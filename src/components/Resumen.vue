@@ -89,8 +89,8 @@ export default {
     created: function(){                
         this.username = this.$route.params.username        
         let self = this
-        let one = "http://127.0.0.1:8000/user/records/" +  this.username
-        let two = "http://127.0.0.1:8000/user/cats/" + this.username
+        let one = "https://mybudgetback.herokuapp.com/user/records/" +  this.username
+        let two = "https://mybudgetback.herokuapp.com/user/cats/" + this.username
         const requestOne = axios.get(one)
         const requestTwo =axios.get(two)
         
