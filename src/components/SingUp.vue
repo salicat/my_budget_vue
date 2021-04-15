@@ -37,10 +37,10 @@ export default {
             }
             if(confirm("No olvides tus datos no tenemos como recuperarlos XD")){
                 axios
-                .post("https://mybudgetback.herokuapp.com//user/create/", data)
+                .post("http://localhost:8000/user/create/", data)
                 .then((response) => {                                     
                     alert("usuario creado con exito")   
-                    this.$router.push({name:"Login"})         
+                    this.$router.push({name:"root"})                             
                 })
                 .catch((error) => {
                     if (error.response.status =="403")

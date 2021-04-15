@@ -99,7 +99,7 @@ export default {
             this.username = localStorage.getItem("current_username");
             var self = this;            
             axios            
-            .get("https://mybudgetback.herokuapp.com/user/cats/" + this.username)
+            .get("http://localhost:8000/user/cats/" + this.username)
             .then((response) => {
                 self.cats = response.data;                
             })            
@@ -110,7 +110,7 @@ export default {
             this.username = localStorage.getItem("current_username")
             var self = this  
             axios
-            .get("https://mybudgetback.herokuapp.com/user/records/" + this.username)
+            .get("http://localhost:8000/user/records/" + this.username)
             .then((response) => {
                 self.registers = response.data
             })  
@@ -127,7 +127,7 @@ export default {
                 value       : this.value
             }
             axios
-            .post("https://mybudgetback.herokuapp.com/user/register/", data)
+            .post("http://localhost:8000/user/register/", data)
             .then((response) => {   
                 window.location.reload();         
             })
@@ -148,7 +148,7 @@ export default {
             var self = this;
             if(confirm("Eliminar registros afectara otros datos en la aplicación")){
                 axios
-                .delete("https://mybudgetback.herokuapp.com/user/records/delete/", {data})
+                .delete("http://localhost:8000/user/records/delete/", {data})
                 .then((response) => {
                     alert("Regristos borrados " + response.data)
                     window.location.reload()

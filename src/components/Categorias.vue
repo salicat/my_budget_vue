@@ -24,13 +24,20 @@
                             <input type="text" v-model="value">
                         </div> <br>
                         <div v-if="type == 'incomes'">
-                            <p> Presupuesto mensual :</p>
+                            <p> Meta mensual :</p>
                             <input type="text" v-model="budget">
                         </div> <br>
                         <div v-if="type == 'expenses'">
-                            <p> Presupuesto mensual :</p>
+                            <p> Presupuesto mensual:</p>
                             <input type="text" v-model="budget">
+                            <p> Este gasto lo haces cada mes?</p>
+                            <input type="checkbox" v-model="recurrency"  v-on:click="recurrency = true" >                            
                         </div> <br>
+                        <div v-if="recurrency == true">
+                            <p> Elige la fecha del proximo vencimiento</p>
+                            <input type="date" id="start" name="trip-start" value="2018-07-22"
+                                    min="2000-03-12" max="2040-12-31" v-model="day"> <br>
+                        </div>
                         <button v-on:click="cat_create"> Crear Categoria</button>
                     </div>                    
                 </div>               
@@ -45,7 +52,7 @@
                         </select><br>                    
                         <select v-model="category" v-if="type === 'incomes'">
                             <option  v-for="cat in cats.incomes" :key="cat.type" >
-                                {{cat.category | formatNumber}} 
+                                {{cat.category}} 
                             </option>
                         </select><br> 
                         <select v-model="category" v-if="type === 'expenses'">
@@ -66,54 +73,69 @@
                         <button v-on:click="delete_cat"> Eliminar </button>
                     </div>
                 </div>
-            </div>      
-            <div class = "tablas">
-            <div class ="ingresos">
-                <h1> Ingresos </h1>
-                <table >
-                    <tr v-for="cat in cats.incomes" :key="cat.category">                    
-                        <th> {{cat.category}} </th> 
-                        <th class="val"> ${{cat.budget}} </th>
-                    </tr>                    
-                </table>                                                                                    
             </div>
-            <div class ="egresos">
-                <h1> Egresos </h1>                
-                <table>
-                    <tr v-for="cat in cats.expenses" :key="cat.category">                    
-                        <th> {{cat.category}} </th> 
-                        <th class="val"> ${{cat.budget}} </th>
-                    </tr>                    
-                </table>
+            <div class = "ing_egr">
+                <div class ="ingresos">
+                    <h1> Ingresos </h1>
+                    <table border="1px">
+                        <tr class = "columnas">
+                            <th>  </th>                            
+                            <th> Meta mensual</th>
+                        </tr>
+                        <tr v-for="cat in cats.incomes" :key="cat.category">                    
+                            <td class="titulos"> {{cat.category}} </td> 
+                            <td> ${{cat.budget}} </td>                                                
+                        </tr>
+                    </table>                                                                                    
+                </div>
+                <div class ="egresos">
+                    <h1> Egresos </h1>                
+                    <table border="1px">
+                        <tr class = "columnas">
+                            <th>  </th>
+                            <th> Presupuesto </th>
+                            <th> Prox Vencimiento </th>
+                        <tr>                           
+                        <tr v-for="cat in cats.expenses" :key="cat.category">                    
+                            <td class="titulos"> {{cat.category}} </td> 
+                            <!-- <td v-bind:class="{alert: cat.value > cat.budget}"> ${{cat.value}}</td> -->
+                            <td > ${{cat.budget}} </td>
+                            <td v-if="cat.recurrency==true"> {{cat.day}}</td>                                          
+                        </tr>                    
+                    </table>
+                </div>                                                          
+        </div>            
+    </div>
+        <div class="assets">
+                <div class ="activos">
+                    <h1> Activos </h1>
+                    <table >
+                        <tr class = "columnas">
+                            <td> </td>
+                            <td> Valor </td>
+                        </tr>
+                        <tr v-for="cat in cats.liabilities" :key="cat.category">                    
+                            <th class="titulos"> {{cat.category}} </th> 
+                            <th> ${{cat.value}} </th>
+                        </tr>                    
+                    </table>
+                </div>
+                <div class ="pasivos">
+                    <h1>Pasivos</h1>
+                    <table >
+                        <tr class = "columnas">
+                            <td> </td>
+                            <td> Valor </td>
+                        </tr>
+
+                        <tr v-for="cat in cats.passives" :key="cat.category">                    
+                            <th class="titulos"> {{cat.category}} </th> 
+                            <th > ${{cat.value}} </th>
+                        </tr>                    
+                    </table>
+                </div>
             </div>
-            <div class ="activos">
-                <h1> Activos </h1>
-                <table >
-                    <tr v-for="cat in cats.liabilities" :key="cat.category">                    
-                        <th> {{cat.category}} </th> 
-                        <th class="val"> ${{cat.value}} </th>
-                    </tr>                    
-                </table>
-            </div>
-            <div class ="pasivos">
-                <h1>Pasivos</h1>
-                <table >
-                    <tr v-for="cat in cats.passives" :key="cat.category">                    
-                        <th> {{cat.category}} </th> 
-                        <th class="val"> ${{cat.value}} </th>
-                    </tr>                    
-                </table>
-            </div>
-            </div>
-        </div>
-        <div class="inferior">
-            <div class="barras">
-                <h2>Barras ACUMULADOS</h2>
-            </div>
-            <div class = "lineas">
-                <h2>Lineas de crecimiento en el tiempo</h2>
-            </div>            
-        </div>
+        <div class="warning">*Recuerda que los valores de Activos y Pasivos los actualizas desde la seccion registros</div>    
     </div>
 </template>
 
@@ -125,24 +147,27 @@ export default {
     data: function (){
         return {
             username : localStorage.getItem("current_username"),
-            type : "",
-            category : "",
+            type        : "",
+            category    : "",
             description : "",
-            value : 0,
-            budget : 0,
-            cats : [],
-            action : undefined
+            value       : 0,
+            budget      : 0,
+            recurrency  : false,
+            day         : 0,            
+            cats        : [],
+            action      : undefined,
+            
         }
     },    
     created: function(){
         this.username = this.$route.params.username
-        let self = this
+        let self = this        
         axios
-        .get("https://mybudgetback.herokuapp.com/user/cats/" + this.username)
+        .get("http://localhost:8000/user/cats/" + this.username)
         .then((result) => {
             self.cats = result.data
         })
-    },
+    },    
     methods : {
         cat_create: function () {
             var data = {
@@ -150,11 +175,14 @@ export default {
                 category    : this.category,
                 username    : this.$route.params.username,                
                 value       : this.value,  
-                budget      : this.budget          
+                budget      : this.budget,
+                recurrency  : this.recurrency,
+                day         : this.day          
                 }        
             let self = this
+            console.log(data.recurrency, data.day)
             axios
-            .post("https://mybudgetback.herokuapp.com/create/category/", data)
+            .post("http://localhost:8000/user/create/category/", data)
             .then((response) => {
                 alert(response.data.message )
                 window.location.reload();
@@ -175,7 +203,7 @@ export default {
             let self = this
             if(confirm("Se eliminarán todos los registros de la categoria " + this.category)){
                 axios
-                .delete("https://mybudgetback.herokuapp.com/user/delete/category/", {data})
+                .delete("http://localhost:8000/user/delete/category/", {data})
                 .then((response) => {
                     alert(response.data.message)
                     window.location.reload();
@@ -198,21 +226,33 @@ export default {
 }
 .new_cat{
     max-width:20%;
-    border-radius: 10px;
     padding: 10px;    
     font-family: arial;
-    overflow:hidden
+    overflow:hidden;
 }
 .new_cat button:hover{
     color: rgb(1, 41, 41);
     box-shadow: 10px 5px 20px 10px rgb(1, 41, 41);
 }
-.tablas{
+.ing_egr table{
+    padding: 2px;
+    text-align: center;
+    border: 0.5px rgba(1, 41, 41, 0.856)
+}
+.columnas {
+    color: rgb(0, 107, 107);
+    padding: 5px;
+}
+.titulos{
+    color: rgb(0, 107, 107);
+    font-weight: 100;
+    text-align: left;
+    padding: 4px ;
+}
+.ing_egr{
+    width: 80%;
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
-    width: 80%;
-    max-height: 40%;
 }
 .ingresos{
     min-width: 20%;
@@ -222,9 +262,11 @@ export default {
     padding: 10px; 
     overflow:hidden   
 }
-.ingresos th{
-    text-align: left;
-   
+.alert{
+    color: red;
+}
+.success{
+    color: rgb(0, 255, 0)
 }
 .egresos{
     min-width: 20%;
@@ -234,17 +276,19 @@ export default {
     padding: 10px;       
     overflow:hidden
 }
-.egresos table{
-    
+.egresos th{    
     text-align: left;
+}
+.assets{
+    display: flex;
+    flex-direction: row;
 }
 .activos{
     min-width: 20%;
     font-family: arial;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;
-    padding: 10px;
-    overflow:hidden    
+    padding: 10px;    
 }
 .activos th{
     text-align: left;
@@ -255,17 +299,9 @@ export default {
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;
     padding: 10px; 
-    overflow:hidden   
 }
 .pasivos th{
     text-align: left;    
-}
-.inferior{
-    display: flex;
-    flex-direction: row;  
-    justify-content: space-around;
-    padding: 10px;      
-    font-family: arial;
 }
 .crear_categorias button{
     font-family: Arial;
@@ -276,7 +312,6 @@ export default {
     margin: 10px;
     padding: 10px 20px;
 }
-
 .barras{
     border-radius: 10px;
     padding: 10px;
@@ -302,6 +337,9 @@ export default {
 }
 .val{
     text-align: right;
+}
+.warning{
+    color: #9e8e01;
 }
 
 </style>

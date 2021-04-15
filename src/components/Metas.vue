@@ -12,11 +12,11 @@
                     <p>Nombra tu meta</p>
                     <input placeholder="Nombre" v-model="name"> 
                     <p>Cuanto $$$ necesitas?</p>
-                    <input placeholder="$" v-model="final_value">
+                    <input type="number" placeholder="$" v-model="final_value">
                     <p>Cuando vas a cumplirla?</p>
                     <input type="date" id="start" name="trip-start" value="2018-07-22"
                         min="2021-03-12" max="2040-12-31" v-model="final_date"> <br>
-                    <button v-on:click="create_goal">Crear Meta</button>
+                    <button v-on:click="create_goal" >Crear Meta</button>
                 </form>
             </div>
             <div class = "actualizar_meta" v-if="elige === '2'">
@@ -58,8 +58,7 @@
                         <td>${{goal.actual}}</td>
                         <td>{{goal.dias}}</td>
                     </tr>
-                </table>
-                
+                </table>                
             </div>            
         </div>        
     </div>
@@ -76,7 +75,7 @@ export default {
             name : "",
             username : localStorage.getItem('current_username'),
             final_value : 0,
-            final_date : "",
+            final_date : undefined,
             value : 0,
             tus_metas : [],            
             elige : undefined
@@ -84,13 +83,11 @@ export default {
     },
     created: function() {
         this.username = this.$route.params.username
-        var self = this
+        var self = this        
         axios        
-        .get("https://mybudgetback.herokuapp.com/user/goals/track/" + this.username)
+        .get("http://localhost:8000/user/goals/track/" + this.username)
         .then((response) =>{
-            self.tus_metas = response.data
-            console.log(this.username)
-
+            self.tus_metas = response.data            
         })
         .catch((error) =>{
             alert(error)
@@ -104,10 +101,11 @@ export default {
                 final_value : this.final_value,
                 final_date : this.final_date                
             }
+            
             axios
-            .post("https://mybudgetback.herokuapp.com/user/goals/set/", data)
+            .post("http://localhost:8000/user/goals/set/", data)
             .then((result) => {
-                
+                console.log(final_date)
             })            
         },
         update_goal: function () {
@@ -118,7 +116,7 @@ export default {
             }
             var self = this;
             axios
-            .put("https://mybudgetback.herokuapp.com/user/goals/update", data)
+            .put("http://localhost:8000/user/goals/update", data)
             .then((result) => {  
                 window.location.reload();              
             })
@@ -129,7 +127,7 @@ export default {
                 username : this.username
             }            
             axios
-            .delete("https://mybudgetback.herokuapp.com/user/goals/delete", {data})
+            .delete("http://localhost:8000/user/goals/delete", {data})
             .then((result) => {        
                 alert(data.name + " borrado")
                 window.location.reload();                       
@@ -153,11 +151,11 @@ export default {
     
 }
 .las_metas{
-    max-width: 40%;
+    width: 30%;
+    padding: 6%;
 }
 
-.crear_metas{
-    padding: 6%;
+.crear_metas{    
     border: .5px;
     border-radius: 10px;
     display: flex;
@@ -179,8 +177,10 @@ export default {
     color: rgb(1, 41, 41);
     box-shadow: 10px 5px 20px 10px rgb(1, 41, 41);
 }
+.los_reportes{
+    width: 70%;
+}
 .informes{
-    max-width: 40%;
     padding: 6%;
     border: .5px;
     border-radius: 10px;

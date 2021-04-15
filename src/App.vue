@@ -31,12 +31,12 @@ export default {
     data: function(){
       return {
               is_auth: localStorage.getItem('isAuth') || false, 
-              username: localStorage.getItem("current_username")
+              username: localStorage.getItem("current_username")              
               };
     },    
     created: function(){
       this.$router.push({name: "root"})
-      this.updateAuth()
+      this.updateAuth()      
     },
           
   methods: {
@@ -150,7 +150,7 @@ body{
   width: 85%;
   height: 86%;
   padding: 10px;  
-  background-image: url("https://i.pinimg.com/originals/58/8c/4b/588c4ba75cbd6dd9fe3c5bfafaaccdea.jpg");  
+  background-color: #000000;
 }
 .footer{
   width: 100%;

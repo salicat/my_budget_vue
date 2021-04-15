@@ -32,7 +32,7 @@ export default {
     processAuthUser : function () {
       var self = this;
       axios
-      .post("https://mybudgetback.herokuapp.com/user/auth/", self.user_in, { headers: {} })
+      .post("http://127.0.0.1:8000/user/auth/", self.user_in, { headers: {} })
       .then ((response) => {
         alert("Autenticacion Exitosa");
         self.$emit("log-in", self.user_in.username)        
