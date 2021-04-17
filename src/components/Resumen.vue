@@ -109,8 +109,8 @@ export default {
             month       : month_cons
         }               
         
-        let one = "http://127.0.0.1:8000/user/records/" + data.username 
-        let two = "http://127.0.0.1:8000/user/cats/" + data.username
+        let one = "https://mybudgetback.herokuapp.com/user/records/" + data.username 
+        let two = "https://mybudgetback.herokuapp.com/user/cats/" + data.username
         
         const requestOne = axios.get(one)
         const requestTwo = axios.get(two)
@@ -155,7 +155,7 @@ export default {
             console.log(typeof month_cons)
             let self = this
             axios
-            .post("http://127.0.0.1:8000/user/month_regs/", data)  
+            .post("https://mybudgetback.herokuapp.com/user/month_regs/", data)  
             .then((response) => {
                 console.log("Ba donnees : ",response.data)
                 self.regs = response.data.length

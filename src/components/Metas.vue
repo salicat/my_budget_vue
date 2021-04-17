@@ -85,7 +85,7 @@ export default {
         this.username = this.$route.params.username
         var self = this        
         axios        
-        .get("http://localhost:8000/user/goals/track/" + this.username)
+        .get("https://mybudgetback.herokuapp.com/user/goals/track/" + this.username)
         .then((response) =>{
             self.tus_metas = response.data            
         })
@@ -103,7 +103,7 @@ export default {
             }
             
             axios
-            .post("http://localhost:8000/user/goals/set/", data)
+            .post("https://mybudgetback.herokuapp.com/user/goals/set/", data)
             .then((result) => {
                 console.log(final_date)
             })            
@@ -116,7 +116,7 @@ export default {
             }
             var self = this;
             axios
-            .put("http://localhost:8000/user/goals/update", data)
+            .put("https://mybudgetback.herokuapp.com/user/goals/update", data)
             .then((result) => {  
                 window.location.reload();              
             })
@@ -127,7 +127,7 @@ export default {
                 username : this.username
             }            
             axios
-            .delete("http://localhost:8000/user/goals/delete", {data})
+            .delete("https://mybudgetback.herokuapp.com/user/goals/delete", {data})
             .then((result) => {        
                 alert(data.name + " borrado")
                 window.location.reload();                       
