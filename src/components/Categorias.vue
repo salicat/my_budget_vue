@@ -163,7 +163,7 @@ export default {
         this.username = this.$route.params.username
         let self = this        
         axios
-        .get("http://localhost:8000/user/cats/" + this.username)
+        .get("https://mybudgetback.herokuapp.com/user/cats/" + this.username)
         .then((result) => {
             self.cats = result.data
         })
@@ -182,7 +182,7 @@ export default {
             let self = this
             console.log(data.recurrency, data.day)
             axios
-            .post("http://localhost:8000/user/create/category/", data)
+            .post("https://mybudgetback.herokuapp.com/user/create/category/", data)
             .then((response) => {
                 alert(response.data.message )
                 window.location.reload();
@@ -203,7 +203,7 @@ export default {
             let self = this
             if(confirm("Se eliminarán todos los registros de la categoria " + this.category)){
                 axios
-                .delete("http://localhost:8000/user/delete/category/", {data})
+                .delete("https://mybudgetback.herokuapp.com/user/delete/category/", {data})
                 .then((response) => {
                     alert(response.data.message)
                     window.location.reload();
