@@ -92,7 +92,7 @@ export default {
         .catch((error) =>{
             alert(error)
         })
-    },
+    },    
     methods:{
         create_goal: function () {
             var data = {

@@ -34,44 +34,42 @@
             <input type= "text" v-model ="descripcion"><br>
 
              <p>Ingresa el valor</p>
-            <input type= "number" v-model ="value"><br>
-            
-            <button v-on:click="save_reg"> Guardar Registro </button>
-            <div>
-                <p>Aqui poner una torta para ver ingresos/gastos con periodos de año</p>                
-            </div>      
-
+            <input type= "number" v-model ="value"><br>            
+            <button v-on:click="save_reg"> Guardar Registro </button>            
         </div>
-         <div class = "tarjeta">
-            <h1>Mis Registros</h1> 
-            <button id="del" v-if="selected.length" v-on:click="reg_del"> Eliminar Seleccion </button>            
-            <table border="1px">
-                <thead>
-                    <tr class = "columns">                    
-                        <label >
-                            <input type="checkbox" v-model="selectedAll" v-on:click="select">
-                        </label>
-                        <th> Tipo </th>
-                        <th> Categoria </th>
-                        <th> Descripción </th>
-                        <th> Valor </th>
-                        <th> Fecha </th>
-                    </tr >
-                </thead>
-                <tbody>
-                    <tr v-for="reg in registers" :key="reg.id">     
-                        <td>
-                        <label> <input type="checkbox" :value="reg.id" v-model="selected"> </label>
-                        </td>               
-                        <td class= "titls1">{{reg.type}}</td>
-                        <td class= "titls2">{{reg.category}}</td>                                      
-                        <td class= "titls5">{{reg.description}} </td>
-                        <td class= "titls3">${{reg.value}}</td>
-                        <td class= "titls4">{{reg.date}}</td>                           
-                    </tr>
-                </tbody>
-            </table>             
-                <button v-on:click="get_regs"> Ver mis ultimos movimientos </button>            
+        <div class = "tarjeta">
+            <div class="botones">
+                <button v-if="registers.length < 1" v-on:click="get_regs"> Ver mis ultimos movimientos </button>
+                <button id="del" v-if="selected.length" v-on:click="reg_del"> Eliminar Seleccion </button>                        
+            </div>
+            <h1>Mis Registros</h1>  
+            <div class="tabla">
+                <table border="1px">
+                    <thead>
+                        <tr class = "columns">                    
+                            <label >
+                                <input type="checkbox" v-model="selectedAll" v-on:click="select">
+                            </label>
+                            <th> Categoria </th>
+                            <th> Descripción </th>
+                            <th> Valor </th>
+                            <th> Fecha </th>
+                        </tr >
+                    </thead>
+                    <tbody>
+                        <tr v-for="reg in registers" :key="reg.id"
+                            :style="{color: reg.type == 'expenses' ? '#FF00D5' : '#05ff19'}">     
+                            <td>
+                            <label> <input type="checkbox" :value="reg.id" v-model="selected"> </label>
+                            </td>               
+                            <td class= "titls2">{{reg.category}}</td>                                      
+                            <td class= "titls5">{{reg.description}} </td>                        
+                            <td class= "titls3" >${{reg.value}}</td>
+                            <td class= "titls4">{{reg.date}}</td>                           
+                        </tr>
+                    </tbody>
+                </table>
+            </div>                                             
         </div>
     </div> 
 </template>
@@ -171,19 +169,17 @@ export default {
     font-family: arial;    
     display: flex;
     justify-content: space-around;
-    align-items: center;   
-    background: rgb(0, 0, 0);
-    color: rgb(255, 255, 255);
+    align-items: top;   
+    color: rgb(255, 255, 255);    
 }
 .container_transaction{
     min-width: 150px;
-    max-width: 30%;
+    max-width: 20%;
     padding: 6%;
     border: .5px;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    background: rgba(0, 0, 0, 0.1);
     box-shadow: 0 10px 25px rgba(1, 41, 41, 0.431);
 }
 .container_transaction button{
@@ -196,20 +192,26 @@ export default {
 }
 .container_transaction button:hover{
     color: rgb(1, 41, 41);
-    box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);
+    box-shadow: 10px 5px 20px 5px rgb(1, 41, 4);
 }
 .tarjeta{
     min-width: 150px;
-    max-width: 40%;
+    max-width: 40%;    
 }
 .tarjeta table{
-    padding: 2px;
+    padding: 2px;    
     text-align: center;
-    border: 0.5px rgba(1, 41, 41, 0.856)
+    border: 0.5px rgba(1, 41, 41, 0.856);           
+}
+.tabla{
+    overflow-y: scroll;
+    overflow: auto;
+    max-height: 65vh;
 }
 .columns {
-    color: rgb(0, 107, 107);
+    color: rgb(255, 255, 255);
     padding: 5px;
+    font-weight: Bold;
 }
 .titls1{
     font-weight: 100;
@@ -230,19 +232,34 @@ export default {
     font-weight: 100;
     padding: 4px ;
 }
-
-
 .tarjeta button{
     font-family: Arial;
     color: #fff;
     background: #000000;
     border: 1px solid #E5E7E9;
     border-radius: 5px;
-    padding: 10px 20px;    
+    padding: 10px 20px;        
 }
 .tarjeta button:hover{
     color: rgb(1, 41, 41);
-    box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);    
+    box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);
 }
-
+.botones{
+    display: flex;
+    flex-direction: row;
+    
+}
+@media screen and (max-width: 700px) {
+    .compo_transaction{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow-y: scroll;
+        overflow: auto;
+        max-height: 65vh;
+     }
+    .container_transaction{
+        
+    }
+}
 </style>
