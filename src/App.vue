@@ -3,22 +3,25 @@
     <div class = "top_right_vigneta" v-if="is_auth">
       <h2>{{username}}</h2>    
       </div>
-    <div class = "sidebar" v-if="is_auth"> 
+    <div  class = "sidebar" v-if="is_auth"
+          v-bind:class="[open ? 'sidebar_on' : 'sidebar']"
+          >       
       <nav>  
+        <button id="none" v-on:click="close_bar">X </button>
         <h2>Menú</h2 >
         <button v-on:click="go_to_resumen">Resumen</button>
         <button v-on:click="go_to_goals">Metas</button>
         <button v-on:click="go_to_cats">Categorias</button>
         <button v-on:click="go_to_reg">Registros</button>
-        <button v-on:click="logOut"> Cerrar Cesión </button>       
+        <button v-on:click="logOut" class="cerrar"> Cerrar Cesión </button>       
       </nav>
     </div>
-    <div class = "main-component">  
-      <router-view v-on:log-in="logIn"> </router-view>
-    </div>    
-    <div class = "footer" v-on:click="logOut">
-      <p> Este es el footer </p>         
+    <div id="main" >
+      <button class="openbtn" v-on:click="open_bar" v-if="!open"> ☰ </button>
     </div>
+    <div v-bind:class="[!open ? 'main-component_2' : 'main-component' ]">  
+      <router-view v-on:log-in="logIn"> </router-view>
+    </div>        
   </div>
 </template>
 
@@ -31,7 +34,8 @@ export default {
     data: function(){
       return {
               is_auth: localStorage.getItem('isAuth') || false, 
-              username: localStorage.getItem("current_username")              
+              username: localStorage.getItem("current_username"),
+              open: false              
               };
     },    
     created: function(){
@@ -83,7 +87,15 @@ export default {
       localStorage.removeItem('isAuth')
       localStorage.removeItem("current_username")
       this.updateAuth()
-    }
+    },
+    open_bar: function () {
+      this.open = true;
+      console.log(this.open);
+    },
+    close_bar: function () {
+      this.open = false;
+      console.log(this.open);
+    }    
   }
 }
 
@@ -94,10 +106,28 @@ body{
   background-color: black;
   color:#fff;
 }
-.sidebar{
+.sidebar {
   position: absolute;
   left: 0%;
-  top: 10%;  
+  top: 5%;  
+  width: 15%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  height: 50%;
+  overflow-x: hidden;
+  transition: 0.5s;  
+}
+#none{
+  border: none;
+}
+#none :hover{
+  box-shadow: 10px 5px 20px 5px rgb(255, 9, 9);
+}
+.sidebar_on {
+  position: absolute;
+  left: 0%;
+  top: 5%;  
   width: 15%;
   max-width: 150px;
   min-height: 400px;
@@ -105,15 +135,36 @@ body{
   color:#fff ;
   background-color: rgba(0, 0, 0, 0.85);
   display: flex;
-  justify-content:space-around;
   border-radius: 0px 10px 10px 0px;
+  box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);
+}
+.sidebar a:hover {
+  color: #f1f1f1;
+}
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+}
+.openbtn:hover {
   box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);
 }
 .sidebar nav{
   font-family: Arial;
   display: flex;
-  justify-content: space-around;
+  padding: 5%;
   flex-direction: column;
+  justify-content:space-evenly;
 }
 .sidebar nav button{
   font-family: Arial;
@@ -151,32 +202,16 @@ body{
   height: 86%;
   padding: 10px;  
   background-color: #000000;
+  transition: 0.5s;  
 }
-.footer{
+.main-component_2{
+  position: fixed;
+  top: 100px;
+  left: 0px;
   width: 100%;
-  height: 5%;
-  position: absolute;
-  bottom: 0%;
-  left: 0%;
-  min-height: 100px;  
-  color:#E5E7E9;
-  display: flex;
-  justify-content:flex-end;
-  align-items: center;
-  background: #000000;
-  box-shadow: 0px -5px 20px 5px rgb(1, 41, 41);
+  height: 86%;
+  padding: 10px;
+  transition: 0.5s;      
 }
-.top_right_vigneta button{
-  font-family: Arial;
-  max-height: 50%;
-  color: #fff;
-  background: #000000;
-  border: 1px solid #E5E7E9;
-  border-radius: 5px;
-  padding: 10px 20px;
-}
-.top_right_vigneta button:hover{
-  color: rgb(255, 0, 76);
-  box-shadow: 10px 5px 20px 5px rgba(255, 2, 99, 0.452);  
-}
+
 </style>

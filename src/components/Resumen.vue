@@ -2,7 +2,6 @@
     <div id="Resumen">
         <div class="main">    
             <div class="barras">
-                <h2>Mes: {{month}}</h2> 
                 <select v-on:change="reload" v-model="month">
                     <option selected> {{month}} </option>
                     <option v-for="mes in meses" 

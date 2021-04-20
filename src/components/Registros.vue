@@ -254,12 +254,13 @@ export default {
         width: 100%;
         display: flex;
         flex-direction: column;
+        align-content: flex-start;
         overflow-y: scroll;
         overflow: auto;
-        max-height: 65vh;
+        max-height: 90vh;
      }
     .container_transaction{
-        
+       
     }
 }
 </style>
