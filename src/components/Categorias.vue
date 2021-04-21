@@ -1,6 +1,5 @@
 <template> 
     <div id="Categorias">
-        <h1>Estas son tus categorias</h1>            
         <div class="cats">
             <div class="new_cat">
                 <h2>Editar mis categorias</h2>  
@@ -72,9 +71,9 @@
                         </select><br>                        
                         <button v-on:click="delete_cat"> Eliminar </button>
                     </div>
-                </div>
+                </div>                
             </div>
-            <div class = "ing_egr">
+            <div class = "ing_egr">        
                 <div class ="ingresos">
                     <h1> Ingresos </h1>
                     <table border="1px">
@@ -90,7 +89,7 @@
                 </div>
                 <div class ="egresos">
                     <h1> Egresos </h1>                
-                    <table border="1px">
+                    <table border="1px" class="tab_egresos">
                         <tr class = "columnas">
                             <th>  </th>
                             <th> Presupuesto </th>
@@ -104,9 +103,8 @@
                         </tr>                    
                     </table>
                 </div>                                                          
-        </div>            
-    </div>
-        <div class="assets">
+            </div>            
+            <div class="assets">
                 <div class ="activos">
                     <h1> Activos </h1>
                     <table >
@@ -119,7 +117,7 @@
                             <th> ${{cat.value}} </th>
                         </tr>                    
                     </table>
-                </div>
+                </div>            
                 <div class ="pasivos">
                     <h1>Pasivos</h1>
                     <table >
@@ -127,16 +125,16 @@
                             <td> </td>
                             <td> Valor </td>
                         </tr>
-
                         <tr v-for="cat in cats.passives" :key="cat.category">                    
                             <th class="titulos"> {{cat.category}} </th> 
                             <th > ${{cat.value}} </th>
                         </tr>                    
                     </table>
                 </div>
-            </div>
-        <div class="warning">*Recuerda que los valores de Activos y Pasivos los actualizas desde la seccion registros</div>    
-    </div>
+            </div>            
+        </div>
+    <div class="warning">*Recuerda que los valores de Activos y Pasivos los actualizas desde la seccion registros</div>
+</div>
 </template>
 
 <script>
@@ -221,11 +219,10 @@ export default {
 <style>
 .cats{
     display: flex;
-    flex-direction: row;
-    justify-content: space-between; 
+    flex-direction: row;            
 }
 .new_cat{
-    max-width:20%;
+    width:20%;
     padding: 10px;    
     font-family: arial;
     overflow:hidden;
@@ -236,8 +233,9 @@ export default {
 }
 .ing_egr table{
     padding: 2px;
+    width: 20%;
     text-align: center;
-    border: 0.5px rgba(1, 41, 41, 0.856)
+    border: 0.5px rgba(1, 41, 41, 0.856);    
 }
 .columnas {
     color: rgb(0, 107, 107);
@@ -250,31 +248,28 @@ export default {
     padding: 4px ;
 }
 .ing_egr{
-    width: 80%;
     display: flex;
     flex-direction: row;
+    width: 40%;
+    justify-content: space-around;
 }
 .ingresos{
-    min-width: 20%;
+    width: 35%;
     font-family: arial;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;
     padding: 10px; 
     overflow:hidden   
 }
-.alert{
-    color: red;
-}
-.success{
-    color: rgb(0, 255, 0)
-}
 .egresos{
-    min-width: 20%;
+    width: 45%;
     font-family: arial;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;
     padding: 10px;       
-    overflow:hidden
+    overflow-y: scroll;
+    overflow: auto;
+    max-height: 65vh;  
 }
 .egresos th{    
     text-align: left;
@@ -282,9 +277,11 @@ export default {
 .assets{
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
+    width: 40%;
 }
 .activos{
-    min-width: 20%;
+    width: 40%;
     font-family: arial;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;
@@ -294,7 +291,7 @@ export default {
     text-align: left;
 }
 .pasivos{
-    min-width: 20%;
+    width: 40%;
     font-family: arial;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;
@@ -341,5 +338,9 @@ export default {
 .warning{
     color: #9e8e01;
 }
-
+.tab_egresos{
+    overflow-y: scroll;
+    overflow: auto;
+    max-height: 50vh;
+}
 </style>

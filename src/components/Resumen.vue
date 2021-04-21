@@ -1,14 +1,15 @@
 <template>
     <div id="Resumen">
         <div class="main">    
-            <div class="barras">
-                <select v-on:change="reload" v-model="month">
-                    <option selected> {{month}} </option>
-                    <option v-for="mes in meses" 
-                            :key="mes" > {{mes}} </option>
-                </select>
-                <div>
-                    <div class="chart">
+                <div class="selector">
+                    <select v-on:change="reload" v-model="month">
+                        <option selected> {{month}} </option>
+                        <option v-for="mes in meses" 
+                                :key="mes" > {{mes}} </option>
+                    </select>
+                </div>
+            <div class="barras">                
+                    <div class="chart1">
                         <pie-chart 
                             :donut="true" 
                             :data="[['Ingresos', incomes], ['Egresos', expenses]]"
@@ -16,37 +17,15 @@
                             :library="{animation:{easing:'easeOutQuad'}, 
                             elements: {arc: {borderWidth: 0}}}"
                             >
-                        </pie-chart>                      
-                        <h2>Ing: ${{incomes}} // Egr: ${{expenses}} </h2>
-                    </div>
-                </div>
-                    <div class="fechas">
-                        <div>
-                        <!--     
-                        <datepicker v-model="init_date" class="datepicker" :value="inicial" 
-                                    name="fecha"                             
-                                    @opened="datepickerOpened" 
-                                    @selected="dateSelected" 
-                                    @closed="datepickerClosed">                    
-                        </datepicker>
-                        Fecha de inicio
-                        <p>{{init_date}}</p>
-                        </div>
-                        <div >
-                            <datepicker v-model="final_date" class="datepicker" :value="final" 
-                                        name="fecha"                             
-                                        @opened="datepickerOpened" 
-                                        @selected="dateSelected" 
-                                        @closed="datepickerClosed">                    
-                            </datepicker>
-                            Fecha de final
-                            <p>{{final_date}}</p>
-                        -->
-                        </div>                                         
+                        </pie-chart>                                              
+                        <p class="ingresos">Ing: ${{incomes}} </p>
+                        <p class="egresos">Egr: ${{expenses}}</p>
+                        <h2 v-bind:class="{ingresos: incomes > expenses,
+                                            egresos: expenses > incomes
+                                            }">Balance ${{incomes - expenses}}</h2>
+                        
                     </div>                
-                </div>                       
-                <div class="grafico_pdte">
-                    <div class="chart">
+                    <div class="chart2">
                         <pie-chart 
                             :donut="true" 
                             :data="[['Activos', liabilities], ['Pasivos', passives]]"
@@ -54,15 +33,30 @@
                             :library="{animation:{easing:'easeOutQuad'}, 
                             elements: {arc: {borderWidth: 0}}}"
                             >
-                        </pie-chart>  
-                    <h2> Activos: ${{liabilities}} // Pasivos: ${{passives}} </h2>
-                    <h2> Patrimonio: ${{liabilities-passives}}</h2>
-                    </div >
-                </div>            
-            </div>                                  
-    </div>
-    
+                            </pie-chart>  
+                        <p class="activos"> Activos: ${{liabilities}} </p>
+                        <p class="pasivos"> Pasivos: ${{passives}} </p>
+                        <h2 v-bind:class="{ ingresos: liabilities > passives,
+                                            egresos: liabilities < passives
+                                            }"> Patrimonio: ${{liabilities-passives}}</h2>
+                    </div >            
+                </div>                                        
+                
+            <div class="otrico">
+                <div class="left">
+                    <h1> Alerta de gastos </h1>
+                                  
+                </div>
+                <div class="right">
+                    <h1> Pendientes de pago </h1>
+                   
+                </div>
+            </div>
+            <div v-if="regs.length > 1">{{regs}}</div>
+        </div>        
+    </div>               
 </template>
+
 <script>
 import axios from 'axios';
 import Datepicker from 'vuejs-datepicker';
@@ -150,20 +144,19 @@ export default {
                 username    : this.$route.params.username,
                 month       : month_cons
             }
-            console.log(typeof data.username)
-            console.log(typeof month_cons)
             let self = this
             axios
             .post("https://mybudgetback.herokuapp.com/user/month_regs/", data)  
             .then((response) => {
-                console.log("Ba donnees : ",response.data)
-                self.regs = response.data.length
-                for (var i = 0; i < response.data.length; i++){
-                if ( response.data[i].type == "incomes") {
-                    this.incomes = this.incomes + response.data[i].value;
+                self.regs = response.data
+                this.incomes = 0;
+                this.expenses = 0;
+                for (var j = 0; j < response.data.length; j++){
+                if (response.data[j].type == "incomes") {
+                    this.incomes = this.incomes + response.data[j].value;
                 };
-                if ( response.data[i].type == "expenses") {
-                    this.expenses = this.expenses + response.data[i].value;
+                if ( response.data[j].type == "expenses") {
+                    this.expenses = this.expenses + response.data[j].value;
                 };                                                                
             }
             })
@@ -198,27 +191,73 @@ export default {
 </script>
 <style>
 .main{
-    display: flex;
-    flex-direction: row;
-    width: 100%;       
-}
-.fechas{
-    display: flex;
-    flex-direction: row;
-}
-.barras{
-    min-width: 50%;
-    overflow: auto;    
-}
-.grafico_pdte{
-    min-width: 50%;    
-}
-.grafico_pdte h2{
-    text-align: center;
-}
-.datepicker{
-    font-family: arial;
-    color: black;
+    overflow-y: scroll;
+    overflow: auto;
+    max-height: 150vh; 
 }
 
+@media screen and (min-width: 700px) {
+.main{
+    font-family: arial;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow-y: scroll;
+    overflow: auto;
+    max-height: 150vh; 
+}
+.selector{
+
+}
+.barras{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.chart1{
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    width: 40%;
+    border:1px solid rgb(0, 107, 107);
+    border-radius: 10px;    
+}
+.chart2{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border:1px solid rgb(0, 107, 107);
+    border-radius: 10px;
+}
+.otrico{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.left{
+    width: 40%;    
+    border:1px solid rgb(0, 107, 107);
+    border-radius: 10px;
+}
+.right{
+    width: 40%;
+    border:1px solid rgb(0, 107, 107);
+    border-radius: 10px;
+}
+.ingresos{
+    color: #79FF00;
+}
+.egresos{
+    color: #FF00D5;
+}
+.activos{
+    color: #00E8FF; 
+}
+.pasivos{
+    color:#FF8600;
+}
+}
 </style>
