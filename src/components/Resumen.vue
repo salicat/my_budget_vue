@@ -40,20 +40,8 @@
                                             egresos: liabilities < passives
                                             }"> Patrimonio: ${{liabilities-passives}}</h2>
                     </div >            
-                </div>                                        
-                
-            <div class="otrico">
-                <div class="left">
-                    <h1> Alerta de gastos </h1>
-                                  
-                </div>
-                <div class="right">
-                    <h1> Pendientes de pago </h1>
-                   
-                </div>
-            </div>
-            <div v-if="regs.length > 1">{{regs}}</div>
-        </div>        
+                </div>                                                        
+            </div>        
     </div>               
 </template>
 
@@ -219,12 +207,10 @@ export default {
     display: flex;
     flex-direction: column;
     justify-items: center;
-    width: 40%;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;    
 }
 .chart2{
-    width: 40%;
     display: flex;
     flex-direction: column;
     justify-content: center;
