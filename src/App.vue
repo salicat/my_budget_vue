@@ -58,24 +58,28 @@ export default {
       if (this.$route.name != "Metas"){
         let username = localStorage.getItem("current_username")
         this.$router.push({name:"Metas", params: {username: username}});
+        this.open = false;
       }
     },
     go_to_reg: function () {
       if (this.$route.name != "Registros"){
         let username = localStorage.getItem("current_username")
         this.$router.push({name: "Registros", params: {username: username}});
+        this.open = false;
       }
     },
     go_to_resumen: function () {
       if (this.$route.name != "Resumen") {
       let username = localStorage.getItem("current_username")
-      this.$router.push({name: "Resumen", params: {username: username}});        
+      this.$router.push({name: "Resumen", params: {username: username}});
+      this.open = false;        
       }
     },
     go_to_cats: function () {
       if (this.$route.name != "Categorias") {
       let username = localStorage.getItem("current_username")
       this.$router.push({name: "Categorias", params: {username: username}});                
+      this.open = false;
       }
     },
     logIn: function(username){

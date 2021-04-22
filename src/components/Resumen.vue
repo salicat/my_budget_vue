@@ -18,10 +18,10 @@
                             elements: {arc: {borderWidth: 0}}}"
                             >
                         </pie-chart>                                              
-                        <p class="ingresos">Ing: ${{incomes}} </p>
-                        <p class="egresos">Egr: ${{expenses}}</p>
-                        <h2 v-bind:class="{ingresos: incomes > expenses,
-                                            egresos: expenses > incomes
+                        <p class="goo">Ing: ${{incomes}} </p>
+                        <p class="bad">Egr: ${{expenses}}</p>
+                        <h2 v-bind:class="{ goo: incomes > expenses,
+                                            bad: expenses > incomes
                                             }">Balance ${{incomes - expenses}}</h2>
                         
                     </div>                
@@ -32,16 +32,30 @@
                             :colors="[ '#00E8FF', '#FF8600']"
                             :library="{animation:{easing:'easeOutQuad'}, 
                             elements: {arc: {borderWidth: 0}}}"
-                            >
-                            </pie-chart>  
-                        <p class="activos"> Activos: ${{liabilities}} </p>
-                        <p class="pasivos"> Pasivos: ${{passives}} </p>
-                        <h2 v-bind:class="{ ingresos: liabilities > passives,
-                                            egresos: liabilities < passives
+                            >        
+                   </pie-chart>  
+                        <p class="act"> Activos: ${{liabilities}} </p>
+                        <p class="pas"> Pasivos: ${{passives}} </p>
+                        <h2 v-bind:class="{ act: liabilities > passives,
+                                            pas:liabilities < passives
                                             }"> Patrimonio: ${{liabilities-passives}}</h2>
                     </div >            
-                </div>                                                        
-            </div>        
+                </div>                                        
+                
+            <div class="otrico">
+                <div class="left">
+                    <h1> Alerta de gastos </h1>
+                    <div>
+                        <p></p>
+                    </div>                                  
+                </div>
+                <div class="right">
+                    <h1> Pendientes de pago </h1>
+                   
+                </div>
+            </div>
+            
+        </div>        
     </div>               
 </template>
 
@@ -72,9 +86,9 @@ export default {
             cats: [],
             regs: [],
             month : undefined,
-            meses : ['January', 'February', 'March', 'April', 'May', 
-                    'June', 'July', 'August', 'September', 'October', 
-                    'November', 'December']             
+            meses : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 
+                    'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 
+                    'Noviembre', 'Diciembre']             
         }
     },
     created: function(){                       
@@ -161,19 +175,7 @@ export default {
             .then((response) => {
                 self.btc = response.data.bpi.USD.rate_float
             })
-        },
-        datepickerOpened : function (){
-            console.log("opened")
-        },
-        dateSelected :  function () {
-            console.log("date selected")
-        },
-        datepickerClosed : function () {
-
-        },
-        customFormatter (date) {
-            return moment(date).format('d, MM, yyyy');
-        }   
+        }           
     } 
 }
 </script>
@@ -181,7 +183,33 @@ export default {
 .main{
     overflow-y: scroll;
     overflow: auto;
-    max-height: 150vh; 
+    max-height: 90vh; 
+}
+
+.barras{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.otrico{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.goo{
+    color: #79FF00;
+}
+.bad{
+    color: #FF00D5;
+}
+.act{
+    color: #00E8FF; 
+}
+.pas{
+    color:#FF8600;
 }
 
 @media screen and (min-width: 700px) {
@@ -233,16 +261,16 @@ export default {
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;
 }
-.ingresos{
+.goo{
     color: #79FF00;
 }
-.egresos{
+.bad{
     color: #FF00D5;
 }
-.activos{
+.act{
     color: #00E8FF; 
 }
-.pasivos{
+.pas{
     color:#FF8600;
 }
 }

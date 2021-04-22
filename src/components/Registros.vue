@@ -158,6 +158,102 @@ export default {
 
 </script>
 <style>
+
+
+#del:hover{
+    color: rgb(255, 8, 8);
+    box-shadow: 10px 5px 20px 5px rgb(255, 2, 2);
+}
+.compo_transaction{
+    width: 100%;
+    font-family: arial;    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items:center;   
+    color: rgb(255, 255, 255);
+    overflow-y: scroll;
+    overflow: auto;
+    max-height: 90vh;    
+}
+.container_transaction{
+    width: 35%;
+    padding: 6%;
+    border: .5px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 25px rgba(1, 41, 41, 0.774);
+}
+.container_transaction button{
+    font-family: Arial;
+    color: #fff;
+    background: #000000;
+    border: 1px solid #E5E7E9;
+    border-radius: 5px;
+    padding: 10px 20px;
+}
+.container_transaction button:hover{
+    color: rgb(1, 41, 41);
+    box-shadow: 10px 5px 20px 5px rgb(1, 41, 4);
+}
+.tarjeta{
+    width: 80%;    
+}
+.tarjeta table{
+    padding: 2px;    
+    text-align: center;
+    border: 0.5px rgba(1, 41, 41, 0.856);           
+}
+.tabla{
+    overflow-y: scroll;
+    overflow: auto;
+    max-height: 65vh;
+}
+.columns {
+    color: rgb(255, 255, 255);
+    padding: 5px;
+    font-weight: Bold;
+}
+.titls1{
+    font-weight: 100;
+    text-align: left;
+    padding: 4px ;
+}
+.titls2{
+    font-weight: 100;
+    text-align: left;
+    padding: 4px ;
+}
+.titls3{
+    font-weight: 100;
+    text-align: right;
+    padding: 4px ;
+}
+.titls4{
+    font-weight: 100;
+    padding: 4px ;
+}
+.tarjeta button{
+    font-family: Arial;
+    color: #fff;
+    background: #000000;
+    border: 1px solid #E5E7E9;
+    border-radius: 5px;
+    padding: 10px 20px;        
+}
+.tarjeta button:hover{
+    color: rgb(1, 41, 41);
+    box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);
+}
+.botones{
+    display: flex;
+    flex-direction: row;    
+}
+
+
+@media screen and (min-width: 700px) {
+
 #Registros{
     padding: 15px;
 }
@@ -174,13 +270,13 @@ export default {
 }
 .container_transaction{
     min-width: 150px;
-    max-width: 20%;
+    max-width: 15%;
     padding: 6%;
     border: .5px;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 10px 25px rgba(1, 41, 41, 0.431);
+    box-shadow: 0 10px 25px rgba(1, 41, 41, 0.774);
 }
 .container_transaction button{
     font-family: Arial;
@@ -195,7 +291,7 @@ export default {
     box-shadow: 10px 5px 20px 5px rgb(1, 41, 4);
 }
 .tarjeta{
-    min-width: 150px;
+    width: 50%;
     max-width: 40%;    
 }
 .tarjeta table{
@@ -249,18 +345,6 @@ export default {
     flex-direction: row;
     
 }
-@media screen and (max-width: 700px) {
-    .compo_transaction{
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-content: flex-start;
-        overflow-y: scroll;
-        overflow: auto;
-        max-height: 90vh;
-     }
-    .container_transaction{
-       
-    }
+
 }
 </style>
