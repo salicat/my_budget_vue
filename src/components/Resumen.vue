@@ -2,7 +2,7 @@
     <div id="Resumen">
         <div class="main">    
                 <div class="selector">
-                    <select v-on:change="reload" v-model="month">
+                    <select v-on:change="reload" v-model="month">                        
                         <option selected> {{month}} </option>
                         <option v-for="mes in meses" 
                                 :key="mes" > {{mes}} </option>
@@ -51,10 +51,9 @@
                 </div>
                 <div class="right">
                     <h1> Pendientes de pago </h1>
-                   
+
                 </div>
             </div>
-            
         </div>        
     </div>               
 </template>
@@ -81,7 +80,6 @@ export default {
             liabilities: 0,
             passives: 0,
             incomes: 0,
-            btc : null, 
             date: new Date(2021, 3, 24),
             cats: [],
             regs: [],
@@ -167,15 +165,7 @@ export default {
                 console.log(error.response.data);
 
             })        
-        },
-        price : function () {
-            let self = this
-            axios
-            .get("https://api.coindesk.com/v1/bpi/currentprice.json")
-            .then((response) => {
-                self.btc = response.data.bpi.USD.rate_float
-            })
-        }           
+        }          
     } 
 }
 </script>
@@ -213,7 +203,7 @@ export default {
 }
 
 @media screen and (min-width: 700px) {
-.main{
+.main{    
     font-family: arial;
     display: flex;
     flex-direction: column;

@@ -264,6 +264,7 @@ export default {
 .compo_transaction{
     font-family: arial;    
     display: flex;
+    flex-direction: row;
     justify-content: space-around;
     align-items: top;   
     color: rgb(255, 255, 255);    

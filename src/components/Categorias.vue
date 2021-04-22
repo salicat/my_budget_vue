@@ -138,8 +138,7 @@
             </div>            
         </div>
     <div class="warning">
-        <p> *Recuerda que los valores de Activos y Pasivos los actualizas desde la seccion registros </p>
-        <p>{{cats}}</p>
+        <p> *Recuerda que los valores de Activos y Pasivos los actualizas desde la seccion registros </p>        
     </div>
 </div>
 </template>
