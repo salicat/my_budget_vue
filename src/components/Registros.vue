@@ -150,7 +150,7 @@ export default {
                 .then((response) => {
                     alert("Regristos borrados " + response.data)
                     window.location.reload()
-            })
+            }) 
             }            
         },       
     }        
