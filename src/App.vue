@@ -94,11 +94,9 @@ export default {
     },
     open_bar: function () {
       this.open = true;
-      console.log(this.open);
     },
     close_bar: function () {
       this.open = false;
-      console.log(this.open);
     }    
   }
 }
@@ -122,99 +120,220 @@ body{
   overflow-x: hidden;
   transition: 0.5s;  
 }
-#none{
-  border: none;
-}
-#none :hover{
-  box-shadow: 10px 5px 20px 5px rgb(255, 9, 9);
-}
-.sidebar_on {
-  position: absolute;
-  left: 0%;
-  top: 5%;  
-  width: 15%;
-  max-width: 150px;
-  min-height: 400px;
-  background-color: #000000 ;
-  color:#fff ;
-  background-color: rgba(0, 0, 0, 0.85);
-  display: flex;
-  border-radius: 0px 10px 10px 0px;
-  box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);
-}
-.sidebar a:hover {
-  color: #f1f1f1;
-}
-.sidebar .closebtn {
-  position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 36px;
-  margin-left: 50px;
-}
-.openbtn {
-  font-size: 20px;
-  cursor: pointer;
-  background-color: #111;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-}
-.openbtn:hover {
-  box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);
-}
-.sidebar nav{
-  font-family: Arial;
-  display: flex;
-  padding: 5%;
-  flex-direction: column;
-  justify-content:space-evenly;
-}
-.sidebar nav button{
-  font-family: Arial;
-  color: #fff;
-  background: #000000;
-  border: 1px solid #E5E7E9;
-  border-radius: 5px;
-  padding: 10px 20px;
-}
-.sidebar nav button:hover{
-  color: rgb(1, 41, 41);
-  box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);
-}
-.top_right_vigneta{
-  padding: 5px;  
-  position: fixed;
-  top: 0;
-  right: 0;
-  display: flex;
-  flex-direction: row;
-  align-content: space-around;
-  border-radius: 0px 0px 0px 10px;
-  box-shadow: -10px 10px 20px 5px rgb(1, 41, 41);  
-}
-.top_right_vigneta h2{
-  font-family: Arial;
-  text-align: center;
-  width: 80%;
-}
-.main-component{
-  position: fixed;
-  top: 100px;
-  left: 180px;
-  width: 85%;
-  height: 86%;
-  padding: 10px;  
-  background-color: #000000;
-  transition: 0.5s;  
-}
-.main-component_2{
-  position: fixed;
-  top: 100px;
-  left: 0px;
-  width: 100%;
-  height: 86%;
-  padding: 10px;
-  transition: 0.5s;      
+.sidebar {
+    position: absolute;
+    left: 0%;
+    top: 5%;  
+    width: 15%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    background-color: #000000 ;
+    color:#fff ;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    border-radius: 0px 10px 10px 0px;
+    box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);        
+    height: 50%;
+    transition: 0.5s;  
+  }
+  #none{
+    border: none;
+  }
+  #none :hover{
+    box-shadow: 10px 5px 20px 5px rgb(255, 9, 9);
+  }
+  .sidebar_on {
+    position: absolute;
+    left: 0%;
+    top: 5%;  
+    width: 30%;
+    max-width: 150px;
+    min-height: 400px;
+    background-color: #000000 ;
+    color:#fff ;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    border-radius: 0px 10px 10px 0px;
+    box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);    
+    transition: 0.5s;
+  }
+  .sidebar .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+  .openbtn {
+    font-size: 20px;
+    background-color: #111;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+  }
+  .sidebar nav{
+    font-family: Arial;
+    display: flex;
+    padding: 5%;
+    flex-direction: column;
+    justify-content:space-evenly;
+  }
+  .sidebar nav button{ 
+    font-family: Arial;
+    color: #fff;
+    background: #000000;
+    border: 1px solid #E5E7E9;
+    border-radius: 5px;
+    padding: 10px 20px;
+  }
+  .top_right_vigneta{
+    padding: 5px;  
+    position: fixed;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    align-content: space-around;
+    border-radius: 0px 0px 0px 10px;
+    box-shadow: -10px 10px 20px 5px rgb(1, 41, 41);  
+  }
+  .top_right_vigneta h2{
+    font-family: Arial;
+    text-align: center;
+    width: 80%;
+  }
+  .main-component{
+    position: fixed;
+    top: 100px;
+    left: 280px;
+    width: 75%;
+    height: 86%;
+    padding: 10px;  
+    background-color: #000000;
+    transition: 0.5s;  
+  }
+  .main-component_2{
+    position: fixed;
+    top: 100px;
+    left: 20px;
+    width: 98%;
+    height: 86%;
+    transition: 0.5s;      
+  }
+
+
+@media screen and (min-width: 700px) {
+  body{
+    background-color: black;
+    color:#fff;    
+  }
+  .sidebar {
+    position: absolute;
+    left: 0%;
+    top: 5%;  
+    width: 15%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    height: 50%;
+    overflow-x: hidden;
+    transition: 0.5s;  
+  }
+  #none{
+    border: none;
+  }
+  #none :hover{
+    box-shadow: 10px 5px 20px 5px rgb(255, 9, 9);
+  }
+  .sidebar_on {
+    position: absolute;
+    left: 0%;
+    top: 5%;  
+    width: 15%;
+    max-width: 150px;
+    min-height: 400px;
+    background-color: #000000 ;
+    color:#fff ;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    border-radius: 0px 10px 10px 0px;
+    box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);
+  }
+  .sidebar a:hover {
+    color: #f1f1f1;
+  }
+  .sidebar .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+  .openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #111;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+  }
+  .openbtn:hover {
+    box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);
+  }
+  .sidebar nav{
+    font-family: Arial;
+    display: flex;
+    padding: 5%;
+    flex-direction: column;
+    justify-content:space-evenly;
+  }
+  .sidebar nav button{
+    font-family: Arial;
+    color: #fff;
+    background: #000000;
+    border: 1px solid #E5E7E9;
+    border-radius: 5px;
+    padding: 10px 20px;
+  }
+  .sidebar nav button:hover{
+    color: rgb(1, 41, 41);
+    box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);
+  }
+  .top_right_vigneta{
+    padding: 5px;  
+    position: fixed;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    align-content: space-around;
+    border-radius: 0px 0px 0px 10px;
+    box-shadow: -10px 10px 20px 5px rgb(1, 41, 41);  
+  }
+  .top_right_vigneta h2{
+    font-family: Arial;
+    text-align: center;
+    width: 80%;
+  }
+  .main-component{
+    position: fixed;
+    top: 100px;
+    left: 180px;
+    width: 85%;
+    height: 86%;
+    padding: 10px;  
+    background-color: #000000;
+    transition: 0.5s;  
+  }
+  .main-component_2{
+    position: fixed;
+    top: 100px;
+    left: 0px;
+    width: 100%;
+    height: 86%;
+    padding: 10px;
+    transition: 0.5s;      
+  }
 }
 </style>

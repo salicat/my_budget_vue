@@ -36,47 +36,37 @@
                                             pas:liabilities < passives
                                             }"> Patrimonio: ${{liabilities-passives}}</h2>
                     </div >            
-                </div>                                        
-                
+                </div>                
             <div class="otrico">
-                <div class="left" v-if="alertas.length > 0">
+                <div class="left">
                     <h1> Gastos por Categoria </h1>
-                        <table border="1px">
-                            <thead>
-                                <tr class = "columns">                    
-                                    <th> Categoria </th>
-                                    <th> Presupuesto </th>
-                                    <th> Gasto del mes </th>
-                                </tr >
-                            </thead>
-                            <tbody>
-                                <tr v-for="item in alertas" v-bind:key="item.name"
-                                    :style="{color: item.value > item.budget ? '#FF00D5' : '#05ff19'}">     
-                                    <td> {{item.name}}</td>                                      
-                                    <td> ${{item.budget}}</td>
-                                    <td> ${{item.value}}</td>                           
-                                </tr>
-                            </tbody>
-                        </table>                                                              
-                    <div>
-                        <!--
-                        <column-chart 
-                            :data="alertas"
-                            :colors="[ '#79FF00', '#FF00D5']"
-                            :library="{animation:{easing:'easeOutQuad'}, 
-                            elements: {arc: {borderWidth: 0}}}"
-                            >
-                        </column-chart>
-                        -->
-                    </div>                                  
+                    <div  v-if="alertas.length > 0" class="exp_cat" >                    
+                        <div v-for="item in alertas" v-bind:key="item.name">
+                            <div class="nombres">
+                                <div>{{item.name}}</div>
+                                <div>{{Math.round(item.value/item.budget*100)}}%</div>
+                            </div>
+                            <div class="bar" >                                
+                                <div v-bind:class="{perce_goo: item.value/item.budget < 0.9999,
+                                                    perce_bad: item.value/item.budget > 1
+
+                                }" 
+                                :style="{width: (item.value/item.budget*100)+'%'}">
+                                </div>                                          
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="right">
                     <h1> Pagos Recurrentes </h1>                                  
-                    <div v-for="item in recurrents" :key="item.name">
-                        <div class="cuadraditos" v-if="item.value < item.budget">
+                    <div class="cuadraditos">
+                    <div v-for="item in recurrents" :key="item.name" >
+                        <div v-if="item.value < item.budget" class="pagos">
                             <h3>{{item.category}} : ${{item.budget}}</h3>                                
+                            <p>{{item.expires}}</p>
                         </div>                         
                     </div>                         
+                    </div>
                 </div>
             </div>
         </div>        
@@ -223,13 +213,11 @@ export default {
                        
                                                                                     
             }
-
                 const responseTwo = responses[1]
                 self.recurrents = responseTwo.data               
 
                 const responseFour = responses[2]
-                self.alertas = responseFour.data
-               
+                self.alertas = responseFour.data              
 
             }))                       
     
@@ -239,30 +227,89 @@ export default {
 </script>
 <style>
 .main{
-
+    overflow-y: scroll;
+    overflow: auto;
+    max-height: 80vh;    
 }
-
 .barras{
-    height: 50%;
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 .otrico{
-    height:50%;
-    width: 100%;
+    font-family: arial;    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.nombres{
+    font-size: 0.8em;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
+}
+
+.bar{
+    position: relative;
+    width: 100%;
+    height: 25px;
+    border-radius: 15px;
+    overflow: hidden;
+    border-bottom: 1px solid rgb(0, 107, 107);
+}
+.perce_goo {
+    position: absolute;
+    top: 1px; left: 1px; right: 1px;
+    display: block;
+    height: 100%;
+    border-radius: 15px;
+    background-color:#09ff00;
+    background-size: 25px 25px;
+}
+.perce_bad{    
+    position: absolute;
+    top: 1px; left: 1px; right: 1px;
+    display: block;
+    height: 100%;
+    border-radius: 15px;
+    background-color:#ff0000;
+    background-size: 25px 25px;
 }
 .left{
     overflow-y: scroll;
     overflow: auto;
-    max-height: 50vh; 
+    max-height: 90vh; 
+    width: 80%;
+    padding: 5px;    
+}
+.right{
+    overflow-y: scroll;
+    overflow: auto;
+    max-height: 90vh; 
+    padding: 15px;
+}
+.cuadraditos{
+    padding-top: 1em;
+    font-display: flex;
+    align-content: center;
+}
+.pagos{
+    color: rgb(255, 255, 255);
+    border:1px rgb(0, 107, 107);
+    border-radius: 10px;        
+}
+.exp_cat{
+    padding-top: 1em;
+}
+.right{
+    width: 48%;
 }
 .goo{
     color: #79FF00;
+}
+.maso{
+    color:#fbff00;
 }
 .bad{
     color: #FF00D5;
@@ -283,10 +330,7 @@ export default {
     justify-content: flex-start;
     overflow-y: scroll;
     overflow: auto;
-    max-height: 150vh; 
-}
-.selector{
-
+    max-height: 85vh; 
 }
 .barras{
     width: 100%;
@@ -294,19 +338,13 @@ export default {
     flex-direction: row;
     justify-content: space-around;
 }
-.cuadraditos{
-    background-color: yellow;
-    color: black;
-    border:1px solid rgb(0, 107, 107);
-    border-radius: 10px;    
-}
-
 .chart1{
     display: flex;
     flex-direction: column;
     justify-items: center;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;    
+    width: 45%;
 }
 .chart2{
     display: flex;
@@ -314,23 +352,51 @@ export default {
     justify-content: center;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;
+    width: 45%;
 }
 .otrico{
+    padding-top:2em;
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
 }
 .left{
-    width: 45%;    
+    width: 45%;
     border:1px solid rgb(0, 107, 107);
-    border-radius: 10px;
+    border-radius: 10px;            
+}
+.exp_cat{
+    overflow-y: scroll;
+    overflow: auto;
+    max-height: 40vh;            
+}
+.nombres{    
+    padding-top:1em;
 }
 .right{
     width: 45%;
     border:1px solid rgb(0, 107, 107);
-    border-radius: 10px;
+    border-radius: 10px;    
 }
+.cuadraditos{
+    width: 100%;    
+    overflow-y: scroll;
+    overflow: auto;
+    max-height: 40vh;
+    padding: 2px;
+}
+.pagos{
+    background-color: #9fa10c;
+    width:auto;
+    color: rgb(255, 255, 255);
+    border:1px solid rgb(0, 107, 107);
+    border-radius: 20px;                    
+}
+.pagos h3, p{
+    margin-left: 10px;
+}
+
 .goo{
     color: #79FF00;
 }
