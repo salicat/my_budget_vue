@@ -4,6 +4,7 @@
             <div class="new_cat">
                 <h2>Editar mis categorias</h2>  
                 <select id="" v-model="action">
+                    <option value="" selected disabled> Selecciona </option>
                     <option value="crear"> Crear Categoria </option>
                     <option value="eliminar"> Eliminar Categoria </option>
                 </select>
@@ -201,7 +202,6 @@ export default {
                 day         : this.day          
                 }        
             let self = this
-            console.log(data.recurrency, data.day)
             axios
             .post("https://mybudgetback.herokuapp.com/user/create/category/", data)
             .then((response) => {
@@ -242,16 +242,12 @@ export default {
 .cats{
     overflow-y: scroll;
     overflow: auto;
-    max-height: 90vh; 
+    max-height: 77vh; 
 }
 .new_cat{
     width:15%;
     padding: 10px;    
     font-family: arial;
-}
-.new_cat button:hover{
-    color: rgb(1, 41, 41);
-    box-shadow: 10px 5px 20px 10px rgb(1, 41, 41);
 }
 .ing_egr table{
     padding: 2px;
@@ -271,12 +267,12 @@ export default {
 }
 .ing_egr{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 100%;
     justify-content: space-around;
 }
 .ingresos{
-    width: 40%;
+    width: 80%;
     font-family: arial;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;
@@ -284,7 +280,7 @@ export default {
     overflow:hidden   
 }
 .egresos{
-    width: 60%;
+    width: 80%;
     font-family: arial;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;
@@ -299,8 +295,7 @@ export default {
 .assets{
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    width: auto;
+    width: 95%;
 }
 .assets table {
     padding: 2px;
@@ -309,8 +304,9 @@ export default {
     border: 0.5px rgba(1, 41, 41, 0.856);
 }
 .activos{
-    width: 50%;
+    width: 40%;
     font-family: arial;
+    font-size: 0.85em;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;
     padding: 10px;    
@@ -319,8 +315,9 @@ export default {
     text-align: left;
 }
 .pasivos{
-    width: 50%;
+    width: 40%;
     font-family: arial;
+    font-size: 0.85em;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;
     padding: 10px; 
@@ -396,7 +393,7 @@ table .pas{
     flex-direction: row;            
 }
 .new_cat{
-    width:15%;
+    width:20%;
     padding: 10px;    
     font-family: arial;
     overflow:hidden;
@@ -405,9 +402,13 @@ table .pas{
     color: rgb(1, 41, 41);
     box-shadow: 10px 5px 20px 10px rgb(1, 41, 41);
 }
+.new_cat select, input {
+    color:#E5E7E9;
+    background-color:#000000;
+}
 .ing_egr table{
     padding: 2px;
-    width: 20%;
+    width: 80%;
     text-align: center;
     border: 0.5px rgba(1, 41, 41, 0.856);    
 }
@@ -423,59 +424,59 @@ table .pas{
 }
 .ing_egr{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 45%;
-    justify-content: space-around;
 }
 .ingresos{
-    width: 35%;
+    width: 90%;
     font-family: arial;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;
-    padding: 10px; 
-    overflow:hidden   
-}
-.egresos{
-    width: 55%;
-    font-family: arial;
-    border:1px solid rgb(0, 107, 107);
-    border-radius: 10px;
-    padding: 10px;       
     overflow-y: scroll;
     overflow: auto;
-    max-height: 65vh;  
+    max-height: 40vh;  
+    display: flex;
+    flex-direction: column;
+    justify-items: center;   
+}
+.egresos{
+    width: 90%;
+    font-family: arial;
+    border:1px solid rgb(0, 107, 107);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;   
 }
 .egresos th{    
     text-align: left;
 }
 .assets{
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+    flex-direction: column;
+    justify-content: space-between;
     width: 40%;
 }
 .assets table {
     padding: 2px;
-    width: 20%;
+    width: 90%;
     text-align: center;
     border: 0.5px rgba(1, 41, 41, 0.856);
 }
 .activos{
-    width: 40%;
+    width: 90%;
     font-family: arial;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;
-    padding: 10px;    
 }
 .activos th{
     text-align: left;
 }
 .pasivos{
-    width: 40%;
+    width: 90%;
     font-family: arial;
     border:1px solid rgb(0, 107, 107);
-    border-radius: 10px;
-    padding: 10px; 
+    border-radius: 10px;     
 }
 .pasivos th{
     text-align: left;    
@@ -488,16 +489,6 @@ table .pas{
     border-radius: 5px;
     margin: 10px;
     padding: 10px 20px;
-}
-.barras{
-    border-radius: 10px;
-    padding: 10px;
-    width: 35%;
-}
-.lineas{
-    border-radius: 10px;
-    padding: 10px;
-    width: 35%;
 }
 .del_cat button{
     font-family: Arial;

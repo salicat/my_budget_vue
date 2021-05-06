@@ -13,7 +13,7 @@
         <button v-on:click="go_to_goals">Metas</button>
         <button v-on:click="go_to_cats">Categorias</button>
         <button v-on:click="go_to_reg">Registros</button>
-        <button v-on:click="logOut" class="cerrar"> Cerrar Cesión </button>       
+        <button v-on:click="logOut" id="cerrar"> Cerrar Cesión </button>       
       </nav>
     </div>
     <div id="main" >
@@ -185,8 +185,10 @@ body{
     background: #000000;
     border: 1px solid #E5E7E9;
     border-radius: 5px;
+    border: 1px solid rgba(1, 98, 98);    
     padding: 10px 20px;
   }
+ 
   .top_right_vigneta{
     padding: 5px;  
     position: fixed;
@@ -292,13 +294,13 @@ body{
     font-family: Arial;
     color: #fff;
     background: #000000;
-    border: 1px solid #E5E7E9;
+    border: 1px solid rgba(1, 98, 98);
     border-radius: 5px;
     padding: 10px 20px;
   }
   .sidebar nav button:hover{
-    color: rgb(1, 41, 41);
-    box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);
+    color: rgb(3, 161, 161);
+    box-shadow: 10px 5px 20px 5px rgb(1, 41, 4);
   }
   .top_right_vigneta{
     padding: 5px;  

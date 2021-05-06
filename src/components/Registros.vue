@@ -39,7 +39,10 @@
         </div>
         <div class = "tarjeta">
             <div class="botones">
-                <button v-if="registers.length < 1" v-on:click="get_regs"> Ver mis ultimos movimientos </button>
+                <select v-model="month">
+                    <option v-for="mes in meses" :key="mes"> {{mes}} </option>
+                </select>
+                <button v-on:click="get_regs"> Ver mis ultimos movimientos </button>
                 <button id="del" v-if="selected.length" v-on:click="reg_del"> Eliminar Seleccion </button>                        
             </div>
             <h1>Mis Registros</h1>  
@@ -90,7 +93,11 @@ export default {
             registers : [],
             selected : [], 
             selectedAll : false,
-            id : undefined
+            id : undefined,
+            month: undefined,
+            meses : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 
+                    'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 
+                    'Noviembre', 'Diciembre']
         };       
     },
         created: function() {
@@ -102,13 +109,18 @@ export default {
                 self.cats = response.data;                
             })            
         },
-
     methods:{
         get_regs: function (){            
-            this.username = localStorage.getItem("current_username")
+            
+            var month_cons = this.meses.indexOf(this.month) + 1;
+
+            var data = {
+            username    : this.$route.params.username,
+            month       : month_cons
+            }  
             var self = this  
             axios
-            .get("https://mybudgetback.herokuapp.com/user/records/" + this.username)
+            .get("https://mybudgetback.herokuapp.com/user/month_records/" + data.username +"/"+ data.month)
             .then((response) => {
                 self.registers = response.data
             })  
@@ -168,22 +180,26 @@ export default {
     width: 100%;
     font-family: arial;    
     display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+    flex-direction: column;    
     align-items:center;   
     color: rgb(255, 255, 255);
     overflow-y: scroll;
     overflow: auto;
-    max-height: 90vh;    
+    max-height: 80vh; 
+    padding-top: 2em;       
 }
-.container_transaction{
-    width: 35%;
+.container_transaction{    
+    width: 50%;
     padding: 6%;
     border: .5px;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 10px 25px rgba(1, 41, 41, 0.774);
+    box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);
+}
+.container_transaction select, input{    
+    color:white;
+    background-color: #000000;
 }
 .container_transaction button{
     font-family: Arial;
@@ -198,12 +214,21 @@ export default {
     box-shadow: 10px 5px 20px 5px rgb(1, 41, 4);
 }
 .tarjeta{
-    width: 80%;    
+    padding-top: 2em;
+    width: 90%;  
+    font-size: 0.75em;        
+    border:1px solid rgb(0, 107, 107);
+    border-radius: 10px; 
+    padding: 2px;
 }
 .tarjeta table{
     padding: 2px;    
     text-align: center;
     border: 0.5px rgba(1, 41, 41, 0.856);           
+}
+.tarjeta select{
+    color:white;
+    background-color: #000000;
 }
 .tabla{
     overflow-y: scroll;
@@ -259,7 +284,7 @@ export default {
 }
 #del:hover{
     color: rgb(255, 8, 8);
-    box-shadow: 10px 5px 20px 5px rgb(255, 2, 2);
+    box-shadow: 10px 5px 20px 5px rgb(134, 0, 0);
 }
 .compo_transaction{
     font-family: arial;    
@@ -279,16 +304,22 @@ export default {
     flex-direction: column;
     box-shadow: 0 10px 25px rgba(1, 41, 41, 0.774);
 }
+.container_transaction select, input{
+    background-color: #000000;
+    color: #E5E7E9;
+}
+
 .container_transaction button{
     font-family: Arial;
     color: #fff;
     background: #000000;
     border: 1px solid #E5E7E9;
-    border-radius: 5px;
+    border-radius: 5px;        
+    border: 1px solid rgba(1, 98, 98);
     padding: 10px 20px;
 }
 .container_transaction button:hover{
-    color: rgb(1, 41, 41);
+    color: rgb(3, 161, 161);
     box-shadow: 10px 5px 20px 5px rgb(1, 41, 4);
 }
 .tarjeta{
@@ -334,18 +365,25 @@ export default {
     color: #fff;
     background: #000000;
     border: 1px solid #E5E7E9;
-    border-radius: 5px;
+    border-radius: 5px;    
+    border: 1px solid rgba(1, 98, 98);
     padding: 10px 20px;        
 }
 .tarjeta button:hover{
-    color: rgb(1, 41, 41);
-    box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);
+    color: rgb(3, 161, 161);
+    box-shadow: 10px 5px 20px 5px rgb(1, 98, 98);
 }
-.botones{
+.botones{    
     display: flex;
     flex-direction: row;
-    
+    justify-content: space-evenly;
 }
+.botones select{
+    background-color: #000000;
+    color: #E5E7E9;
+    border: 1px solid rgba(1, 98, 98);
+}
+
 
 }
 </style>

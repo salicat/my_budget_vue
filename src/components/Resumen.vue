@@ -40,32 +40,41 @@
             <div class="otrico">
                 <div class="left">
                     <h1> Gastos por Categoria </h1>
+                    <div> 
+                        <div class="goo">
+                            Ingresos ${{incomes}}
+                        </div>
+                        <div class="bad">
+                            Gastos ${{expenses}}
+                        </div>
+                    </div>
                     <div  v-if="alertas.length > 0" class="exp_cat" >                    
-                        <div v-for="item in alertas" v-bind:key="item.name">
+                        <div v-for="item in alertas" v-bind:key="item.name"
+                            v-if="item.value/item.budget > 0.1">
                             <div class="nombres">
                                 <div>{{item.name}}</div>
-                                <div>{{Math.round(item.value/item.budget*100)}}%</div>
+                                <div>{{Math.round(item.value/item.budget*100)}}%</div>                                                                
                             </div>
                             <div class="bar" >                                
                                 <div v-bind:class="{perce_goo: item.value/item.budget < 0.9999,
-                                                    perce_bad: item.value/item.budget > 1
-
-                                }" 
-                                :style="{width: (item.value/item.budget*100)+'%'}">
+                                                    perce_bad: item.value/item.budget >= 1}"  
+                                                    :style="{
+                                                        width: (item.value/item.budget*100)+'%'}"> 
+                                    ${{item.value}}
                                 </div>                                          
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="right">
+                <div class="right" >
                     <h1> Pagos Recurrentes </h1>                                  
-                    <div class="cuadraditos">
-                    <div v-for="item in recurrents" :key="item.name" >
-                        <div v-if="item.value < item.budget" class="pagos">
-                            <h3>{{item.category}} : ${{item.budget}}</h3>                                
-                            <p>{{item.expires}}</p>
-                        </div>                         
-                    </div>                         
+                    <div class="cuadraditos" v-if="recurrents.length > 0">
+                        <div v-for="item in recurrents" :key="item.name" >
+                            <div v-if="item.value < item.budget" class="pagos">
+                                <h3>{{item.category}} : ${{item.budget}}</h3>                                
+                                <p>{{item.expires}}</p>
+                            </div>   
+                        </div>                                         
                     </div>
                 </div>
             </div>
@@ -160,7 +169,22 @@ export default {
             }        
 
             const responseThree = responses[2]
-            self.recurrents = responseThree.data                
+            var estemes = month_cons.toString()                
+            var actualiza = function(date){
+                var fecha = date.split("-");
+                fecha[1] = "0"+estemes;                
+                var actualizada = fecha[0]+"-"+fecha[1]+"-"+fecha[2];                
+                return actualizada;                                 
+            }
+
+            for (var l = 0; l < responseThree.data.length; l++) {                
+                if (mes(responseThree.data[l].expires) < month_cons) {
+                    actualiza(responseThree.data[l].expires)
+                                        
+                }                
+                self.recurrents[l] = responseThree.data[l]
+            }
+       
            
             const responseFour = responses[3]
             self.alertas = responseFour.data
@@ -231,25 +255,43 @@ export default {
     overflow: auto;
     max-height: 80vh;    
 }
+.selector{
+    color:white;
+    background-color: black;
+}
 .barras{
-    width: 100%;
+    display: flex;
+    flex-direction:row;
+    justify-content: space-evenly;    
+    padding-top: 1em;    
+    width: 90%;
+}
+.chart1{
+    width: 40%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: left;
+}
+.chart2{    
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
 }
 .otrico{
     font-family: arial;    
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
+    padding-top: 1em;
 }
 .nombres{
     font-size: 0.8em;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    padding-top: 2em;
 }
-
 .bar{
     position: relative;
     width: 100%;
@@ -281,13 +323,19 @@ export default {
     overflow: auto;
     max-height: 90vh; 
     width: 80%;
-    padding: 5px;    
+    padding: 5px;
+    border:1px solid rgb(0, 107, 107);
+    border-radius: 10px;     
 }
 .right{
+    padding-top: 1em;
     overflow-y: scroll;
     overflow: auto;
+    width: 80%;
     max-height: 90vh; 
     padding: 15px;
+    border:1px solid rgb(0, 107, 107);
+    border-radius: 10px;     
 }
 .cuadraditos{
     padding-top: 1em;
@@ -295,9 +343,12 @@ export default {
     align-content: center;
 }
 .pagos{
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    background-color:#fbff00;
     border:1px rgb(0, 107, 107);
     border-radius: 10px;        
+    margin: 2px;
+    padding: 2px;
 }
 .exp_cat{
     padding-top: 1em;
@@ -331,6 +382,10 @@ export default {
     overflow-y: scroll;
     overflow: auto;
     max-height: 85vh; 
+}
+.selector select{
+    color:white;
+    background-color: black;
 }
 .barras{
     width: 100%;
@@ -383,13 +438,14 @@ export default {
     width: 100%;    
     overflow-y: scroll;
     overflow: auto;
-    max-height: 40vh;
-    padding: 2px;
+    max-height: 40vh;    
 }
 .pagos{
-    background-color: #9fa10c;
-    width:auto;
-    color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: inherit;
+    background-color: #e09e04;
+    width:45%;
+    color: rgb(0, 0, 0);
     border:1px solid rgb(0, 107, 107);
     border-radius: 20px;                    
 }

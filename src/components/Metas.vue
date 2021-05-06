@@ -177,6 +177,10 @@ export default {
     color: rgb(1, 41, 41);
     box-shadow: 10px 5px 20px 10px rgb(1, 41, 41);
 }
+.crear_metas input, select{
+    color:#E5E7E9;
+    background-color:#000000;
+}
 .los_reportes{
     width: 70%;
 }
