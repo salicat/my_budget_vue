@@ -185,8 +185,8 @@ export default {
     color: rgb(255, 255, 255);
     overflow-y: scroll;
     overflow: auto;
-    max-height: 80vh; 
-    padding-top: 2em;       
+    max-height: 75vh; 
+    padding-top: 2em;           
 }
 .container_transaction{    
     width: 50%;

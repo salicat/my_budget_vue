@@ -67,7 +67,7 @@
                     </div>
                 </div>
                 <div class="right" >
-                    <h1> Pagos Recurrentes </h1>                                  
+                    <h1> Pagos pendientes {{month}} </h1>                                  
                     <div class="cuadraditos" v-if="recurrents.length > 0">
                         <div v-for="item in recurrents" :key="item.name" >
                             <div v-if="item.value < item.budget" class="pagos">
@@ -179,8 +179,7 @@ export default {
 
             for (var l = 0; l < responseThree.data.length; l++) {                
                 if (mes(responseThree.data[l].expires) < month_cons) {
-                    actualiza(responseThree.data[l].expires)
-                                        
+                    responseThree.data[l].expires = actualiza(responseThree.data[l].expires)                                        
                 }                
                 self.recurrents[l] = responseThree.data[l]
             }
@@ -237,11 +236,25 @@ export default {
                        
                                                                                     
             }
-                const responseTwo = responses[1]
-                self.recurrents = responseTwo.data               
+            const responseTwo = responses[1]
+            var estemes = new_month.toString()                
+            var actualiza = function(date){
+                var fecha = date.split("-");
+                fecha[1] = "0"+estemes;                
+                var actualizada = fecha[0]+"-"+fecha[1]+"-"+fecha[2];                
+                return actualizada;                                 
+            }
 
-                const responseFour = responses[2]
-                self.alertas = responseFour.data              
+            for (var l = 0; l < responseTwo.data.length; l++) {                
+                if (mes(responseTwo.data[l].expires) < new_month) {
+                    responseTwo.data[l].expires = actualiza(responseTwo.data[l].expires)
+                }                
+                self.recurrents[l] = responseTwo.data[l]
+            }
+        
+        
+            const responseFour = responses[2]
+            self.alertas = responseFour.data              
 
             }))                       
     
@@ -251,6 +264,7 @@ export default {
 </script>
 <style>
 .main{
+    width: 100%;
     overflow-y: scroll;
     overflow: auto;
     max-height: 80vh;    
@@ -328,27 +342,30 @@ export default {
     border-radius: 10px;     
 }
 .right{
-    padding-top: 1em;
     overflow-y: scroll;
     overflow: auto;
-    width: 80%;
     max-height: 90vh; 
     padding: 15px;
     border:1px solid rgb(0, 107, 107);
-    border-radius: 10px;     
+    border-radius: 10px;         
 }
 .cuadraditos{
+    width: 100%;
     padding-top: 1em;
     font-display: flex;
     align-content: center;
 }
-.pagos{
+.pagos{    
+    display: flex;
+    flex-direction: column;    
+    background-color: #b40196;
+    width:90%;
+    font-size: 0.8em;
     color: rgb(0, 0, 0);
-    background-color:#fbff00;
-    border:1px rgb(0, 107, 107);
-    border-radius: 10px;        
-    margin: 2px;
-    padding: 2px;
+    border-radius: 60px; 
+}
+.pagos h3, p{
+    margin-left: 30px;
 }
 .exp_cat{
     padding-top: 1em;
@@ -375,6 +392,7 @@ export default {
 
 @media screen and (min-width: 700px) {
 .main{    
+    width: 100%;
     font-family: arial;
     display: flex;
     flex-direction: column;
@@ -439,18 +457,21 @@ export default {
     overflow-y: scroll;
     overflow: auto;
     max-height: 40vh;    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 .pagos{
     display: flex;
-    flex-direction: inherit;
-    background-color: #e09e04;
-    width:45%;
+    flex-direction: column;    
+    background-color: #b40196;
+    width:50%;
+    font-size: 0.8em;
     color: rgb(0, 0, 0);
-    border:1px solid rgb(0, 107, 107);
-    border-radius: 20px;                    
+    border-radius: 60px; 
 }
 .pagos h3, p{
-    margin-left: 10px;
+    margin-left: 30px;
 }
 
 .goo{
