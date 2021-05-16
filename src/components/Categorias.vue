@@ -77,7 +77,7 @@
             <div class = "ing_egr">        
                 <div class ="ingresos">
                     <h1 class="goo"> Ingresos </h1>
-                    <h2 class="goo"> ${{t_in}} </h2>
+                    <h2 class="goo"> ${{Number(t_in).toLocaleString()}} </h2>
                     <table border="1px">
                         <tr class = "columnas">
                             <th>  </th>                            
@@ -91,7 +91,7 @@
                 </div>
                 <div class ="egresos">
                     <h1 class="bad"> Egresos </h1>                
-                    <h2 class="bad"> ${{t_bud}} </h2>
+                    <h2 class="bad"> ${{Number(t_bud).toLocaleString()}} </h2>
                     <table border="1px" class="tab_egresos">
                         <tr class = "columnas">
                             <th>  </th>
@@ -101,8 +101,8 @@
                         <tr v-for="cat in cats.expenses" :key="cat.category">                    
                             <td class="titulos"> {{cat.category}} </td> 
                             <!-- <td v-bind:class="{alert: cat.value > cat.budget}"> ${{cat.value}}</td> -->
-                            <td class="bad"> ${{cat.budget}} </td>
-                            <td v-if="cat.recurrency==true"> {{cat.day}}</td>                                          
+                            <td class="bad"> ${{Number(cat.budget).toLocaleString()}} </td>
+                            <td v-if="cat.recurrency==true" class="titulos"> {{cat.day}}</td>                                          
                         </tr>                    
                     </table>
                 </div>                                                          
@@ -110,7 +110,7 @@
             <div class="assets">
                 <div class ="activos">
                     <h1 class="act"> Activos </h1>
-                    <h2 class="act"> ${{t_lia}} </h2>
+                    <h2 class="act"> ${{Number(t_lia).toLocaleString()}} </h2>
                     <table border="1px">
                         <tr class = "columnas">
                             <td> </td>
@@ -118,13 +118,13 @@
                         </tr>
                         <tr v-for="cat in cats.liabilities" :key="cat.category">                    
                             <th class="titulos"> {{cat.category}} </th> 
-                            <th class="act"> ${{cat.value}} </th>
+                            <th class="act"> ${{Number(cat.value).toLocaleString()}} </th>
                         </tr>                    
                     </table>
                 </div>            
                 <div class ="pasivos">
                     <h1 class="pas"> Pasivos </h1>
-                    <h2 class="pas"> ${{t_pass}} </h2>
+                    <h2 class="pas"> ${{Number(t_pass).toLocaleString()}} </h2>
                     <table border="1px">
                         <tr class = "columnas">
                             <td> </td>
@@ -132,7 +132,7 @@
                         </tr>
                         <tr v-for="cat in cats.passives" :key="cat.category">                    
                             <th class="titulos"> {{cat.category}} </th> 
-                            <th class="pas"> ${{cat.value}} </th>
+                            <th class="pas"> ${{Number(cat.value).toLocaleString()}} </th>
                         </tr>                    
                     </table>
                 </div>
@@ -174,7 +174,6 @@ export default {
         .get("https://mybudgetback.herokuapp.com/user/cats/" + this.username)
         .then((result) => {
             self.cats = result.data;
-            console.log(result.data.incomes[0].budget)
             for (var i= 0; i < result.data.incomes.length; i++){
                 this.t_in = this.t_in + result.data.incomes[i].budget;
             }
@@ -205,7 +204,8 @@ export default {
             axios
             .post("https://mybudgetback.herokuapp.com/user/create/category/", data)
             .then((response) => {
-                alert(response.data.message )
+                alert(response.data.message)
+                window.location.reload();
             })
             .catch((error) =>{
                 if (error.response.status == "403"){

@@ -16,7 +16,7 @@
         <button v-on:click="logOut" id="cerrar"> Cerrar Cesión </button>       
       </nav>
     </div>
-    <div id="main" >
+    <div id="main" v-if="is_auth">
       <button class="openbtn" v-on:click="open_bar" v-if="!open"> ☰ </button>
     </div>
     <div v-bind:class="[!open ? 'main-component_2' : 'main-component' ]">  
@@ -242,12 +242,18 @@ body{
     overflow-x: hidden;
     transition: 0.5s;  
   }
-  #none{
-    border: none;
+  .sidebar nav button{
+    font-family: Arial;
+    color: #fff;
+    background: #000000;
+    border: 1px solid rgba(1, 98, 98);
+    border-radius: 5px;
+    padding: 10px 20px;
   }
-  #none :hover{
-    box-shadow: 10px 5px 20px 5px rgb(255, 9, 9);
-  }
+  .sidebar nav button:hover{
+    color: rgb(3, 161, 161);
+    box-shadow: 10px 5px 20px 5px rgb(1, 41, 4);
+  }  
   .sidebar_on {
     position: absolute;
     left: 0%;
@@ -261,9 +267,6 @@ body{
     display: flex;
     border-radius: 0px 10px 10px 0px;
     box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);
-  }
-  .sidebar a:hover {
-    color: #f1f1f1;
   }
   .sidebar .closebtn {
     position: absolute;
@@ -289,19 +292,7 @@ body{
     padding: 5%;
     flex-direction: column;
     justify-content:space-evenly;
-  }
-  .sidebar nav button{
-    font-family: Arial;
-    color: #fff;
-    background: #000000;
-    border: 1px solid rgba(1, 98, 98);
-    border-radius: 5px;
-    padding: 10px 20px;
-  }
-  .sidebar nav button:hover{
-    color: rgb(3, 161, 161);
-    box-shadow: 10px 5px 20px 5px rgb(1, 41, 4);
-  }
+  }  
   .top_right_vigneta{
     padding: 5px;  
     position: fixed;
@@ -336,6 +327,10 @@ body{
     height: 86%;
     padding: 10px;
     transition: 0.5s;      
+  }
+  .cerrar button:hover{
+    box-shadow: -10px 10px 20px 5px rgb(255, 0, 212); 
+    color: red;
   }
 }
 </style>

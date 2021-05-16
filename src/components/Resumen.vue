@@ -10,6 +10,9 @@
                 </div>
             <div class="barras">                
                     <div class="chart1" v-if="incomes||expenses != 0">
+                        <h2 v-bind:class="{ goo: incomes > expenses,
+                                            bad: expenses > incomes
+                                            }">Balance ${{Number(incomes - expenses).toLocaleString()}}</h2>
                         <pie-chart                             
                             :donut="true" 
                             :data="[['Ingresos', incomes], ['Egresos', expenses]]"
@@ -17,13 +20,12 @@
                             :library="{animation:{easing:'easeOutQuad'}, 
                             elements: {arc: {borderWidth: 0}}}"
                             >
-                        </pie-chart>                         
-                        <h2 v-bind:class="{ goo: incomes > expenses,
-                                            bad: expenses > incomes
-                                            }">Balance ${{incomes - expenses}}</h2>
-                        
+                        </pie-chart>                                                                         
                     </div>                
                     <div class="chart2" v-if="liabilities||passives != 0"                             > 
+                        <h2 v-bind:class="{ act: liabilities > passives,
+                                            pas:liabilities < passives
+                                            }"> Patrimonio: ${{Number(liabilities-passives).toLocaleString() }}</h2>
                         <pie-chart
                             :donut="true" 
                             :data="[['Activos', liabilities], ['Pasivos', passives]]"
@@ -31,37 +33,42 @@
                             :library="{animation:{easing:'easeOutQuad'}, 
                             elements: {arc: {borderWidth: 0}}}"
                             >        
-                   </pie-chart>  
-                        <h2 v-bind:class="{ act: liabilities > passives,
-                                            pas:liabilities < passives
-                                            }"> Patrimonio: ${{liabilities-passives}}</h2>
+                        </pie-chart>                          
                     </div >            
                 </div>                
             <div class="otrico">
                 <div class="left">
                     <h1> Gastos por Categoria </h1>
                     <div> 
-                        <div class="goo">
-                            Ingresos ${{incomes}}
-                        </div>
-                        <div class="bad">
-                            Gastos ${{expenses}}
-                        </div>
+                        <p v-bind:class="{   goo: expenses/gen_budget < 0.99999,
+                                                    act: expenses/gen_budget == 1,
+                                                    bad: expenses/gen_budget > 1                                
+                            }"> 
+                            Has gastado el {{Math.round(expenses/gen_budget*100)}}% 
+                            de tu presupuesto: ${{Number(gen_budget).toLocaleString()}} </p> 
+                        
                     </div>
                     <div  v-if="alertas.length > 0" class="exp_cat" >                    
                         <div v-for="item in alertas" v-bind:key="item.name"
                             v-if="item.value/item.budget > 0.1">
+                            <hr class="divider">                            
                             <div class="nombres">
                                 <div>{{item.name}}</div>
-                                <div>{{Math.round(item.value/item.budget*100)}}%</div>                                                                
-                            </div>
-                            <div class="bar" >                                
-                                <div v-bind:class="{perce_goo: item.value/item.budget < 0.9999,
-                                                    perce_bad: item.value/item.budget >= 1}"  
-                                                    :style="{
+                                <div>{{Math.round(item.value/item.budget*100)}}%</div>                                    
+                            </div>                            
+                            <div class="progres">                                                                                                
+                                <div class="bar" >
+                                    <div v-bind:class="{perce_goo: item.value/item.budget < 0.9999,
+                                                        perce_ok: item.value/item.budget == 1,
+                                                        perce_bad: item.value/item.budget > 1}"  
+                                                        :style="{
                                                         width: (item.value/item.budget*100)+'%'}"> 
-                                    ${{item.value}}
-                                </div>                                          
+                                        ${{Number(item.value).toLocaleString()}}
+                                    </div>                                                                                                           
+                                </div>
+                                <div class="budget">
+                                    <p> ${{Number(item.budget).toLocaleString()}} </p>
+                                </div>                                                                
                             </div>
                         </div>
                     </div>
@@ -69,11 +76,11 @@
                 <div class="right" >
                     <h1> Pagos pendientes {{month}} </h1>                                  
                     <div class="cuadraditos" v-if="recurrents.length > 0">
-                        <div v-for="item in recurrents" :key="item.name" >
-                            <div v-if="item.value < item.budget" class="pagos">
-                                <h3>{{item.category}} : ${{item.budget}}</h3>                                
+                        <div v-for="item in recurrents" :key="item.name">
+                            <div v-if="item.value < 1" class="pagos">
+                                <h3>{{item.category}} : ${{Number(item.budget).toLocaleString()}}</h3>
                                 <p>{{item.expires}}</p>
-                            </div>   
+                            </div> 
                         </div>                                         
                     </div>
                 </div>
@@ -103,6 +110,7 @@ export default {
             liabilities: 0,
             passives: 0,
             incomes: 0,
+            gen_budget : 0,
             date: new Date(2021, 3, 24),
             cats: [],
             regs: [],
@@ -182,10 +190,12 @@ export default {
                     responseThree.data[l].expires = actualiza(responseThree.data[l].expires)                                        
                 }                
                 self.recurrents[l] = responseThree.data[l]
-            }
-       
+            }       
            
             const responseFour = responses[3]
+            for (var b = 0; b < responseFour.data.length; b++){
+                this.gen_budget = this.gen_budget + responseFour.data[b].budget;
+            }
             self.alertas = responseFour.data
 
 
@@ -231,10 +241,7 @@ export default {
                         if ( responseOne.data[l].type == "expenses") {
                             this.expenses = this.expenses + responseOne.data[l].value;
                         };
-                    }
-                    
-                       
-                                                                                    
+                    }                                                               
             }
             const responseTwo = responses[1]
             var estemes = new_month.toString()                
@@ -250,47 +257,55 @@ export default {
                     responseTwo.data[l].expires = actualiza(responseTwo.data[l].expires)
                 }                
                 self.recurrents[l] = responseTwo.data[l]
-            }
-        
+            }        
         
             const responseFour = responses[2]
-            self.alertas = responseFour.data              
-
-            }))                       
-    
+            this.gen_budget = 0;
+            for (var b = 0; b < responseFour.data.length; b++){
+                this.gen_budget = this.gen_budget + responseFour.data[b].budget;
+            }
+            self.alertas = responseFour.data
+            }))                           
         },
     }     
 }
 </script>
 <style>
 .main{
-    width: 100%;
+    width: 98%;
     overflow-y: scroll;
     overflow: auto;
     max-height: 80vh;    
 }
 .selector{
+    position:fixed;
+    z-index: 1;    
+}
+.selector select{    
     color:white;
-    background-color: black;
+    background-color: #000000;
 }
 .barras{
+    font-family: arial;
     display: flex;
-    flex-direction:row;
+    flex-direction:column;
     justify-content: space-evenly;    
-    padding-top: 1em;    
+    padding-top: 1em;           
     width: 90%;
 }
 .chart1{
-    width: 40%;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: left;
+    justify-content: left;    
+    padding-bottom: 1em; 
 }
 .chart2{    
-    width: 40%;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: left;
+    justify-content: left;    
+    padding-bottom: 1em; 
 }
 .otrico{
     font-family: arial;    
@@ -306,15 +321,32 @@ export default {
     justify-content: space-between;
     padding-top: 2em;
 }
+.progres{
+    font-family: arial;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
 .bar{
     position: relative;
-    width: 100%;
+    width: 80%;
     height: 25px;
     border-radius: 15px;
     overflow: hidden;
     border-bottom: 1px solid rgb(0, 107, 107);
 }
 .perce_goo {
+    color: black;
+    position: absolute;
+    top: 1px; left: 1px; right: 1px;
+    display: block;
+    height: 100%;
+    border-radius: 15px;
+    background-color:#00E8FF;
+    background-size: 25px 25px;
+}
+.perce_ok{
+    color: black;
     position: absolute;
     top: 1px; left: 1px; right: 1px;
     display: block;
@@ -322,8 +354,10 @@ export default {
     border-radius: 15px;
     background-color:#09ff00;
     background-size: 25px 25px;
+
 }
 .perce_bad{    
+    color: white;
     position: absolute;
     top: 1px; left: 1px; right: 1px;
     display: block;
@@ -332,22 +366,21 @@ export default {
     background-color:#ff0000;
     background-size: 25px 25px;
 }
-.left{
-    overflow-y: scroll;
-    overflow: auto;
-    max-height: 90vh; 
+.left{    
     width: 80%;
     padding: 5px;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;     
 }
 .right{
-    overflow-y: scroll;
-    overflow: auto;
-    max-height: 90vh; 
+    width: 80%;
     padding: 15px;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;         
+}
+.divider{
+    width: 90%;
+    border-block-color: rgba(0, 107, 107, 0.411);
 }
 .cuadraditos{
     width: 100%;
@@ -390,9 +423,8 @@ export default {
 }
 
 
-@media screen and (min-width: 700px) {
+@media screen and (min-width: 600px) {
 .main{    
-    width: 100%;
     font-family: arial;
     display: flex;
     flex-direction: column;
@@ -405,6 +437,7 @@ export default {
     color:white;
     background-color: black;
 }
+
 .barras{
     width: 100%;
     display: flex;
@@ -446,6 +479,7 @@ export default {
 }
 .nombres{    
     padding-top:1em;
+    color: white;
 }
 .right{
     width: 45%;
@@ -461,6 +495,19 @@ export default {
     flex-direction: column;
     justify-content: center;
 }
+.progres{
+    font-family: arial;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.bar{
+    width: 80%;
+}
+.divider{
+    width: 90%;
+    border-block-color: rgba(0, 107, 107, 0.411);
+}
 .pagos{
     display: flex;
     flex-direction: column;    
@@ -473,7 +520,6 @@ export default {
 .pagos h3, p{
     margin-left: 30px;
 }
-
 .goo{
     color: #79FF00;
 }

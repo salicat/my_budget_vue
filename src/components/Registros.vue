@@ -61,13 +61,18 @@
                     </thead>
                     <tbody>
                         <tr v-for="reg in registers" :key="reg.id"
-                            :style="{color: reg.type == 'expenses' ? '#FF00D5' : '#05ff19'}">     
+                            v-bind:class="{ goo: reg.type == 'incomes',
+                                            bad: reg.type == 'expenses',
+                                            pas: reg.type == 'passives',
+                                            act: reg.type == 'liabilities'
+
+                            }">     
                             <td>
                             <label> <input type="checkbox" :value="reg.id" v-model="selected"> </label>
                             </td>               
                             <td class= "titls2">{{reg.category}}</td>                                      
                             <td class= "titls5">{{reg.description}} </td>                        
-                            <td class= "titls3" >${{reg.value}}</td>
+                            <td class= "titls3" >${{Number(reg.value).toLocaleString()}}</td>
                             <td class= "titls4">{{reg.date}}</td>                           
                         </tr>
                     </tbody>
@@ -180,13 +185,12 @@ export default {
     width: 100%;
     font-family: arial;    
     display: flex;
-    flex-direction: column;    
+    flex-direction: column;
     align-items:center;   
     color: rgb(255, 255, 255);
     overflow-y: scroll;
     overflow: auto;
-    max-height: 75vh; 
-    padding-top: 2em;           
+    max-height: 85vh;           
 }
 .container_transaction{    
     width: 50%;
@@ -214,7 +218,6 @@ export default {
     box-shadow: 10px 5px 20px 5px rgb(1, 41, 4);
 }
 .tarjeta{
-    padding-top: 2em;
     width: 90%;  
     font-size: 0.75em;        
     border:1px solid rgb(0, 107, 107);
@@ -231,9 +234,7 @@ export default {
     background-color: #000000;
 }
 .tabla{
-    overflow-y: scroll;
-    overflow: auto;
-    max-height: 65vh;
+    
 }
 .columns {
     color: rgb(255, 255, 255);
@@ -275,7 +276,18 @@ export default {
     display: flex;
     flex-direction: row;    
 }
-
+.goo{
+    color: #79FF00;
+}
+.bad{
+    color: #FF00D5;
+}
+.act{
+    color: #00E8FF; 
+}
+.pas{
+    color:#FF8600;
+}
 
 @media screen and (min-width: 700px) {
 
@@ -383,7 +395,18 @@ export default {
     color: #E5E7E9;
     border: 1px solid rgba(1, 98, 98);
 }
-
+.goo{
+    color: #79FF00;
+}
+.bad{
+    color: #FF00D5;
+}
+.act{
+    color: #00E8FF; 
+}
+.pas{
+    color:#FF8600;
+}
 
 }
 </style>
