@@ -71,6 +71,62 @@ export default {
   align-items: center;
   position: fixed;
   padding: 3%;
+}
+.bienvenida{
+  font-family:Arial, Helvetica, sans-serif;
+  color: white;
+}
+.ingresa{
+  color: white;
+}
+#app{
+  font-family: Tahoma; 
+  color:darkturquoise
+}
+.container_auth_user{
+    max-width: 190px;
+    max-height: 250px;
+    border: 1px solid #3b3b3b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;    
+    box-shadow: 10px 10px 45px 5px rgb(0, 107, 107);
+}
+.auth_user h2{
+    color: #ffffff;
+}
+.auth_user form{
+    width:60%;    
+}
+.auth_user input{
+    height: 40px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 20px;
+    margin: 5px 0;
+    border: 1px solid #383747;
+    background-color: #181818;
+    color: #a0a0a0;    
+}
+.auth_user button{
+    width: 100%;
+    height: 40px;
+    color: #818181;
+    background: #000000;
+    border-radius: 12px;
+    padding: 10 px 25px;
+    margin:5px 0;
+    border: 1px solid rgba(1, 98, 98);
+}
+
+@media screen and (min-width: 500px) {
+.auth_user{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  padding: 3%;
   margin-left: 35%;
 }
 .bienvenida{
@@ -91,7 +147,6 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 50%;
     border-radius: 10px;    
     box-shadow: 10px 10px 45px 5px rgb(0, 107, 107);
   }
@@ -125,4 +180,6 @@ export default {
     color: rgb(3, 161, 161);
     box-shadow: 10px 5px 20px 5px rgb(1, 41, 4);    
 }
+}
+
 </style>

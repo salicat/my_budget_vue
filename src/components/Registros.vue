@@ -289,7 +289,7 @@ export default {
     color:#FF8600;
 }
 
-@media screen and (min-width: 700px) {
+@media screen and (min-width: 500px) {
 
 #Registros{
     padding: 15px;

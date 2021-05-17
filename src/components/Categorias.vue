@@ -2,10 +2,11 @@
     <div id="Categorias">
         <div class="cats">
             <div class="new_cat">
-                <h2>Editar mis categorias</h2>  
+                <h2>Tus categorias</h2>  
                 <select id="" v-model="action">
                     <option value="" selected disabled> Selecciona </option>
                     <option value="crear"> Crear Categoria </option>
+                    <option value="modificar"> Modificar categoria</option>
                     <option value="eliminar"> Eliminar Categoria </option>
                 </select>
                 <div v-if="action ==='crear'">
@@ -41,7 +42,39 @@
                         <button v-on:click="cat_create"> Crear Categoria</button>
                     </div>                    
                 </div>               
-                <div v-if="action ==='eliminar'" >
+                <div v-if="action ==='modificar'" >
+                    <div class="modificar">                    
+                        <p> Elige el tipo de categoria </p>
+                        <select v-model="type">
+                            <option value= "incomes"> Ingreso </option>
+                            <option value= "expenses"> Egreso </option>
+                            <option value= "liabilities"> Activo </option>
+                            <option value= "passives"> Pasivo </option>
+                        </select>
+                        <p> Elige tu categoria </p>
+                            <select v-model="category" v-if="type === 'incomes'">
+                                <option  v-for="cat in cats.incomes" :key="cat.type" value="ingre">
+                                    {{cat.category}} 
+                                </option>
+                            </select><br> 
+                            <select v-model="category" v-if="type === 'expenses'">
+                                <option  v-for="cat in cats.expenses" :key="cat.type" value="egre">
+                                    {{cat.category}}                                     
+                                </option>                                
+                            </select><br>
+                            <select v-model="category" v-if="type === 'liabilities'">
+                                <option  v-for="cat in cats.liabilities" :key="cat.type" value="acti">
+                                    {{cat.category}} 
+                                </option>            
+                            </select><br>   
+                            <select v-model="category" v-if="type === 'passives'">
+                                <option  v-for="cat in cats.passives" :key="cat.type"  value="pasi">
+                                    {{cat.category}} 
+                                </option>
+                            </select><br>                          
+                        </div>
+                </div>
+                <div v-if="action ==='eliminar'">
                     <div class="del_cat">
                         <p> Elige la categoria que deseas eliminar </p>
                         <select v-model ="type">    
@@ -137,10 +170,7 @@
                     </table>
                 </div>
             </div>            
-        </div>
-    <div class="warning">
-        <p> *Recuerda que los valores de Activos y Pasivos los actualizas desde la seccion registros </p>        
-    </div>
+        </div>  
 </div>
 </template>
 
@@ -204,13 +234,12 @@ export default {
             axios
             .post("https://mybudgetback.herokuapp.com/user/create/category/", data)
             .then((response) => {
-                alert(response.data.message)
-                window.location.reload();
+                alert(response.data.message)                
             })
             .catch((error) =>{
-                if (error.response.status == "403"){
-                    alert("Ya tienes una categoria con nombre " + data.category)
-                }                
+                alert("Tu categoria coincide exactamente con otra ya creada, " + 
+                    " intenta cambiando una letra por mayuscula, error inicial que ya no me atrevo a corregir =)")
+                                                                
             })
         },
         delete_cat : function () {
@@ -387,16 +416,15 @@ table .pas{
     color:#FF8600;
 }
 
-@media screen and (min-width: 700px) {
+@media screen and (min-width: 500px) {
 .cats{
     display: flex;
     flex-direction: row;            
 }
 .new_cat{
     width:20%;
-    padding: 10px;    
+    padding: 5px;    
     font-family: arial;
-    overflow:hidden;
 }
 .new_cat button:hover{
     color: rgb(1, 41, 41);
@@ -405,6 +433,46 @@ table .pas{
 .new_cat select, input {
     color:#E5E7E9;
     background-color:#000000;
+}
+.crear_categorias{
+    width: 95%;    
+    display: flex;   
+    flex-direction: column;
+}
+.crear_categorias input{
+    width: 95%;
+}
+.modificar{    
+    width: 95%;        
+    display: flex;   
+    flex-direction: column;
+}
+.del_cat{    
+    width: 95%;        
+    display: flex;   
+    flex-direction: column;
+}
+.crear_categorias button{
+    font-family: Arial;
+    color: #fff;
+    background: #000000;
+    border: 1px solid #E5E7E9;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px 20px;    
+}
+.del_cat button{
+    font-family: Arial;
+    color: #fff;
+    background: #000000;
+    border: 1px solid #E5E7E9;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px 20px;
+}
+.del_cat button:hover{
+    color: rgb(255, 8, 8);
+    box-shadow: 10px 5px 20px 5px rgb(255, 2, 2);
 }
 .ing_egr table{
     padding: 2px;
@@ -480,28 +548,6 @@ table .pas{
 }
 .pasivos th{
     text-align: left;    
-}
-.crear_categorias button{
-    font-family: Arial;
-    color: #fff;
-    background: #000000;
-    border: 1px solid #E5E7E9;
-    border-radius: 5px;
-    margin: 10px;
-    padding: 10px 20px;
-}
-.del_cat button{
-    font-family: Arial;
-    color: #fff;
-    background: #000000;
-    border: 1px solid #E5E7E9;
-    border-radius: 5px;
-    margin: 10px;
-    padding: 10px 20px;
-}
-.del_cat button:hover{
-    color: rgb(255, 8, 8);
-    box-shadow: 10px 5px 20px 5px rgb(255, 2, 2);
 }
 .val{
     text-align: right;

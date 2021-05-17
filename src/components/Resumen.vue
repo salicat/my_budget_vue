@@ -423,7 +423,7 @@ export default {
 }
 
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 500px) {
 .main{    
     font-family: arial;
     display: flex;
