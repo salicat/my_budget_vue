@@ -8,7 +8,7 @@
                 <option value="3"> Borrar Meta </option>
             </select>        
             <div class = "crear_metas" v-if="elige === '1'">
-                <form>
+                <form>                    
                     <p>Nombra tu meta</p>
                     <input placeholder="Nombre" v-model="name"> 
                     <p>Cuanto $$$ necesitas?</p>
@@ -100,12 +100,10 @@ export default {
                 username : this.username,
                 final_value : this.final_value,
                 final_date : this.final_date                
-            }
-            
+            }            
             axios
             .post("https://mybudgetback.herokuapp.com/user/goals/set/", data)
             .then((result) => {
-                console.log(final_date)
             })            
         },
         update_goal: function () {

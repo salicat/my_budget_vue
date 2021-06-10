@@ -49,14 +49,13 @@
                         
                     </div>
                     <div  v-if="alertas.length > 0" class="exp_cat" >                    
-                        <div v-for="item in alertas" v-bind:key="item.name"
-                            v-if="item.value/item.budget > 0.1">
+                        <div v-for="item in alertas" v-bind:key="item.name" >
                             <hr class="divider">                            
                             <div class="nombres">
                                 <div>{{item.name}}</div>
                                 <div>{{Math.round(item.value/item.budget*100)}}%</div>                                    
                             </div>                            
-                            <div class="progres">                                                                                                
+                            <div class="progres">
                                 <div class="bar" >
                                     <div v-bind:class="{perce_goo: item.value/item.budget < 0.9999,
                                                         perce_ok: item.value/item.budget == 1,
@@ -79,7 +78,7 @@
                         <div v-for="item in recurrents" :key="item.name">
                             <div v-if="item.value < 1" class="pagos">
                                 <h3>{{item.category}} : ${{Number(item.budget).toLocaleString()}}</h3>
-                                <p>{{item.expires}}</p>
+                                <p>{{item.expires}}</p>                                
                             </div> 
                         </div>                                         
                     </div>
@@ -196,8 +195,7 @@ export default {
             for (var b = 0; b < responseFour.data.length; b++){
                 this.gen_budget = this.gen_budget + responseFour.data[b].budget;
             }
-            self.alertas = responseFour.data
-
+            self.alertas = responseFour.data.sort(function(a,b){return b.value - a.value});
 
         }))       
         .catch((error) => {
@@ -264,7 +262,7 @@ export default {
             for (var b = 0; b < responseFour.data.length; b++){
                 this.gen_budget = this.gen_budget + responseFour.data[b].budget;
             }
-            self.alertas = responseFour.data
+            self.alertas = responseFour.data.sort(function(a,b){return b.value - a.value});
             }))                           
         },
     }     
@@ -422,7 +420,6 @@ export default {
     color:#FF8600;
 }
 
-
 @media screen and (min-width: 500px) {
 .main{    
     font-family: arial;
@@ -437,7 +434,6 @@ export default {
     color:white;
     background-color: black;
 }
-
 .barras{
     width: 100%;
     display: flex;
@@ -490,7 +486,7 @@ export default {
     width: 100%;    
     overflow-y: scroll;
     overflow: auto;
-    max-height: 40vh;    
+    max-height: 40vh;        
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -506,12 +502,12 @@ export default {
 }
 .divider{
     width: 90%;
-    border-block-color: rgba(0, 107, 107, 0.411);
+    border-block-color: rgba(255, 255, 255, 0.411);
 }
 .pagos{
     display: flex;
     flex-direction: column;    
-    background-color: #b40196;
+    background-color: #b40196;    
     width:50%;
     font-size: 0.8em;
     color: rgb(0, 0, 0);

@@ -1,6 +1,6 @@
 <template> 
     <div id="Categorias">
-        <div class="cats">
+        <div class="cats">            
             <div class="new_cat">
                 <h2>Tus categorias</h2>  
                 <select id="" v-model="action">
@@ -44,35 +44,70 @@
                 </div>               
                 <div v-if="action ==='modificar'" >
                     <div class="modificar">                    
-                        <p> Elige el tipo de categoria </p>
+                        <p> Elige el tipo </p>
                         <select v-model="type">
                             <option value= "incomes"> Ingreso </option>
                             <option value= "expenses"> Egreso </option>
                             <option value= "liabilities"> Activo </option>
                             <option value= "passives"> Pasivo </option>
-                        </select>
-                        <p> Elige tu categoria </p>
-                            <select v-model="category" v-if="type === 'incomes'">
-                                <option  v-for="cat in cats.incomes" :key="cat.type" value="ingre">
-                                    {{cat.category}} 
-                                </option>
-                            </select><br> 
-                            <select v-model="category" v-if="type === 'expenses'">
-                                <option  v-for="cat in cats.expenses" :key="cat.type" value="egre">
-                                    {{cat.category}}                                     
-                                </option>                                
-                            </select><br>
-                            <select v-model="category" v-if="type === 'liabilities'">
-                                <option  v-for="cat in cats.liabilities" :key="cat.type" value="acti">
-                                    {{cat.category}} 
-                                </option>            
-                            </select><br>   
-                            <select v-model="category" v-if="type === 'passives'">
-                                <option  v-for="cat in cats.passives" :key="cat.type"  value="pasi">
-                                    {{cat.category}} 
-                                </option>
-                            </select><br>                          
-                        </div>
+                        </select>                        
+                            <div v-if="type === 'incomes'">
+                                <p> Elige tu categoria </p>
+                                <select v-model="category" >
+                                    <option v-for="cat in cats.incomes" :key="cat.type">
+                                        {{cat.category}} 
+                                    </option>
+                                </select> 
+                                <div v-if="category">
+                                    <p class="goo"> Meta Actual: ${{Number(cats.incomes[cats.incomes.map(function(e) { return e.category; }).indexOf(category)].budget).toLocaleString()}}</p>
+                                    <p> Ingresa la nueva meta</p>
+                                    <input type="number" v-model="budget" required><br>
+                                    <button v-on:click="update_cat"> Actualizar </button>
+                                </div>
+                            </div>
+                            <div v-if="type === 'expenses'">
+                                <p> Elige tu categoria </p>                                
+                                <select v-model="category" >
+                                    <option v-for="cat in cats.expenses" :key="cat.type" >
+                                        {{cat.category}}                                     
+                                    </option>                                
+                                </select>
+                                <div v-if="category">                                
+                                    <p class="bad"> Presupuesto Actual: ${{Number(cats.expenses[cats.expenses.map(function(e) { return e.category; }).indexOf(category)].budget).toLocaleString()}}</p>
+                                    <p> Ingresa el nuevo presupuesto  </p>
+                                    <input type="number" v-model="budget" required><br>
+                                    <button v-on:click="update_cat"> Actualizar </button>
+                                </div>
+                            </div>
+                            <div v-if="type === 'liabilities'">
+                                <p> Elige tu categoria </p>                                
+                                <select v-model="category">
+                                    <option v-for="cat in cats.liabilities" :key="cat.type">
+                                        {{cat.category}} 
+                                    </option>                                                
+                                </select>
+                                <div v-if="category">
+                                    <p class="act"> Valor Actual del Activo: ${{Number(cats.liabilities[cats.liabilities.map(function(e) { return e.category; }).indexOf(category)].value).toLocaleString()}}</p>
+                                    <p> Ingresa el nuevo Valor </p>
+                                    <input type="number" v-model="value" required><br>
+                                    <button v-on:click="update_cat"> Actualizar </button>
+                                </div>
+                            </div>
+                            <div v-if="type === 'passives'">
+                                <p> Elige tu categoria </p>                                
+                                <select v-model="category" >
+                                    <option v-for="cat in cats.passives" :key="cat.type">
+                                        {{cat.category}} 
+                                    </option>
+                                </select>
+                                <div v-if="category">
+                                    <p class="pas"> Valor actual del pasivo: ${{Number(cats.passives[cats.passives.map(function(e) { return e.category; }).indexOf(category)].value).toLocaleString()}}</p>
+                                    <p> Ingresa el nuevo valor </p>
+                                    <input type="number" v-model="value" required>
+                                    <button v-on:click="update_cat"> Actualizar </button>
+                                </div>
+                            </div>                                                                                           
+                    </div>
                 </div>
                 <div v-if="action ==='eliminar'">
                     <div class="del_cat">
@@ -241,6 +276,22 @@ export default {
                     " intenta cambiando una letra por mayuscula, error inicial que ya no me atrevo a corregir =)")
                                                                 
             })
+        },
+        update_cat : function () {
+            var data = {
+                type : this.type,
+                category : this.category,
+                budget : this.budget,
+                value : this.value
+            }
+            axios
+            .put("https://mybudgetback.herokuapp.com/user/cats/update/", data) 
+            .then((result) => {
+                alert("categoria " + data.category + " actualizada")
+            })
+            .catch((error) => {
+                alert(data.type + " " + data.category + " " + data.budget)
+            })                        
         },
         delete_cat : function () {
             var data = {
@@ -447,6 +498,15 @@ table .pas{
     display: flex;   
     flex-direction: column;
 }
+.modificar button{
+    font-family: Arial;
+    color: #fff;
+    background: #000000;
+    border: 1px solid #E5E7E9;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px 20px;
+} 
 .del_cat{    
     width: 95%;        
     display: flex;   
