@@ -269,7 +269,8 @@ export default {
             axios
             .post("https://mybudgetback.herokuapp.com/user/create/category/", data)
             .then((response) => {
-                alert(response.data.message)                
+                alert(response.data.message) 
+                window.location.reload();                               
             })
             .catch((error) =>{
                 alert("Tu categoria coincide exactamente con otra ya creada, " + 
@@ -300,7 +301,7 @@ export default {
                 username : this.username
             }
             let self = this
-            if(confirm("Se eliminarán todos los registros de la categoria " + this.category)){
+            if(confirm("Se eliminará la categoria " + this.category)){
                 axios
                 .delete("https://mybudgetback.herokuapp.com/user/delete/category/", {data})
                 .then((response) => {
@@ -322,7 +323,7 @@ export default {
 .cats{
     overflow-y: scroll;
     overflow: auto;
-    max-height: 77vh; 
+    max-height: 85vh; 
 }
 .new_cat{
     width:15%;
@@ -359,7 +360,11 @@ export default {
     padding: 10px; 
     overflow:hidden   
 }
+.ingresos table{
+    width: 100%;
+}
 .egresos{
+    margin-top: 20px;    
     width: 80%;
     font-family: arial;
     border:1px solid rgb(0, 107, 107);
@@ -368,6 +373,7 @@ export default {
     overflow-y: scroll;
     overflow: auto;
     max-height: 40vh; 
+    padding-bottom: 30px;  
 }
 .egresos th{    
     text-align: left;
@@ -376,6 +382,7 @@ export default {
     display: flex;
     flex-direction: row;
     width: 95%;
+    padding-bottom: 30px;  
 }
 .assets table {
     padding: 2px;
@@ -383,8 +390,8 @@ export default {
     text-align: center;
     border: 0.5px rgba(1, 41, 41, 0.856);
 }
-.activos{
-    width: 40%;
+.activos{    
+    margin-top: 20px;       
     font-family: arial;
     font-size: 0.85em;
     border:1px solid rgb(0, 107, 107);
@@ -394,7 +401,11 @@ export default {
 .activos th{
     text-align: left;
 }
-.pasivos{
+.activos table{
+    width:100%;
+}
+.pasivos{    
+    margin-top: 20px;   
     width: 40%;
     font-family: arial;
     font-size: 0.85em;
@@ -404,6 +415,9 @@ export default {
 }
 .pasivos th{
     text-align: left;    
+}
+.pasivos table{
+    width:100%;
 }
 .crear_categorias button{
     font-family: Arial;
@@ -534,7 +548,7 @@ table .pas{
     color: rgb(255, 8, 8);
     box-shadow: 10px 5px 20px 5px rgb(255, 2, 2);
 }
-.ing_egr table{
+.ing_egr table{    
     padding: 2px;
     width: 80%;
     text-align: center;
@@ -555,7 +569,8 @@ table .pas{
     flex-direction: column;
     width: 45%;
 }
-.ingresos{
+.ingresos{     
+    font-size: 1em;  
     width: 90%;
     font-family: arial;
     border:1px solid rgb(0, 107, 107);
@@ -567,23 +582,30 @@ table .pas{
     flex-direction: column;
     justify-items: center;   
 }
+.ingresos table{
+    width: 100%;
+}
 .egresos{
+    font-size: 1em;
     width: 90%;
     font-family: arial;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    justify-items: center;   
+    justify-items: center;        
 }
 .egresos th{    
     text-align: left;
 }
+.egresos table{
+    width:100%;
+}
 .assets{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     width: 40%;
+    padding-bottom: 2em;
 }
 .assets table {
     padding: 2px;
@@ -591,7 +613,9 @@ table .pas{
     text-align: center;
     border: 0.5px rgba(1, 41, 41, 0.856);
 }
-.activos{
+.activos{        
+    font-size: 1em;
+    margin-top: 0px;   
     width: 90%;
     font-family: arial;
     border:1px solid rgb(0, 107, 107);
@@ -600,7 +624,11 @@ table .pas{
 .activos th{
     text-align: left;
 }
-.pasivos{
+.activos table{    
+    width:100%;
+}
+.pasivos{    
+    font-size: 1em;
     width: 90%;
     font-family: arial;
     border:1px solid rgb(0, 107, 107);
@@ -608,6 +636,9 @@ table .pas{
 }
 .pasivos th{
     text-align: left;    
+}
+.pasivos table{    
+    width:100%;
 }
 .val{
     text-align: right;

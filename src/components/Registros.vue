@@ -16,8 +16,8 @@
                 </option>
             </select> 
             <select v-model="category" v-if="type === 'expenses'">
-                <option  v-for="cat in cats.expenses" :key="cat.type" >
-                    {{cat.category}} 
+                <option  v-for="cat in cats.expenses" :key="cat.category" >
+                    {{cat.category}}
                 </option>
             </select>
             <select v-model="category" v-if="type === 'liabilities'">
@@ -40,14 +40,15 @@
         <div class = "tarjeta">
             <div class="botones">
                 <select v-model="month">
+                    <option selected disabled> Mes </option>
                     <option v-for="mes in meses" :key="mes"> {{mes}} </option>
                 </select>
-                <button v-on:click="get_regs"> Ver mis ultimos movimientos </button>
+                <button v-on:click="get_regs"> Ver movimientos </button>
                 <button id="del" v-if="selected.length" v-on:click="reg_del"> Eliminar Seleccion </button>                        
             </div>
             <h1>Mis Registros</h1>  
             <div class="tabla">
-                <table border="1px">
+                <table border="1px" v-if="registers.length > 0">
                     <thead>
                         <tr class = "columns">                    
                             <label >
@@ -102,7 +103,7 @@ export default {
             month: undefined,
             meses : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 
                     'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 
-                    'Noviembre', 'Diciembre']
+                    'Noviembre', 'Diciembre']            
         };       
     },
         created: function() {
@@ -186,6 +187,7 @@ export default {
     font-family: arial;    
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     align-items:center;   
     color: rgb(255, 255, 255);
     overflow-y: scroll;
@@ -199,7 +201,7 @@ export default {
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);
+    box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);    
 }
 .container_transaction select, input{    
     color:white;
@@ -222,19 +224,22 @@ export default {
     font-size: 0.75em;        
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px; 
-    padding: 2px;
+    padding: 2px;    
+    margin-top: 50px;
+    box-shadow: 0 5px 20px rgba(0, 148, 148, 0.774);
+    padding-bottom: 30px;  
 }
 .tarjeta table{
     padding: 2px;    
     text-align: center;
-    border: 0.5px rgba(1, 41, 41, 0.856);           
+    border: 0.5px rgba(1, 41, 41, 0.856); 
+    width: 100%;     
+    padding-bottom: 30px;   
+    padding-top: 10px;
 }
 .tarjeta select{
     color:white;
     background-color: #000000;
-}
-.tabla{
-    
 }
 .columns {
     color: rgb(255, 255, 255);
@@ -334,14 +339,19 @@ export default {
     color: rgb(3, 161, 161);
     box-shadow: 10px 5px 20px 5px rgb(1, 41, 4);
 }
-.tarjeta{
+.tarjeta{    
+    font-size: 1em; 
     width: 50%;
     max-width: 40%;    
+    font-size: 1em;
 }
 .tarjeta table{
+    font-size: 1em;
     padding: 2px;    
     text-align: center;
-    border: 0.5px rgba(1, 41, 41, 0.856);           
+    border: 0.5px rgba(1, 41, 41, 0.856);    
+    width: 100%;       
+    padding-bottom: 30px;        
 }
 .tabla{
     overflow-y: scroll;

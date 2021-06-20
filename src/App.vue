@@ -312,8 +312,8 @@ body{
   .main-component{
     position: fixed;
     top: 100px;
-    left: 180px;
-    width: 85%;
+    left: 10%;
+    width: 90%;
     height: 86%;
     padding: 10px;  
     background-color: #000000;

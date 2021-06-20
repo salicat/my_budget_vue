@@ -38,7 +38,15 @@
                 </div>                
             <div class="otrico">
                 <div class="left">
-                    <h1> Gastos por Categoria </h1>
+                    <div class="left_title">
+                        <h1> Gastos por Categoria </h1>
+                        <select v-on:change="filtrar" v-model="filter">
+                            <option selected disabled> Filtro </option>
+                            <option value="percent"> Porcentage</option>
+                            <option value="expended"> Gasto</option>
+                            <option value="budget"> Presupuesto</option>
+                        </select>
+                    </div>
                     <div> 
                         <p v-bind:class="{   goo: expenses/gen_budget < 0.99999,
                                                     act: expenses/gen_budget == 1,
@@ -53,7 +61,7 @@
                             <hr class="divider">                            
                             <div class="nombres">
                                 <div>{{item.name}}</div>
-                                <div>{{Math.round(item.value/item.budget*100)}}%</div>                                    
+                                <div>{{Math.round(item.value/item.budget*100)}}%</div> 
                             </div>                            
                             <div class="progres">
                                 <div class="bar" >
@@ -116,9 +124,10 @@ export default {
             alertas: [],
             recurrents: [],
             month : undefined,
+            filter : undefined,
             meses : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 
                     'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 
-                    'Noviembre', 'Diciembre']             
+                    'Noviembre', 'Diciembre']                        
         }
     },
     created: function(){                       
@@ -265,6 +274,9 @@ export default {
             self.alertas = responseFour.data.sort(function(a,b){return b.value - a.value});
             }))                           
         },
+        filtrar : function () {           
+          
+        }
     }     
 }
 </script>
@@ -273,7 +285,7 @@ export default {
     width: 98%;
     overflow-y: scroll;
     overflow: auto;
-    max-height: 80vh;    
+    max-height: 85vh;       
 }
 .selector{
     position:fixed;
@@ -288,7 +300,7 @@ export default {
     display: flex;
     flex-direction:column;
     justify-content: space-evenly;    
-    padding-top: 1em;           
+    padding-top: 2em;           
     width: 90%;
 }
 .chart1{
@@ -308,9 +320,9 @@ export default {
 .otrico{
     font-family: arial;    
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: column;    
     padding-top: 1em;
+    padding-bottom: 2em;        
 }
 .nombres{
     font-size: 0.8em;
@@ -367,14 +379,25 @@ export default {
 .left{    
     width: 80%;
     padding: 5px;
-    border:1px solid rgb(0, 107, 107);
-    border-radius: 10px;     
+    border-radius: 10px;         
+    box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);  
+}
+.left_title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.left_title select{
+    color:white;
+    background-color: #000000;
+    max-height: 30px;
 }
 .right{
+    margin-top: 40px;
     width: 80%;
     padding: 15px;
-    border:1px solid rgb(0, 107, 107);
-    border-radius: 10px;         
+    border-radius: 10px;        
+    box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);       
 }
 .divider{
     width: 90%;
@@ -394,6 +417,7 @@ export default {
     font-size: 0.8em;
     color: rgb(0, 0, 0);
     border-radius: 60px; 
+    margin-top: 10px;
 }
 .pagos h3, p{
     margin-left: 30px;
@@ -434,19 +458,21 @@ export default {
     color:white;
     background-color: black;
 }
-.barras{
+.barras{    
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
 }
-.chart1{
+.chart1{        
+    font-size: 1em;
     display: flex;
     flex-direction: column;
     justify-items: center;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;    
     width: 45%;
+    padding: 1em;    
 }
 .chart2{
     display: flex;
@@ -455,8 +481,10 @@ export default {
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;
     width: 45%;
+    padding: 1em;
 }
-.otrico{
+.otrico{    
+    font-size: 1em;
     padding-top:2em;
     width: 100%;
     display: flex;
@@ -464,9 +492,20 @@ export default {
     justify-content: space-around;
 }
 .left{
+    padding: 1em;
     width: 45%;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;            
+}
+.left_title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.left_title select{
+    color:white;
+    background-color: #000000;
+    max-height: 30px;
 }
 .exp_cat{
     overflow-y: scroll;
@@ -478,6 +517,8 @@ export default {
     color: white;
 }
 .right{
+    padding: 1em;
+    margin-top: 0px;
     width: 45%;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;    
@@ -509,7 +550,7 @@ export default {
     flex-direction: column;    
     background-color: #b40196;    
     width:50%;
-    font-size: 0.8em;
+    font-size: 1em;
     color: rgb(0, 0, 0);
     border-radius: 60px; 
 }
