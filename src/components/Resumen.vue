@@ -2,20 +2,30 @@
     <div id="Resumen">
         <div class="main">    
                 <div class="selector">
-                    <select v-on:change="reload" v-model="month">                        
-                        <option selected> {{month}} </option>
-                        <option v-for="mes in meses" 
-                                :key="mes" > {{mes}} </option>
-                    </select>
+                    <div>
+                        <select v-model="month">                        
+                            <option selected> {{month}} </option>
+                            <option v-for="mes in meses" 
+                                    :key="mes" > {{mes}} </option>
+                        </select>
+                    </div>
+                    <div>
+                        <select v-model="anio">                        
+                            <option selected> {{curr_year}} </option>
+                            <option v-for="anio in anios" 
+                                    :key="anio" > {{anio}} </option>
+                        </select>
+                    </div>
+                    <button v-on:click="reload"> Consultar </button>
                 </div>
-            <div class="barras">                
+            <div class="barras">   
                     <div class="chart1" v-if="incomes||expenses != 0">
                         <h2 v-bind:class="{ goo: incomes > expenses,
                                             bad: expenses > incomes
                                             }">Balance ${{Number(incomes - expenses).toLocaleString()}}</h2>
                         <pie-chart                             
                             :donut="true" 
-                            :data="[['Ingresos', incomes], ['Egresos', expenses]]"
+                            :data="[['Ingresos', incomes], ['Gastos', expenses]]"
                             :colors="[ '#79FF00', '#FF00D5']"
                             :library="{animation:{easing:'easeOutQuad'}, 
                             elements: {arc: {borderWidth: 0}}}"
@@ -40,15 +50,9 @@
                 <div class="left">
                     <div class="left_title">
                         <h1> Gastos por Categoria </h1>
-                        <select v-on:change="filtrar" v-model="filter">
-                            <option selected disabled> Filtro </option>
-                            <option value="percent"> Porcentage</option>
-                            <option value="expended"> Gasto</option>
-                            <option value="budget"> Presupuesto</option>
-                        </select>
                     </div>
                     <div> 
-                        <p v-bind:class="{   goo: expenses/gen_budget < 0.99999,
+                        <p v-bind:class="{  goo: expenses/gen_budget < 0.99999,
                                                     act: expenses/gen_budget == 1,
                                                     bad: expenses/gen_budget > 1                                
                             }"> 
@@ -81,15 +85,19 @@
                     </div>
                 </div>
                 <div class="right" >
-                    <h1> Pagos pendientes {{month}} </h1>                                  
-                    <div class="cuadraditos" v-if="recurrents.length > 0">
-                        <div v-for="item in recurrents" :key="item.name">
-                            <div v-if="item.value < 1" class="pagos">
-                                <h3>{{item.category}} : ${{Number(item.budget).toLocaleString()}}</h3>
-                                <p>{{item.expires}}</p>                                
-                            </div> 
-                        </div>                                         
-                    </div>
+                        <h1> Pagos pendientes {{month}} {{anio}}</h1>                                  
+                        <div class="cuadraditos" v-if="recurrents.length > 0">
+                            <div v-for="item in recurrents" :key="item.name">
+                                <div v-bind:class="{pagok: item.value > 1,
+                                                    pagofail: item.value <= 0}">
+                                    <h3>{{item.category}} : ${{Number(item.budget).toLocaleString()}}</h3>
+                                    <h3>{{item.expires}}</h3>                                
+                                </div> 
+                            </div>                                         
+                        </div>
+                        <div v-if="!recurrents.length > 0">
+                            <h1> NO TIENES PAGOS RECURRENTES </h1>
+                        </div>   
                 </div>
             </div>
         </div>        
@@ -118,13 +126,17 @@ export default {
             passives: 0,
             incomes: 0,
             gen_budget : 0,
-            date: new Date(2021, 3, 24),
             cats: [],
             regs: [],
             alertas: [],
             recurrents: [],
+            curr_year : new Date().getFullYear(),
+            curr_month : new Date().getMonth(),
             month : undefined,
-            filter : undefined,
+            months : [],
+            history : {},
+            anio : undefined,
+            anios : [2021, 2022],
             meses : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 
                     'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 
                     'Noviembre', 'Diciembre']                        
@@ -134,20 +146,24 @@ export default {
         const today = new Date()
 
         today.toLocaleString('default', { month: 'long' })
-        var n = today.getMonth();
+        var n = today.getMonth();        
         this.month = this.meses[n]
         
+        var y = today.getFullYear();
+        this.anio = y
+
         var month_cons = this.meses.indexOf(this.month) + 1;
 
         var data = {
             username    : this.$route.params.username,
+            year        : this.anio,
             month       : month_cons
         }               
         
         let one     = "https://mybudgetback.herokuapp.com/user/records/" + data.username
         let two     = "https://mybudgetback.herokuapp.com/user/cats/" + data.username
         let three   = "https://mybudgetback.herokuapp.com/user/month_regs/"+ data.username + "/" +  data.month
-        let four    = "https://mybudgetback.herokuapp.com/user/cats/" + data.username + "/" + data.month
+        let four    = "https://mybudgetback.herokuapp.com/user/cats/" + data.username + "/" + data.year + "/" + data.month
         
         const requestOne    = axios.get(one)
         const requestTwo    = axios.get(two)
@@ -175,6 +191,16 @@ export default {
                 };
                 }                                                                                 
             }       
+            
+            const ano = function (odate){
+                let anof = odate.split("-")
+                return "" +anof[0] +"-"+ anof[1]
+            }
+
+            for(var m = 0; m < responseOne.data.length; m++){
+                self.months = ano(responseOne.data[m].date)
+            }
+        
 
             const responseTwo = responses[1]                  
             for (var j = 0; j < responseTwo.data.liabilities.length; j++){
@@ -201,29 +227,35 @@ export default {
             }       
            
             const responseFour = responses[3]
-            for (var b = 0; b < responseFour.data.length; b++){
+                for (var b = 0; b < responseFour.data.length; b++){
                 this.gen_budget = this.gen_budget + responseFour.data[b].budget;
-            }
-            self.alertas = responseFour.data.sort(function(a,b){return b.value - a.value});
-
+                self.alertas[b] = responseFour.data[b]           
+                }           
         }))       
         .catch((error) => {
             alert(error);
         });        
     },       
     methods : {
-        reload : function () {            
-          
-            var new_month = this.meses.indexOf(this.month) + 1;             
+        reload : function () {
+            
+            const today = new Date()
+
+            today.toLocaleString('default', { month: 'long' })
+            var new_month = today.getMonth(); 
+
+
+            var month_cons = this.meses.indexOf(this.month) + 1;
 
             var datos = {
                 username    : this.$route.params.username,
-                month       : new_month
+                year        : this.anio,
+                month       : month_cons
             }
 
             let one     = "https://mybudgetback.herokuapp.com/user/records/" + datos.username
             let two     = "https://mybudgetback.herokuapp.com/user/month_regs/"+ datos.username + "/" +  datos.month
-            let four    = "https://mybudgetback.herokuapp.com/user/cats/" + datos.username + "/" + datos.month
+            let four    = "https://mybudgetback.herokuapp.com/user/cats/" + datos.username + "/" +datos.year + "/" + datos.month
    
             const requestOne    = axios.get(one)
             const requestTwo    = axios.get(two)
@@ -265,18 +297,15 @@ export default {
                 }                
                 self.recurrents[l] = responseTwo.data[l]
             }        
-        
+            
             const responseFour = responses[2]
             this.gen_budget = 0;
-            for (var b = 0; b < responseFour.data.length; b++){
-                this.gen_budget = this.gen_budget + responseFour.data[b].budget;
-            }
-            self.alertas = responseFour.data.sort(function(a,b){return b.value - a.value});
+                for (var b = 0; b < responseFour.data.length; b++){
+                    this.gen_budget = this.gen_budget + responseFour.data[b].budget;
+                }    
+                self.alertas = responseFour.data
             }))                           
         },
-        filtrar : function () {           
-          
-        }
     }     
 }
 </script>
@@ -290,8 +319,12 @@ export default {
 .selector{
     position:fixed;
     z-index: 1;    
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
 }
-.selector select{    
+.selector select{ 
+    
     color:white;
     background-color: #000000;
 }
@@ -346,7 +379,7 @@ export default {
     border-bottom: 1px solid rgb(0, 107, 107);
 }
 .perce_goo {
-    color: black;
+    color: rgb(254, 167, 129);
     position: absolute;
     top: 1px; left: 1px; right: 1px;
     display: block;
@@ -408,17 +441,31 @@ export default {
     padding-top: 1em;
     font-display: flex;
     align-content: center;
+    line-height:0px;
 }
-.pagos{    
+.pagok{    
     display: flex;
-    flex-direction: column;    
-    background-color: #b40196;
-    width:90%;
+    flex-direction: column;   
+    text-align: center;
+    width:30%;
+    background-color: #79FF00;
     font-size: 0.8em;
     color: rgb(0, 0, 0);
     border-radius: 60px; 
     margin-top: 10px;
 }
+.pagofail{
+    display: flex;
+    flex-direction: column;   
+    text-align: center;
+    width:30%;
+    background-color: #FF00D5;
+    font-size: 0.8em;
+    color: rgb(0, 0, 0);
+    border-radius: 60px; 
+    margin-top: 10px;
+}
+
 .pagos h3, p{
     margin-left: 30px;
 }
@@ -444,7 +491,7 @@ export default {
     color:#FF8600;
 }
 
-@media screen and (min-width: 500px) {
+@media screen and (min-width: 480px) {
 .main{    
     font-family: arial;
     display: flex;
@@ -547,8 +594,7 @@ export default {
 }
 .pagos{
     display: flex;
-    flex-direction: column;    
-    background-color: #b40196;    
+    flex-direction: column;   
     width:50%;
     font-size: 1em;
     color: rgb(0, 0, 0);

@@ -3,6 +3,7 @@
         <div class = "container_transaction">            
             <h2 class ="usuario">Registrar Transaccion</h2><br>
             <p>Selecciona:</p>
+            
             <select v-model ="type">    
                 <option value= "incomes"> Ingreso </option>
                 <option value= "expenses"> Egreso </option>
@@ -40,8 +41,13 @@
         <div class = "tarjeta">
             <div class="botones">
                 <select v-model="month">
-                    <option selected disabled> Mes </option>
-                    <option v-for="mes in meses" :key="mes"> {{mes}} </option>
+                    <option v-for="mes in meses" 
+                            :key="mes"> {{mes}} 
+                    </option>
+                </select>
+                <select v-model="year">
+                    <option value="2021"> 2021 </option>
+                    <option value="2022"> 2022 </option>
                 </select>
                 <button v-on:click="get_regs"> Ver movimientos </button>
                 <button id="del" v-if="selected.length" v-on:click="reg_del"> Eliminar Seleccion </button>                        
@@ -101,6 +107,7 @@ export default {
             selectedAll : false,
             id : undefined,
             month: undefined,
+            year: [2021, 2022],
             meses : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 
                     'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 
                     'Noviembre', 'Diciembre']            
@@ -122,11 +129,12 @@ export default {
 
             var data = {
             username    : this.$route.params.username,
+            year        : this.year,
             month       : month_cons
             }  
             var self = this  
             axios
-            .get("https://mybudgetback.herokuapp.com/user/month_records/" + data.username +"/"+ data.month)
+            .get("https://mybudgetback.herokuapp.com/user/month_records/" + data.username + "/" + data.year + "/" + data.month)
             .then((response) => {
                 self.registers = response.data
             })  

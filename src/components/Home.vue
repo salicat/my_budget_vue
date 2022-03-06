@@ -1,3 +1,3 @@
 <template>
-    <h1>Bienvenide! este es el home MADAFAKA</h1>
+    <h1>Bienvenide! </h1>
 </template>
