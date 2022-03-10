@@ -51,6 +51,11 @@ const router = new vueRouter({
             name:       "Categorias",
             component:  Categorias
         },
+        //{
+        //    path:       '/user/reportes/:username',
+        //    name:       "Reportes",
+        //    component:  Reportes
+        //}
     ]
 })
 export default router

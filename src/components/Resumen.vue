@@ -58,7 +58,9 @@
                             }"> 
                             Has gastado el {{Math.round(expenses/gen_budget*100)}}% 
                             de tu presupuesto: ${{Number(gen_budget).toLocaleString()}} </p> 
-                        
+                        <p>
+                            Presupuesto restante: ${{Number(gen_budget-expenses).toLocaleString()}}    
+                        </p>
                     </div>
                     <div  v-if="alertas.length > 0" class="exp_cat" >                    
                         <div v-for="item in alertas" v-bind:key="item.name" >
@@ -84,17 +86,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="right" >
-                        <h1> Pagos pendientes {{month}} {{anio}}</h1>                                  
-                        <div class="cuadraditos" v-if="recurrents.length > 0">
-                            <div v-for="item in recurrents" :key="item.name">
-                                <div v-bind:class="{pagok: item.value > 1,
-                                                    pagofail: item.value <= 0}">
+                <div  class="right">
+                            <div>
+                                <h1> Pagos pendientes {{month}} {{anio}}</h1>                                  
+                            </div>
+                            <div class="cua_father" v-if="recurrents.length > 0">  
+                                <div class="cuadraditos" v-for="item in recurrents" :key="item.name"
+                                        v-bind:class="{pagok: item.value > 1,
+                                        pagofail: item.value <= 0}">
                                     <h3>{{item.category}} : ${{Number(item.budget).toLocaleString()}}</h3>
                                     <h3>{{item.expires}}</h3>                                
                                 </div> 
-                            </div>                                         
-                        </div>
+                            </div>
                         <div v-if="!recurrents.length > 0">
                             <h1> NO TIENES PAGOS RECURRENTES </h1>
                         </div>   
@@ -273,7 +276,7 @@ export default {
                 this.expenses =  0;
                 this.incomes = 0;
                 for (var l = 0; l < responseOne.data.length; l++){
-                    if (mes(responseOne.data[l].date) == new_month) {
+                    if (mes(responseOne.data[l].date) == month_cons) {
                         if (responseOne.data[l].type == "incomes") {
                         this.incomes = this.incomes + responseOne.data[l].value;
                         };
@@ -314,7 +317,7 @@ export default {
     width: 98%;
     overflow-y: scroll;
     overflow: auto;
-    max-height: 85vh;       
+    max-height: auto;       
 }
 .selector{
     position:fixed;
@@ -342,13 +345,15 @@ export default {
     flex-direction: column;
     justify-content: left;    
     padding-bottom: 1em; 
+    box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);  
 }
 .chart2{    
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: left;    
-    padding-bottom: 1em; 
+    padding-bottom: 1em;
+    box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);   
 }
 .otrico{
     font-family: arial;    
@@ -411,7 +416,7 @@ export default {
 }
 .left{    
     width: 80%;
-    padding: 5px;
+    height: auto;
     border-radius: 10px;         
     box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);  
 }
@@ -423,47 +428,42 @@ export default {
 .left_title select{
     color:white;
     background-color: #000000;
-    max-height: 30px;
 }
 .right{
-    margin-top: 40px;
-    width: 80%;
-    padding: 15px;
+    padding: 1em;
+    margin-top: 5px;
+    width: 45%;
+    border:1px solid rgb(0, 107, 107);
     border-radius: 10px;        
     box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);       
 }
 .divider{
     width: 90%;
-    border-block-color: rgba(0, 107, 107, 0.411);
-}
+    border-color: rgba(0, 148, 148, 0.774);
+}  
+.cua_father{
+    display: grid;
+    grid-template-columns: 30% 30% 30%;
+    gap: 10px;
+} 
 .cuadraditos{
-    width: 100%;
-    padding-top: 1em;
-    font-display: flex;
-    align-content: center;
-    line-height:0px;
+    padding: 1em;
+    margin-top: 5px;
+    max-width: 80%;        
 }
-.pagok{    
-    display: flex;
-    flex-direction: column;   
+.pagok{     
     text-align: center;
-    width:30%;
     background-color: #79FF00;
     font-size: 0.8em;
     color: rgb(0, 0, 0);
     border-radius: 60px; 
-    margin-top: 10px;
 }
 .pagofail{
-    display: flex;
-    flex-direction: column;   
     text-align: center;
-    width:30%;
     background-color: #FF00D5;
     font-size: 0.8em;
     color: rgb(0, 0, 0);
     border-radius: 60px; 
-    margin-top: 10px;
 }
 
 .pagos h3, p{
@@ -492,6 +492,7 @@ export default {
 }
 
 @media screen and (min-width: 480px) {
+
 .main{    
     font-family: arial;
     display: flex;
