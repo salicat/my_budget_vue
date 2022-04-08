@@ -1,51 +1,51 @@
 <template>
-    <div id="Resumen">
-        <div class="main">    
-                <div class="selector">
-                    <div>
-                        <select v-model="month">                        
-                            <option selected> {{month}} </option>
-                            <option v-for="mes in meses" 
-                                    :key="mes" > {{mes}} </option>
-                        </select>
-                    </div>
-                    <div>
-                        <select v-model="anio">                        
-                            <option selected> {{curr_year}} </option>
-                            <option v-for="anio in anios" 
-                                    :key="anio" > {{anio}} </option>
-                        </select>
-                    </div>
-                    <button v-on:click="reload"> Consultar </button>
-                </div>
-            <div class="barras">   
-                    <div class="chart1" v-if="incomes||expenses != 0">
-                        <h2 v-bind:class="{ goo: incomes > expenses,
-                                            bad: expenses > incomes
-                                            }">Balance ${{Number(incomes - expenses).toLocaleString()}}</h2>
-                        <pie-chart                             
-                            :donut="true" 
-                            :data="[['Ingresos', incomes], ['Gastos', expenses]]"
-                            :colors="[ '#79FF00', '#FF00D5']"
-                            :library="{animation:{easing:'easeOutQuad'}, 
-                            elements: {arc: {borderWidth: 0}}}"
-                            >
-                        </pie-chart>                                                                         
-                    </div>                
-                    <div class="chart2" v-if="liabilities||passives != 0"                             > 
-                        <h2 v-bind:class="{ act: liabilities > passives,
-                                            pas:liabilities < passives
-                                            }"> Patrimonio: ${{Number(liabilities-passives).toLocaleString() }}</h2>
-                        <pie-chart
-                            :donut="true" 
-                            :data="[['Activos', liabilities], ['Pasivos', passives]]"
-                            :colors="[ '#00E8FF', '#FF8600']"
-                            :library="{animation:{easing:'easeOutQuad'}, 
-                            elements: {arc: {borderWidth: 0}}}"
-                            >        
-                        </pie-chart>                          
-                    </div >            
-                </div>                
+    <div class="main">    
+        <div class="selector"><div>
+            <select v-model="month">                        
+                <option selected> {{month}} </option>
+                <option v-for="mes in meses" 
+                        :key="mes" > {{mes}} </option>
+            </select>
+        </div>
+        <div>
+        <select v-model="anio">                        
+            <option selected> {{curr_year}} </option>
+            <option v-for="anio in anios" 
+                    :key="anio" > {{anio}} </option>
+        </select>
+        </div>
+            <button v-on:click="reload"> Consultar </button>
+        </div>
+        <div class="barras">   
+            <div class="chart1" v-if="incomes||expenses != 0">
+                <h2 v-bind:class="{ goo: incomes > expenses,
+                    bad: expenses > incomes
+                    }"
+                    >Balance ${{Number(incomes - expenses).toLocaleString()}}</h2>
+                <pie-chart                             
+                    :donut="true" 
+                    :data="[['Ingresos', incomes], ['Gastos', expenses]]"
+                    :colors="[ '#79FF00', '#FF00D5']"
+                    :library="{animation:{easing:'easeOutQuad'}, 
+                    elements: {arc: {borderWidth: 0}}}"
+                    >
+                </pie-chart>                                                                         
+            </div>                
+            <div class="chart2" v-if="liabilities||passives != 0"                             > 
+                <h2 v-bind:class="{ act: liabilities > passives,
+                    pas:liabilities < passives
+                    }"
+                    > Patrimonio: ${{Number(liabilities-passives).toLocaleString() }}</h2>
+                <pie-chart
+                    :donut="true" 
+                    :data="[['Activos', liabilities], ['Pasivos', passives]]"
+                    :colors="[ '#00E8FF', '#FF8600']"
+                    :library="{animation:{easing:'easeOutQuad'}, 
+                    elements: {arc: {borderWidth: 0}}}"
+                    >        
+                </pie-chart>                          
+                </div >            
+            </div>                
             <div class="otrico">
                 <div class="left">
                     <div class="left_title">
@@ -53,13 +53,13 @@
                     </div>
                     <div> 
                         <p v-bind:class="{  goo: expenses/gen_budget < 0.99999,
-                                                    act: expenses/gen_budget == 1,
-                                                    bad: expenses/gen_budget > 1                                
-                            }"> 
-                            Has gastado el {{Math.round(expenses/gen_budget*100)}}% 
-                            de tu presupuesto: ${{Number(gen_budget).toLocaleString()}} </p> 
+                                            act: expenses/gen_budget == 1,
+                                            bad: expenses/gen_budget > 1                                
+                        }"> 
+                        Has gastado el {{Math.round(expenses/gen_budget*100)}}% 
+                        de tu presupuesto: ${{Number(gen_budget).toLocaleString()}} </p> 
                         <p>
-                            Presupuesto restante: ${{Number(gen_budget-expenses).toLocaleString()}}    
+                        Presupuesto restante: ${{Number(gen_budget-expenses).toLocaleString()}}    
                         </p>
                     </div>
                     <div  v-if="alertas.length > 0" class="exp_cat" >                    
@@ -87,24 +87,23 @@
                     </div>
                 </div>
                 <div  class="right">
-                            <div>
-                                <h1> Pagos pendientes {{month}} {{anio}}</h1>                                  
-                            </div>
-                            <div class="cua_father" v-if="recurrents.length > 0">  
-                                <div class="cuadraditos" v-for="item in recurrents" :key="item.name"
+                    <div>
+                        <h1> Pagos pendientes {{month}} {{anio}}</h1>                                  
+                    </div>
+                    <div class="cua_father" v-if="recurrents.length > 0">  
+                    <div class="cuadraditos" v-for="item in recurrents" :key="item.name"
                                         v-bind:class="{pagok: item.value > 1,
                                         pagofail: item.value <= 0}">
-                                    <h3>{{item.category}} : ${{Number(item.budget).toLocaleString()}}</h3>
-                                    <h3>{{item.expires}}</h3>                                
-                                </div> 
-                            </div>
-                        <div v-if="!recurrents.length > 0">
-                            <h1> NO TIENES PAGOS RECURRENTES </h1>
-                        </div>   
+                        <h3>{{item.category}} : ${{Number(item.budget).toLocaleString()}}</h3>
+                        <h3>{{item.expires}}</h3>                                
+                    </div> 
                 </div>
+                <div v-if="!recurrents.length > 0">
+                    <h1> NO TIENES PAGOS RECURRENTES </h1>
+                </div>   
             </div>
-        </div>        
-    </div>               
+        </div>
+    </div>                      
 </template>
 
 <script>
@@ -339,7 +338,6 @@ export default {
     padding-top: 2em; 
 }
 .chart1{
-    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: left;    
@@ -347,7 +345,6 @@ export default {
     box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);  
 }
 .chart2{    
-    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: left;    
@@ -511,7 +508,8 @@ export default {
     flex-direction: row;
     justify-content: space-around;
 }
-.chart1{        
+.chart1{ 
+    width: 95%;       
     font-size: 1em;
     display: flex;
     flex-direction: column;
@@ -522,6 +520,7 @@ export default {
     padding: 1em;    
 }
 .chart2{
+    width: 95%;
     display: flex;
     flex-direction: column;
     justify-content: center;
