@@ -163,9 +163,9 @@ export default {
             month       : month_cons
         }               
         
-        let one     = "https://mybudgetback.herokuapp.com/user/records/" + data.username
+        let one     = "https://mybudgetback.herokuapp.com/user/month_records/" + data.username + "/" + data.year + "/" + data.month
         let two     = "https://mybudgetback.herokuapp.com/user/cats/" + data.username
-        let three   = "https://mybudgetback.herokuapp.com/user/month_regs/"+ data.username + "/" +  data.month
+        let three   = "https://mybudgetback.herokuapp.com/user/month_regs/"+ data.username + "/" +  data.year + "/" + data.month
         let four    = "https://mybudgetback.herokuapp.com/user/cats/" + data.username + "/" + data.year + "/" + data.month
         
         const requestOne    = axios.get(one)
@@ -256,8 +256,8 @@ export default {
                 month       : month_cons
             }
 
-            let one     = "https://mybudgetback.herokuapp.com/user/records/" + datos.username
-            let two     = "https://mybudgetback.herokuapp.com/user/month_regs/"+ datos.username + "/" +  datos.month
+            let one     = "https://mybudgetback.herokuapp.com/user/month_records/" + datos.username + "/" + datos.year + "/" + datos.month
+            let two     = "https://mybudgetback.herokuapp.com/user/month_regs/"+ datos.username + "/" + datos.year + "/" +  datos.month
             let four    = "https://mybudgetback.herokuapp.com/user/cats/" + datos.username + "/" +datos.year + "/" + datos.month
    
             const requestOne    = axios.get(one)
@@ -336,8 +336,7 @@ export default {
     display: flex;
     flex-direction:column;
     justify-content: space-evenly;    
-    padding-top: 2em;           
-    width: 90%;
+    padding-top: 2em; 
 }
 .chart1{
     width: 100%;

@@ -118,7 +118,7 @@ export default {
             var self = this;            
             axios            
             .get("https://mybudgetback.herokuapp.com/user/cats/" + this.username)
-            .then((response) => {
+            .then((response) => {                
                 self.cats = response.data;                
             })            
         },
