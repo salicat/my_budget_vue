@@ -379,6 +379,7 @@ export default {
 .barras{
     font-family: arial;
     display: flex;
+    width: auto;
     flex-direction:column;
     justify-content: center;
     padding-top: 2em;
@@ -564,7 +565,7 @@ export default {
     justify-content: space-between;
 }
 .chart1{ 
-    width: 95%;       
+    min-width: 95%;       
     font-size: 1em;
     display: flex;
     flex-direction: column;
