@@ -8,11 +8,11 @@
             </select>
         </div>
         <div>
-        <select v-model="anio">                        
-            <option selected> {{curr_year}} </option>
-            <option v-for="anio in anios" 
-                    :key="anio" > {{anio}} </option>
-        </select>
+            <select v-model="anio">                        
+                <option selected> {{curr_year}} </option>
+                <option v-for="anio in anios" 
+                        :key="anio" > {{anio}} </option>
+            </select>
         </div>
             <button v-on:click="reload"> Consultar </button>
         </div>
@@ -21,7 +21,8 @@
                 <h2 v-bind:class="{ goo: incomes > expenses,
                     bad: expenses > incomes
                     }"
-                    >Balance ${{Number(incomes - expenses).toLocaleString()}}</h2>
+                    >Balance ${{Number(incomes - expenses).toLocaleString()}}
+                </h2>
                 <pie-chart                             
                     :donut="true" 
                     :data="[['Ingresos', incomes], ['Gastos', expenses]]"
@@ -36,26 +37,15 @@
                 <pie-chart
                     :donut  ="false"
                     :data   ="exp_pie"
-                    :colors ="['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black', 'white', 'grey' ]"
-                    :library="{animation:{easing:'easeOutQuad'}, 
-                    elements: {arc: {borderWidth: 0}}}"
+                    :colors ="['Red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black', 'white', 'grey' ]"
+                    :library="{animation:{easing:'easeOutQuart'},
+                    elements: {arc: {borderWidth: 0},
+                    }}"
                     >
                 </pie-chart>
-            </div>                
-                <div class="chart2" v-if="liabilities||passives != 0"                             > 
-                    <h2 v-bind:class="{ act: liabilities > passives,
-                        pas:liabilities < passives
-                        }"
-                        > Patrimonio: ${{Number(liabilities-passives).toLocaleString() }}</h2>
-                    <bar-chart
-                        :data="[['Activos', liabilities], ['Pasivos', passives]]"
-                        :colors="['green']"
-                        :library="{animation:{easing:'easeOutQuad'}, 
-                        elements: {arc: {borderWidth: 0}}}"
-                        >        
-                    </bar-chart>                          
-                </div >            
-            </div>               
+                <h1>${{Number(expenses).toLocaleString()}}</h1>
+            </div>                                 
+        </div>
             <div class="otrico">
                 <div class="left">
                     <div class="left_title">
@@ -124,12 +114,13 @@
                 <h1> Rastreo por categoria </h1>
                 <p>EN MANTENIMIENTO ;)</p>
                 <select >
-                    <option>
-
+                    <option >
+                    
                     </option>
                 </select>
                 <line-chart
-
+                    :data="[['Ene', 690000], ['Feb', 1200000], ['Mar', 290000], ['Abril', 540000], ['Mayo', 1100000]]"
+                    
                 >
                 </line-chart>
             </div> 
@@ -372,7 +363,7 @@ export default {
     width: 98%;
     overflow-y: scroll;
     overflow: auto;
-    max-height: auto;       
+    max-height: 85vh;  
 }
 .selector{
     position:fixed;
@@ -389,36 +380,34 @@ export default {
     font-family: arial;
     display: flex;
     flex-direction:column;
-    justify-content: space-evenly;    
-    padding-top: 2em; 
+    justify-content: center;
+    padding-top: 2em;
+    margin: 3%; 
 }
 .chart1{
     display: flex;
     flex-direction: column;
-    justify-content: center; 
-    max-width: 30%;   
-    padding-bottom: 1em; 
+    align-items: center; 
+    max-width: 70%;  
+    padding: 10%; 
+    border-radius: 10px;  
     box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);  
 }
 .gastorta{
     display: flex;
     flex-direction: column;
-    justify-content: center;   
-    max-width: 30%;
-    padding: 1em; 
+    align-content: center; 
+    max-width: 85%;
+    margin-top: 10%;
+    padding: 3%;
+    border-radius: 10px;  
+    border:1px solid rgb(0, 107, 107); 
     box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);  
-}
-.chart2{    
-    display: flex;
-    max-width: 30%;
-    flex-direction: column;
-    justify-content: center;    
-    padding-bottom: 1em;
-    box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);   
 }
 .otrico{
     font-family: arial;    
     display: flex;
+    margin: 2%;
     flex-direction: column;    
     padding-top: 1em;
     padding-bottom: 2em;        
@@ -476,7 +465,8 @@ export default {
     background-size: 25px 25px;
 }
 .left{    
-    width: 80%;
+    width: 90%;
+    padding: 2%;
     height: auto;
     border-radius: 10px;         
     box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);  
@@ -492,8 +482,8 @@ export default {
 }
 .right{
     padding: 1em;
-    margin-top: 5px;
-    width: 45%;
+    margin-top: 10%;
+    min-width: 85%;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;        
     box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);       
@@ -568,10 +558,10 @@ export default {
     background-color: black;
 }
 .barras{    
-    width: 100%;
+    width: 95%;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 .chart1{ 
     width: 95%;       
@@ -584,8 +574,9 @@ export default {
     width: 45%;
     padding: 1em;    
 }
-.chart2{
-    width: 95%;
+.gastorta{
+    margin-top: 0;
+    max-width: 90%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -596,17 +587,18 @@ export default {
 }
 .otrico{    
     font-size: 1em;
+    margin-left: 2%;
     padding-top:2em;
-    width: 100%;
+    width: 95%;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 .left{
     padding: 1em;
-    width: 45%;
+    min-width: 45%;
     border:1px solid rgb(0, 107, 107);
-    border-radius: 10px;            
+    border-radius: 10px;           
 }
 .left_title{
     display: flex;
@@ -629,8 +621,9 @@ export default {
 }
 .right{
     padding: 1em;
-    margin-top: 0px;
-    width: 45%;
+    margin-top: 0;
+    margin-left: 5%;
+    min-width: 45%;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;    
 }
