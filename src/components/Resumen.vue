@@ -30,22 +30,32 @@
                     elements: {arc: {borderWidth: 0}}}"
                     >
                 </pie-chart>                                                                         
-            </div>                
-            <div class="chart2" v-if="liabilities||passives != 0"                             > 
-                <h2 v-bind:class="{ act: liabilities > passives,
-                    pas:liabilities < passives
-                    }"
-                    > Patrimonio: ${{Number(liabilities-passives).toLocaleString() }}</h2>
+            </div>
+            <div class="gastorta" v-if="expenses > 0" >
+                <h2> Distribucion de Gastos </h2>
                 <pie-chart
-                    :donut="true" 
-                    :data="[['Activos', liabilities], ['Pasivos', passives]]"
-                    :colors="[ '#00E8FF', '#FF8600']"
+                    :donut  ="false"
+                    :data   ="exp_pie"
+                    :colors ="['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black', 'white', 'grey' ]"
                     :library="{animation:{easing:'easeOutQuad'}, 
                     elements: {arc: {borderWidth: 0}}}"
-                    >        
-                </pie-chart>                          
-                </div >            
+                    >
+                </pie-chart>
             </div>                
+                <div class="chart2" v-if="liabilities||passives != 0"                             > 
+                    <h2 v-bind:class="{ act: liabilities > passives,
+                        pas:liabilities < passives
+                        }"
+                        > Patrimonio: ${{Number(liabilities-passives).toLocaleString() }}</h2>
+                    <bar-chart
+                        :data="[['Activos', liabilities], ['Pasivos', passives]]"
+                        :colors="['green']"
+                        :library="{animation:{easing:'easeOutQuad'}, 
+                        elements: {arc: {borderWidth: 0}}}"
+                        >        
+                    </bar-chart>                          
+                </div >            
+            </div>               
             <div class="otrico">
                 <div class="left">
                     <div class="left_title">
@@ -58,19 +68,26 @@
                         }"> 
                         Has gastado el {{Math.round(expenses/gen_budget*100)}}% 
                         de tu presupuesto: ${{Number(gen_budget).toLocaleString()}} </p> 
-                        <p>
-                        Presupuesto restante: ${{Number(gen_budget-expenses).toLocaleString()}}    
-                        </p>
+                        <p> Presupuesto restante: ${{Number(gen_budget-expenses).toLocaleString()}}</p>
+                        <p> Gasto promedio por dia: ${{Number(expenses/curr_day).toLocaleString("en", {   
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0,
+                            })}}</p>
+                        <p> Tu presupuesto se agotará en  
+                            {{Number((gen_budget-expenses)/(expenses/curr_day)).toLocaleString("en", {   
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0,
+                            })}} dias </p>
                     </div>
-                    <div  v-if="alertas.length > 0" class="exp_cat" >                    
+                    <div class="exp_cat" >                    
                         <div v-for="item in alertas" v-bind:key="item.name" >
                             <hr class="divider">                            
-                            <div class="nombres">
+                            <div class="nombres" >
                                 <div>{{item.name}}</div>
                                 <div>{{Math.round(item.value/item.budget*100)}}%</div> 
                             </div>                            
-                            <div class="progres">
-                                <div class="bar" >
+                            <div class="progres" >
+                                <div class="bar" v-if="item.value > 0">
                                     <div v-bind:class="{perce_goo: item.value/item.budget < 0.9999,
                                                         perce_ok: item.value/item.budget == 1,
                                                         perce_bad: item.value/item.budget > 1}"  
@@ -90,19 +107,32 @@
                     <div>
                         <h1> Pagos pendientes {{month}} {{anio}}</h1>                                  
                     </div>
-                    <div class="cua_father" v-if="recurrents.length > 0">  
-                    <div class="cuadraditos" v-for="item in recurrents" :key="item.name"
+                        <div class="cua_father" v-if="recurrents.length > 0">  
+                        <div class="cuadraditos" v-for="item in recurrents" :key="item.name"
                                         v-bind:class="{pagok: item.value > 1,
                                         pagofail: item.value <= 0}">
-                        <h3>{{item.category}} : ${{Number(item.budget).toLocaleString()}}</h3>
-                        <h3>{{item.expires}}</h3>                                
-                    </div> 
+                            <h3>{{item.category}} : ${{Number(item.budget).toLocaleString()}}</h3>
+                            <h3>{{item.expires}}</h3>                                
+                        </div> 
+                    </div>
+                    <div v-if="!recurrents.length > 0">
+                        <h1> NO TIENES PAGOS RECURRENTES </h1>
+                    </div>   
                 </div>
-                <div v-if="!recurrents.length > 0">
-                    <h1> NO TIENES PAGOS RECURRENTES </h1>
-                </div>   
             </div>
-        </div>
+            <div>
+                <h1> Rastreo por categoria </h1>
+                <p>EN MANTENIMIENTO ;)</p>
+                <select >
+                    <option>
+
+                    </option>
+                </select>
+                <line-chart
+
+                >
+                </line-chart>
+            </div> 
     </div>                      
 </template>
 
@@ -132,11 +162,13 @@ export default {
             regs: [],
             alertas: [],
             recurrents: [],
+            color_pie: [],
             curr_year : new Date().getFullYear(),
             curr_month : new Date().getMonth(),
+            curr_day : undefined,
             month : undefined,
             months : [],
-            history : {},
+            exp_pie : [],
             anio : undefined,
             anios : [2021, 2022],
             meses : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 
@@ -145,14 +177,18 @@ export default {
         }
     },
     created: function(){                       
-        const today = new Date()
 
+        const today = new Date()
         today.toLocaleString('default', { month: 'long' })
-        var n = today.getMonth();        
-        this.month = this.meses[n]
         
+        var n = today.getMonth();
+        this.month = this.meses[n]
+
         var y = today.getFullYear();
         this.anio = y
+
+        var d = String(today.getDate()).padStart(2, '0');
+        this.curr_day = d
 
         var month_cons = this.meses.indexOf(this.month) + 1;
 
@@ -231,9 +267,20 @@ export default {
             const responseFour = responses[3]
                 for (var b = 0; b < responseFour.data.length; b++){
                 this.gen_budget = this.gen_budget + responseFour.data[b].budget;
-                self.alertas[b] = responseFour.data[b]           
-                }           
-        }))       
+                    self.alertas[b] = responseFour.data[b]
+                    if (this.alertas[b].value > 0) {
+                        self.exp_pie[b] = [this.alertas[b].name, this.alertas[b].value]           
+                    }
+                }
+            
+                for (var f = 0; f < this.exp_pie.length; f++ ) {
+                    this.color_pie.push('#'+Math.floor(Math.random()*16777215).toString(16));
+                }      
+                
+            
+            
+        })) 
+
         .catch((error) => {
             alert(error);
         });        
@@ -241,6 +288,8 @@ export default {
     methods : {
         reload : function () {
             
+            this.exp_pie = []
+
             const today = new Date()
 
             today.toLocaleString('default', { month: 'long' })
@@ -306,6 +355,13 @@ export default {
                     this.gen_budget = this.gen_budget + responseFour.data[b].budget;
                 }    
                 self.alertas = responseFour.data
+            
+            for (var r = 0; r < this.alertas.length; r++){
+                if (this.alertas[r].value > 0) {
+                        self.exp_pie[r] = [this.alertas[r].name, this.alertas[r].value]           
+                    }
+            }
+            
             }))                           
         },
     }     
@@ -326,7 +382,6 @@ export default {
     justify-content: space-evenly;
 }
 .selector select{ 
-    
     color:white;
     background-color: #000000;
 }
@@ -340,14 +395,24 @@ export default {
 .chart1{
     display: flex;
     flex-direction: column;
-    justify-content: left;    
+    justify-content: center; 
+    max-width: 30%;   
     padding-bottom: 1em; 
+    box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);  
+}
+.gastorta{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;   
+    max-width: 30%;
+    padding: 1em; 
     box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);  
 }
 .chart2{    
     display: flex;
+    max-width: 30%;
     flex-direction: column;
-    justify-content: left;    
+    justify-content: center;    
     padding-bottom: 1em;
     box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);   
 }
