@@ -17,6 +17,19 @@
             <button v-on:click="reload"> Consultar </button>
         </div>
         <div class="barras">   
+            <div class="gastorta" v-if="expenses > 0" >
+                <h2> Distribucion de Gastos </h2>
+                <pie-chart
+                    :donut  ="false"
+                    :data   ="exp_pie"
+                    :colors ="['Red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black', 'white', 'grey' ]"
+                    :library="{animation:{easing:'easeOutQuart'},
+                    elements: {arc: {borderWidth: 0},
+                    }}"
+                    >
+                </pie-chart>
+                <h1>${{Number(expenses).toLocaleString()}}</h1>
+            </div>
             <div class="chart1" v-if="incomes||expenses != 0">
                 <h2 v-bind:class="{ goo: incomes > expenses,
                     bad: expenses > incomes
@@ -31,19 +44,6 @@
                     elements: {arc: {borderWidth: 0}}}"
                     >
                 </pie-chart>                                                                         
-            </div>
-            <div class="gastorta" v-if="expenses > 0" >
-                <h2> Distribucion de Gastos </h2>
-                <pie-chart
-                    :donut  ="false"
-                    :data   ="exp_pie"
-                    :colors ="['Red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black', 'white', 'grey' ]"
-                    :library="{animation:{easing:'easeOutQuart'},
-                    elements: {arc: {borderWidth: 0},
-                    }}"
-                    >
-                </pie-chart>
-                <h1>${{Number(expenses).toLocaleString()}}</h1>
             </div>                                 
         </div>
             <div class="otrico">
@@ -107,17 +107,18 @@
                     </div>
                     <div v-if="!recurrents.length > 0">
                         <h1> NO TIENES PAGOS RECURRENTES </h1>
-                    </div>   
+                    </div>
                 </div>
             </div>
             <div>
-                <h1> Rastreo por categoria </h1>
+                <h1>Rastreo por categoria </h1>
                 <p>EN MANTENIMIENTO ;)</p>
                 <select >
-                    <option >
-                    
+                    <option v-for="exp in exp_pie" v-bind:key="exp.name">
+                    {{exp.name}}
                     </option>
                 </select>
+                <p>{{alertas}}</p>
                 <line-chart
                     :data="[['Ene', 690000], ['Feb', 1200000], ['Mar', 290000], ['Abril', 540000], ['Mayo', 1100000]]"
                     
@@ -360,6 +361,9 @@ export default {
 </script>
 <style>
 .main{
+    font-family: arial;
+    display: flex;
+    flex-direction: column;
     width: 98%;
     overflow-y: scroll;
     overflow: auto;
@@ -377,6 +381,7 @@ export default {
     background-color: #000000;
 }
 .barras{
+    min-width: 90%;
     font-family: arial;
     display: flex;
     width: auto;
@@ -559,13 +564,13 @@ export default {
     background-color: black;
 }
 .barras{    
-    width: 95%;
+    min-width: 95%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 .chart1{ 
-    min-width: 95%;       
+    max-width: 30%;       
     font-size: 1em;
     display: flex;
     flex-direction: column;
@@ -577,14 +582,14 @@ export default {
 }
 .gastorta{
     margin-top: 0;
-    max-width: 90%;
+    min-width: 55%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     border:1px solid rgb(0, 107, 107);
     border-radius: 10px;
     width: 45%;
-    padding: 1em;
+    padding: 2e m;
 }
 .otrico{    
     font-size: 1em;
