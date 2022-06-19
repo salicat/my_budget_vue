@@ -7,6 +7,7 @@ import Registros from  './components/Registros'
 import Metas from './components/Metas'
 import Categorias from './components/Categorias'
 import SingUp from './components/SingUp'
+import CarlosCortes from './components/CarlosCortes'
 
 const router = new vueRouter({
     mode: 'history',
@@ -51,11 +52,11 @@ const router = new vueRouter({
             name:       "Categorias",
             component:  Categorias
         },
-        //{
-        //    path:       '/user/reportes/:username',
-        //    name:       "Reportes",
-        //    component:  Reportes
-        //}
+        {
+            path:     '/CarlosCortes',
+            name:     "CarlosCortes",
+            component:CarlosCortes    
+        }
     ]
 })
 export default router

@@ -205,9 +205,8 @@ export default {
                 window.location.reload();                               
             })
             .catch((error) =>{
-                alert("Tu categoria coincide exactamente con otra ya creada, " + 
-                    " intenta cambiando una letra por mayuscula, error inicial que ya no me atrevo a corregir =)")
-                                                                
+                alert(error.response.data)
+                console.log(error.response.data)                                                             
             })
         },
         delete_cat : function () {

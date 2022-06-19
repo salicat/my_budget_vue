@@ -13,7 +13,8 @@
         <button v-on:click="go_to_goals">Metas</button>
         <button v-on:click="go_to_cats">Categorias</button>
         <button v-on:click="go_to_reg">Registros</button>
-        <button v-on:click="logOut" id="cerrar"> Cerrar Cesión </button>       
+        <button v-on:click="logOut" id="cerrar"> Cerrar Cesión </button>
+        <button v-on:click="go_to_carloscortes"> About the author </button>       
       </nav>
     </div>
     <div id="main" v-if="is_auth">
@@ -81,6 +82,10 @@ export default {
       this.$router.push({name: "Categorias", params: {username: username}});                
       this.open = false;
       }
+    },
+    go_to_carloscortes: function () {
+      this.$router.push({name: "CarlosCortes", params: {}});
+      this.open = false;
     },
     logIn: function(username){
       localStorage.setItem('current_username', username)

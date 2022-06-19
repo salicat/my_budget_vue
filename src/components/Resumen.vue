@@ -28,7 +28,7 @@
                     }}"
                     >
                 </pie-chart>
-                <h1>${{Number(expenses).toLocaleString()}}</h1>
+                <h1>Gasto del mes: ${{Number(expenses).toLocaleString()}}</h1>
             </div>
             <div class="chart1" v-if="incomes||expenses != 0">
                 <h2 v-bind:class="{ goo: incomes > expenses,
@@ -57,7 +57,7 @@
                                             bad: expenses/gen_budget > 1                                
                         }"> 
                         Has gastado el {{Math.round(expenses/gen_budget*100)}}% 
-                        de tu presupuesto: ${{Number(gen_budget).toLocaleString()}} </p> 
+                        de tu presupuesto de ${{Number(gen_budget).toLocaleString()}} </p> 
                         <p> Presupuesto restante: ${{Number(gen_budget-expenses).toLocaleString()}}</p>
                         <p> Gasto promedio por dia: ${{Number(expenses/curr_day).toLocaleString("en", {   
                                 minimumFractionDigits: 0,
@@ -114,7 +114,7 @@
                 <h1>Rastreo por categoria </h1>
                 <p>EN MANTENIMIENTO ;)</p>
                 <select >
-                    <option v-for="exp in exp_pie" v-bind:key="exp.name">
+                    <option v-for="exp in alertas" v-bind:key="exp.name">
                     {{exp.name}}
                     </option>
                 </select>
@@ -449,6 +449,16 @@ export default {
     background-color:#00E8FF;
     background-size: 25px 25px;
 }
+.perce.maso{
+    color: rgb(255, 226, 226);
+    position: absolute;
+    top: 1px; left: 1px; right: 1px;
+    display: block;
+    height: 100%;
+    border-radius: 15px;
+    background-color:#ff7700;
+    background-size: 25px 25px;
+}
 .perce_ok{
     color: black;
     position: absolute;
@@ -668,6 +678,9 @@ export default {
 }
 .goo{
     color: #79FF00;
+}
+.maso{
+    color:#fbff00;
 }
 .bad{
     color: #FF00D5;

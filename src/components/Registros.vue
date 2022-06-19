@@ -35,7 +35,7 @@
             <input type= "text" v-model ="descripcion"><br>
 
              <p>Ingresa el valor</p>
-            <input type= "number" v-model ="value"><br>            
+            <input type= "number" placeholder="0.00" v-model ="value"><br>            
             <button v-on:click="save_reg"> Guardar Registro </button>            
         </div>
         <div class = "tarjeta">

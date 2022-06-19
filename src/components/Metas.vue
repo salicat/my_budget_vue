@@ -13,7 +13,7 @@
                         <p>Nombra tu meta</p>
                         <input placeholder="Nombre" v-model="name"> 
                         <p>Cuanto $$$ necesitas?</p>
-                        <input type="number" placeholder="$" v-model="final_value">
+                        <input type="number" step="0.01" placeholder="$" v-model="final_value">
                         <p>Cuando vas a cumplirla?</p>
                         <input type="date" id="start" name="trip-start" value="2018-07-22"
                             min="2021-03-12" max="2040-12-31" v-model="final_date"> <br>
