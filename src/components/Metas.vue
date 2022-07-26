@@ -44,7 +44,7 @@
             <div class="los_reportes">            
                 <div class = "informes">
                     <h1>Mis metas</h1>
-                    <table border = 1px >
+                    <table  >
                         <tr class = "columnas">
                             <th> Meta </th>
                             <th> % </th>
