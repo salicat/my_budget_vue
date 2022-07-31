@@ -251,13 +251,13 @@ export default {
             }
             let self = this
             axios
-            .delete("https://mybudgetback.herokuapp.com/user/delete/category/", {data})
+            .delete("https://mybudgetback.herokuapp.com/user/delete/category/", data)
             .then((response) => {
                 alert(response.data.message); 
                 window.location.reload();
             })
             .catch((error) =>{
-                alert(data.category + data.username + data.type)
+                alert(error.data.message)
             })
         }
     }
