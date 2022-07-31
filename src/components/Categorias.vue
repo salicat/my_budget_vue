@@ -1,8 +1,10 @@
 <template> 
     <b-container fluid> 
-        <div id="Categorias">
-            <div class="cats">            
-                <div class="new_cat">
+        <b-row align-h="between">
+            <b-col cols="11" sm="3" class="mx-auto" style="border-radius: 10px;
+                                            margin-top: 3%;  
+                                            padding: 3%; 
+                                            border:1px solid rgb(0, 107, 107);">
                     <h2>Tus categorias</h2>  
                     <select id="" v-model="action">
                         <option value="" selected disabled> Selecciona </option>
@@ -73,13 +75,16 @@
                             </select><br>                        
                             <button v-on:click="delete_cat"> Eliminar </button>
                         </div>
-                    </div>                
-                </div>
-                <div class = "ing_egr">        
-                    <div class ="ingresos">
+                    </div>               
+            </b-col>
+            <b-col cols="11" class="mx-auto" sm="4">
+                <div class = "ing_egr" style="border-radius: 10px;
+                                            margin-top: 3%;  
+                                            padding: 3%; 
+                                            border:1px solid rgb(0, 107, 107);" >
                         <h1 class="goo"> Ingresos </h1>
                         <h2 class="goo"> ${{Number(t_in).toLocaleString()}} </h2>
-                        <table border="1px">
+                        <table >
                             <tr class = "columnas">
                                 <th>  </th>                            
                                 <th> Meta mensual</th>
@@ -90,56 +95,76 @@
                             </tr>
                         </table>                                                                                    
                     </div>
-                    <div class ="egresos">
+                    <div class ="egresos" style="border-radius: 10px;
+                                            margin-top: 3%;  
+                                            padding: 3%; 
+                                            border:1px solid rgb(0, 107, 107);">
                         <h1 class="bad"> Egresos </h1>                
                         <h2 class="bad"> ${{Number(t_bud).toLocaleString()}} </h2>
-                        <table border="1px" class="tab_egresos">
+                        <table class="tab_egresos">
                             <tr class = "columnas">
                                 <th>  </th>
                                 <th> Presupuesto </th>
-                                <th> Prox Vencimiento </th>
                             <tr>                           
                             <tr v-for="cat in cats.expenses" :key="cat.category">                    
                                 <td class="titulos"> {{cat.category}} </td> 
                                 <!-- <td v-bind:class="{alert: cat.value > cat.budget}"> ${{cat.value}}</td> -->
-                                <td class="bad"> ${{Number(cat.budget).toLocaleString()}} </td>
-                                <td v-if="cat.recurrency==true" class="titulos"> {{cat.day}}</td>                                          
+                                <td class="bad"> ${{Number(cat.budget).toLocaleString()}} </td>                                          
                             </tr>                    
                         </table>
-                    </div>                                                          
-                </div>            
-                <div class="assets">
-                    <div class ="activos">
-                        <h1 class="act"> Activos </h1>
-                        <h2 class="act"> ${{Number(t_lia).toLocaleString()}} </h2>
-                        <table border="1px">
-                            <tr class = "columnas">
-                                <td> </td>
-                                <td> Valor </td>
-                            </tr>
-                            <tr v-for="cat in cats.liabilities" :key="cat.category">                    
-                                <th class="titulos"> {{cat.category}} </th> 
-                                <th class="act"> ${{Number(cat.value).toLocaleString()}} </th>
-                            </tr>                    
+                    </div>                                                        
+            </b-col>
+            <b-col cols="11" sm="4">
+                    <div class ="activos" style="border-radius: 10px;
+                                            margin-top: 3%;  
+                                            padding: 3%; 
+                                            border:1px solid rgb(0, 107, 107);">
+                        <h1 class="act"> Activos ${{Number(t_lia).toLocaleString()}} </h1>
+                        <table>
+                            <thead>
+                                <tr class = "columnas">
+                                    <td> </td>
+                                    <td> Valor </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="cat in cats.liabilities" :key="cat.category">                    
+                                    <th class="titulos"> {{cat.category}} </th> 
+                                    <th class="act"> ${{Number(cat.value).toLocaleString()}} </th>
+                                </tr>
+                            </tbody>                    
                         </table>
                     </div>            
-                    <div class ="pasivos">
-                        <h1 class="pas"> Pasivos </h1>
-                        <h2 class="pas"> ${{Number(t_pass).toLocaleString()}} </h2>
-                        <table border="1px">
-                            <tr class = "columnas">
-                                <td> </td>
-                                <td> Valor </td>
-                            </tr>
-                            <tr v-for="cat in cats.passives" :key="cat.category">                    
-                                <th class="titulos"> {{cat.category}} </th> 
-                                <th class="pas"> ${{Number(cat.value).toLocaleString()}} </th>
-                            </tr>                    
+                    <div class ="pasivos" style="border-radius: 10px;
+                                            margin-top: 3%;  
+                                            padding: 3%; 
+                                            border:1px solid rgb(0, 107, 107);">
+                        
+                        <h1 class="pas"> Pasivos ${{Number(t_pass).toLocaleString()}} </h1>
+                        <table>
+                            <thead>
+                                <tr class = "columnas">
+                                    <td> </td>
+                                    <td> Valor </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="cat in cats.passives" :key="cat.category">                    
+                                    <th class="titulos"> {{cat.category}} </th> 
+                                    <th class="pas"> ${{Number(cat.value).toLocaleString()}} </th>
+                                </tr>                    
+                            </tbody>
                         </table>
-                    </div>
-                </div>            
-            </div>  
-        </div>
+                    </div> 
+            </b-col>
+        </b-row>
+        <b-row>
+            <b-col cols="12" mx-class="auto" style="border-radius: 10px;  
+                                            margin-top: 5%;
+                                            padding: 3%;
+                                            border:1px solid rgb(0, 107, 107); 
+                                            box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);"></b-col>
+        </b-row>
     </b-container>
 </template>
 
@@ -236,155 +261,6 @@ export default {
 }
 </script>
 <style>
-
-.cats{
-    overflow-y: scroll;
-    overflow: auto;
-    max-height: 85vh; 
-}
-.new_cat{
-    width:15%;
-    padding: 10px;    
-    font-family: arial;
-}
-.ing_egr table{
-    padding: 2px;
-    width: 20%;
-    text-align: center;
-    border: 0.5px rgba(1, 41, 41, 0.856);    
-}
-.columnas {
-    color: rgb(0, 107, 107);
-    padding: 5px;
-}
-.titulos{
-    color: rgb(0, 107, 107);
-    font-weight: 100;
-    text-align: left;
-    padding: 4px ;
-}
-.ing_egr{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    justify-content: space-around;
-}
-.ingresos{
-    width: 80%;
-    font-family: arial;
-    border:1px solid rgb(0, 107, 107);
-    border-radius: 10px;
-    padding: 10px; 
-    overflow:hidden   
-}
-.ingresos table{
-    width: 100%;
-}
-.egresos{
-    margin-top: 20px;    
-    width: 80%;
-    font-family: arial;
-    border:1px solid rgb(0, 107, 107);
-    border-radius: 10px;
-    padding: 10px;    
-    overflow-y: scroll;
-    overflow: auto;
-    max-height: 40vh; 
-    padding-bottom: 30px;  
-}
-.egresos th{    
-    text-align: left;
-}
-.assets{
-    display: flex;
-    flex-direction: row;
-    width: 95%;
-    padding-bottom: 30px;  
-}
-.assets table {
-    padding: 2px;
-    width: 20%;
-    text-align: center;
-    border: 0.5px rgba(1, 41, 41, 0.856);
-}
-.activos{    
-    margin-top: 20px;       
-    font-family: arial;
-    font-size: 0.85em;
-    border:1px solid rgb(0, 107, 107);
-    border-radius: 10px;
-    padding: 10px;    
-}
-.activos th{
-    text-align: left;
-}
-.activos table{
-    width:100%;
-}
-.pasivos{    
-    margin-top: 20px;   
-    width: 40%;
-    font-family: arial;
-    font-size: 0.85em;
-    border:1px solid rgb(0, 107, 107);
-    border-radius: 10px;
-    padding: 10px; 
-}
-.pasivos th{
-    text-align: left;    
-}
-.pasivos table{
-    width:100%;
-}
-.crear_categorias button{
-    font-family: Arial;
-    color: #fff;
-    background: #000000;
-    border: 1px solid #E5E7E9;
-    border-radius: 5px;
-    margin: 10px;
-    padding: 10px 20px;
-}
-.barras{
-    border-radius: 10px;
-    padding: 10px;
-    width: 35%;
-}
-.lineas{
-    border-radius: 10px;
-    padding: 10px;
-    width: 35%;
-}
-.del_cat button{
-    font-family: Arial;
-    color: #fff;
-    background: #000000;
-    border: 1px solid #E5E7E9;
-    border-radius: 5px;
-    margin: 10px;
-    padding: 10px 20px;
-}
-.del_cat button:hover{
-    color: rgb(255, 8, 8);
-    box-shadow: 10px 5px 20px 5px rgb(255, 2, 2);
-}
-.val{
-    text-align: right;
-}
-table .act{
-    text-align: right;
-}
-table .pas{
-    text-align: right;
-}
-.warning{
-    color: #9e8e01;
-}
-.tab_egresos{
-    overflow-y: scroll;
-    overflow: auto;
-    max-height: 50vh;
-}
 .goo{
     color: #79FF00;
 }
@@ -397,182 +273,15 @@ table .pas{
 .pas{
     color:#FF8600;
 }
-
-@media screen and (min-width: 500px) {
-.cats{
-    display: flex;
-    flex-direction: row;            
-}
-.new_cat{
-    width:20%;
-    padding: 5px;    
-    font-family: arial;
-}
-.new_cat button:hover{
-    color: rgb(1, 41, 41);
-    box-shadow: 10px 5px 20px 10px rgb(1, 41, 41);
-}
-.new_cat select, input {
-    color:#E5E7E9;
-    background-color:#000000;
-}
-.crear_categorias{
-    width: 95%;    
-    display: flex;   
-    flex-direction: column;
-}
-.crear_categorias input{
-    width: 95%;
-}
-.modificar{    
-    width: 95%;        
-    display: flex;   
-    flex-direction: column;
-}
-.modificar button{
-    font-family: Arial;
-    color: #fff;
-    background: #000000;
-    border: 1px solid #E5E7E9;
-    border-radius: 5px;
-    margin: 10px;
-    padding: 10px 20px;
-} 
-.del_cat{    
-    width: 95%;        
-    display: flex;   
-    flex-direction: column;
-}
-.crear_categorias button{
-    font-family: Arial;
-    color: #fff;
-    background: #000000;
-    border: 1px solid #E5E7E9;
-    border-radius: 5px;
-    margin: 10px;
-    padding: 10px 20px;    
-}
-.del_cat button{
-    font-family: Arial;
-    color: #fff;
-    background: #000000;
-    border: 1px solid #E5E7E9;
-    border-radius: 5px;
-    margin: 10px;
-    padding: 10px 20px;
-}
-.del_cat button:hover{
-    color: rgb(255, 8, 8);
-    box-shadow: 10px 5px 20px 5px rgb(255, 2, 2);
-}
-.ing_egr table{    
-    padding: 2px;
-    width: 80%;
-    text-align: center;
-    border: 0.5px rgba(1, 41, 41, 0.856);    
-}
-.columnas {
-    color: rgb(0, 107, 107);
-    padding: 5px;
-}
 .titulos{
-    color: rgb(0, 107, 107);
-    font-weight: 100;
-    text-align: left;
-    padding: 4px ;
+    font-weight: bold;
 }
-.ing_egr{
-    display: flex;
-    flex-direction: column;
-    width: 45%;
-}
-.ingresos{     
-    font-size: 1em;  
-    width: 90%;
-    font-family: arial;
-    border:1px solid rgb(0, 107, 107);
-    border-radius: 10px;
-    overflow-y: scroll;
-    overflow: auto;
-    max-height: 40vh;  
-    display: flex;
-    flex-direction: column;
-    justify-items: center;   
-}
-.ingresos table{
-    width: 100%;
-}
-.egresos{
-    font-size: 1em;
-    width: 90%;
-    font-family: arial;
-    border:1px solid rgb(0, 107, 107);
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-items: center;        
-}
-.egresos th{    
-    text-align: left;
-}
-.egresos table{
-    width:100%;
-}
-.assets{
-    display: flex;
-    flex-direction: column;
-    width: 40%;
-    padding-bottom: 2em;
-}
-.assets table {
-    padding: 2px;
-    width: 90%;
-    text-align: center;
-    border: 0.5px rgba(1, 41, 41, 0.856);
-}
-.activos{        
-    font-size: 1em;
-    margin-top: 0px;   
-    width: 90%;
-    font-family: arial;
-    border:1px solid rgb(0, 107, 107);
-    border-radius: 10px;
-}
-.activos th{
-    text-align: left;
-}
-.activos table{    
-    width:100%;
-}
-.pasivos{    
-    font-size: 1em;
-    width: 90%;
-    font-family: arial;
-    border:1px solid rgb(0, 107, 107);
-    border-radius: 10px;     
-}
-.pasivos th{
-    text-align: left;    
-}
-.pasivos table{    
-    width:100%;
-}
-.val{
+td:nth-child(2){
     text-align: right;
 }
-table .act{
-    text-align: right;
+table{
+    justify-content: space-between;
 }
-table .pas{
-    text-align: right;
-}
-.warning{
-    color: #9e8e01;
-}
-.tab_egresos{
-    overflow-y: scroll;
-    overflow: auto;
-    max-height: 50vh;
-}
-}
+
+
 </style>

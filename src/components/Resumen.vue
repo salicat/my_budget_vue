@@ -53,7 +53,7 @@
                                             border:1px solid rgb(0, 107, 107); 
                                             box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">
                 <div class="chart1" v-if="incomes||expenses != 0">
-                    <h2 class="act">Ingre Vs Egresos</h2>
+                    <h2 class="act">Ingresos Vs Egresos</h2>
                     <pie-chart                             
                         :donut="true" 
                         :data="[['Ingresos', incomes], ['Gastos', expenses]]"
@@ -402,6 +402,7 @@ export default {
 }
 </script>
 <style>
+
 .nombres{
     display: flex;
     flex-direction: row;

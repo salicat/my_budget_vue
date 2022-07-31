@@ -1,8 +1,9 @@
 <template>
     <b-container fluid>
-        <b-row>
+        <b-row >
             <b-col cols="10"  sm="4" class = "mx-auto" style="border-radius: 10px;  
                                             padding: 3%;
+                                            margin-top: 3%;
                                             border:1px solid rgb(0, 107, 107); 
                                             box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);"> 
                 <b-row>
@@ -59,8 +60,10 @@
                 </b-row>
                     
             </b-col>
-            <b-col cols="10" sm="7" class = "tarjeta" style="border-radius: 10px;  
+            <b-col cols="10" sm="7" mx-class="auto" style="border-radius: 10px;  
                                             padding: 3%;
+                                            margin-left: 8%;
+                                            margin-top: 3%;
                                             border:1px solid rgb(0, 107, 107); 
                                             box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">
                 <h2 class="act">Consultar Registros</h2>
@@ -121,6 +124,13 @@
                     </div>
                 </b-row>                                          
             </b-col>
+        </b-row>
+        <b-row>
+            <b-col cols="12" mx-class="auto" style="border-radius: 10px;  
+                                            margin-top: 5%;
+                                            padding: 3%;
+                                            border:1px solid rgb(0, 107, 107); 
+                                            box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);"></b-col>
         </b-row>
     </b-container> 
 </template>
@@ -221,10 +231,7 @@ export default {
 
 </script>
 <style>
-#del:hover{
-    color: rgb(255, 8, 8);
-    box-shadow: 10px 5px 20px 5px rgb(255, 2, 2);
-}
+
 .columns {
     color: rgb(255, 255, 255);
     padding: 5px;
