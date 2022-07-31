@@ -163,7 +163,14 @@
                                             margin-top: 5%;
                                             padding: 3%;
                                             border:1px solid rgb(0, 107, 107); 
-                                            box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);"></b-col>
+                                            box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">
+                <div>
+                    <h1 class="act">Alertas:</h1>
+                    <h2 v-if="t_pass < t_lia && t_bud < t_in" class="act"> Tus finanzas lucen saludables</h2>
+                    <h2 v-if="t_pass > t_lia" class="bad"> Tus Pasivos son mayores que tus activos</h2>
+                    <h2 v-if="t_bud > t_in " class="bad"> Tus egresos exceden tus ingresos </h2>
+                </div>
+            </b-col>
         </b-row>
     </b-container>
 </template>
@@ -243,18 +250,15 @@ export default {
                 username : this.username
             }
             let self = this
-            if(confirm("Se eliminará la categoria " + this.category)){
-                axios
-                .delete("https://mybudgetback.herokuapp.com/user/delete/category/", {data})
-                .then((response) => {
-                    alert(response.data.message)
-                    window.location.reload();
-                })
-                .catch((error) =>{
-                    alert(data.category + data.username + data.type)
-                })
-            }
-
+            axios
+            .delete("https://mybudgetback.herokuapp.com/user/delete/category/", {data})
+            .then((response) => {
+                alert(response.data.message); 
+                window.location.reload();
+            })
+            .catch((error) =>{
+                alert(data.category + data.username + data.type)
+            })
         }
     }
     
