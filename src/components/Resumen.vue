@@ -1,6 +1,6 @@
 <template>
     <b-container fliud class="main">    
-        <b-row>
+        <b-row align-h="between">
             <b-col cols="4" sm="3" style="border-radius: 10px;
                                     padding: 1%; 
                                     border:1px solid rgb(0, 107, 107); 

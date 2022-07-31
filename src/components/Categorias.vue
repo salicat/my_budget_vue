@@ -1,144 +1,146 @@
 <template> 
-    <div id="Categorias">
-        <div class="cats">            
-            <div class="new_cat">
-                <h2>Tus categorias</h2>  
-                <select id="" v-model="action">
-                    <option value="" selected disabled> Selecciona </option>
-                    <option value="crear"> Crear Categoria </option>
-                    <option value="eliminar"> Eliminar Categoria </option>
-                </select>
-                <div v-if="action ==='crear'">
-                    <div class = "crear_categorias">
-                        <p> Nombra tu categoria </p>
-                        <input type="text" v-model="category">
-                        <p> Elige un tipo de categoria </p>
-                        <select v-model="type">
-                            <option value="incomes"> Ingresos </option>
-                            <option value="expenses"> Egresos </option>
-                            <option value="liabilities"> Activos </option>
-                            <option value="passives"> Pasivos </option>
-                        </select>
-                        <div v-if="type == 'liabilities' || type ==  'passives'">
-                            <p> Valor Actual :</p>
-                            <input type="text" v-model="value">
-                        </div> <br>
-                        <div v-if="type == 'incomes'">
-                            <p> Meta mensual :</p>
-                            <input type="text" v-model="budget">
-                        </div> <br>
-                        <div v-if="type == 'expenses'">
-                            <p> Presupuesto mensual:</p>
-                            <input type="text" v-model="budget">
-                            <p> Este gasto lo haces cada mes?</p>
-                            <input type="checkbox" v-model="recurrency"  v-on:click="recurrency = true">                            
-                        </div> <br>
-                        <div v-if="recurrency == true">
-                            <p> Elige la fecha del proximo vencimiento</p>
-                            <input type="date" id="start" name="trip-start" value="2018-07-22"
-                                    min="2000-03-12" max="2040-12-31" v-model="day"> <br>
+    <b-container fluid> 
+        <div id="Categorias">
+            <div class="cats">            
+                <div class="new_cat">
+                    <h2>Tus categorias</h2>  
+                    <select id="" v-model="action">
+                        <option value="" selected disabled> Selecciona </option>
+                        <option value="crear"> Crear Categoria </option>
+                        <option value="eliminar"> Eliminar Categoria </option>
+                    </select>
+                    <div v-if="action ==='crear'">
+                        <div class = "crear_categorias">
+                            <p> Nombra tu categoria </p>
+                            <input type="text" v-model="category">
+                            <p> Elige un tipo de categoria </p>
+                            <select v-model="type">
+                                <option value="incomes"> Ingresos </option>
+                                <option value="expenses"> Egresos </option>
+                                <option value="liabilities"> Activos </option>
+                                <option value="passives"> Pasivos </option>
+                            </select>
+                            <div v-if="type == 'liabilities' || type ==  'passives'">
+                                <p> Valor Actual :</p>
+                                <input type="text" v-model="value">
+                            </div> <br>
+                            <div v-if="type == 'incomes'">
+                                <p> Meta mensual :</p>
+                                <input type="text" v-model="budget">
+                            </div> <br>
+                            <div v-if="type == 'expenses'">
+                                <p> Presupuesto mensual:</p>
+                                <input type="text" v-model="budget">
+                                <p> Este gasto lo haces cada mes?</p>
+                                <input type="checkbox" v-model="recurrency"  v-on:click="recurrency = true">                            
+                            </div> <br>
+                            <div v-if="recurrency == true">
+                                <p> Elige la fecha del proximo vencimiento</p>
+                                <input type="date" id="start" name="trip-start" value="2018-07-22"
+                                        min="2000-03-12" max="2040-12-31" v-model="day"> <br>
+                            </div>
+                            <button v-on:click="cat_create"> Crear Categoria</button>
+                        </div>                    
+                    </div>               
+                    <div v-if="action ==='eliminar'">
+                        <div class="del_cat">
+                            <p> Elige la categoria que deseas eliminar </p>
+                            <select v-model ="type">    
+                                <option value= "incomes"> Ingreso </option>
+                                <option value= "expenses"> Egreso </option>
+                                <option value= "liabilities"> Activo </option>
+                                <option value= "passives"> Pasivo </option>
+                            </select><br>                    
+                            <select v-model="category" v-if="type === 'incomes'">
+                                <option  v-for="cat in cats.incomes" :key="cat.type" >
+                                    {{cat.category}} 
+                                </option>
+                            </select><br> 
+                            <select v-model="category" v-if="type === 'expenses'">
+                                <option  v-for="cat in cats.expenses" :key="cat.type" >
+                                    {{cat.category}} 
+                                </option>
+                            </select><br>
+                            <select v-model="category" v-if="type === 'liabilities'">
+                                <option  v-for="cat in cats.liabilities" :key="cat.type" >
+                                    {{cat.category}} 
+                                </option>            
+                            </select><br>   
+                            <select v-model="category" v-if="type === 'passives'">
+                                <option  v-for="cat in cats.passives" :key="cat.type" >
+                                    {{cat.category}} 
+                                </option>
+                            </select><br>                        
+                            <button v-on:click="delete_cat"> Eliminar </button>
                         </div>
-                        <button v-on:click="cat_create"> Crear Categoria</button>
-                    </div>                    
-                </div>               
-                <div v-if="action ==='eliminar'">
-                    <div class="del_cat">
-                        <p> Elige la categoria que deseas eliminar </p>
-                        <select v-model ="type">    
-                            <option value= "incomes"> Ingreso </option>
-                            <option value= "expenses"> Egreso </option>
-                            <option value= "liabilities"> Activo </option>
-                            <option value= "passives"> Pasivo </option>
-                        </select><br>                    
-                        <select v-model="category" v-if="type === 'incomes'">
-                            <option  v-for="cat in cats.incomes" :key="cat.type" >
-                                {{cat.category}} 
-                            </option>
-                        </select><br> 
-                        <select v-model="category" v-if="type === 'expenses'">
-                            <option  v-for="cat in cats.expenses" :key="cat.type" >
-                                {{cat.category}} 
-                            </option>
-                        </select><br>
-                        <select v-model="category" v-if="type === 'liabilities'">
-                            <option  v-for="cat in cats.liabilities" :key="cat.type" >
-                                {{cat.category}} 
-                            </option>            
-                        </select><br>   
-                        <select v-model="category" v-if="type === 'passives'">
-                            <option  v-for="cat in cats.passives" :key="cat.type" >
-                                {{cat.category}} 
-                            </option>
-                        </select><br>                        
-                        <button v-on:click="delete_cat"> Eliminar </button>
+                    </div>                
+                </div>
+                <div class = "ing_egr">        
+                    <div class ="ingresos">
+                        <h1 class="goo"> Ingresos </h1>
+                        <h2 class="goo"> ${{Number(t_in).toLocaleString()}} </h2>
+                        <table border="1px">
+                            <tr class = "columnas">
+                                <th>  </th>                            
+                                <th> Meta mensual</th>
+                            </tr>
+                            <tr v-for="cat in cats.incomes" :key="cat.category">                    
+                                <td class="titulos"> {{cat.category}} </td> 
+                                <td class="goo"> ${{cat.budget}} </td>                                                
+                            </tr>
+                        </table>                                                                                    
                     </div>
-                </div>                
-            </div>
-            <div class = "ing_egr">        
-                <div class ="ingresos">
-                    <h1 class="goo"> Ingresos </h1>
-                    <h2 class="goo"> ${{Number(t_in).toLocaleString()}} </h2>
-                    <table border="1px">
-                        <tr class = "columnas">
-                            <th>  </th>                            
-                            <th> Meta mensual</th>
-                        </tr>
-                        <tr v-for="cat in cats.incomes" :key="cat.category">                    
-                            <td class="titulos"> {{cat.category}} </td> 
-                            <td class="goo"> ${{cat.budget}} </td>                                                
-                        </tr>
-                    </table>                                                                                    
-                </div>
-                <div class ="egresos">
-                    <h1 class="bad"> Egresos </h1>                
-                    <h2 class="bad"> ${{Number(t_bud).toLocaleString()}} </h2>
-                    <table border="1px" class="tab_egresos">
-                        <tr class = "columnas">
-                            <th>  </th>
-                            <th> Presupuesto </th>
-                            <th> Prox Vencimiento </th>
-                        <tr>                           
-                        <tr v-for="cat in cats.expenses" :key="cat.category">                    
-                            <td class="titulos"> {{cat.category}} </td> 
-                            <!-- <td v-bind:class="{alert: cat.value > cat.budget}"> ${{cat.value}}</td> -->
-                            <td class="bad"> ${{Number(cat.budget).toLocaleString()}} </td>
-                            <td v-if="cat.recurrency==true" class="titulos"> {{cat.day}}</td>                                          
-                        </tr>                    
-                    </table>
-                </div>                                                          
-            </div>            
-            <div class="assets">
-                <div class ="activos">
-                    <h1 class="act"> Activos </h1>
-                    <h2 class="act"> ${{Number(t_lia).toLocaleString()}} </h2>
-                    <table border="1px">
-                        <tr class = "columnas">
-                            <td> </td>
-                            <td> Valor </td>
-                        </tr>
-                        <tr v-for="cat in cats.liabilities" :key="cat.category">                    
-                            <th class="titulos"> {{cat.category}} </th> 
-                            <th class="act"> ${{Number(cat.value).toLocaleString()}} </th>
-                        </tr>                    
-                    </table>
+                    <div class ="egresos">
+                        <h1 class="bad"> Egresos </h1>                
+                        <h2 class="bad"> ${{Number(t_bud).toLocaleString()}} </h2>
+                        <table border="1px" class="tab_egresos">
+                            <tr class = "columnas">
+                                <th>  </th>
+                                <th> Presupuesto </th>
+                                <th> Prox Vencimiento </th>
+                            <tr>                           
+                            <tr v-for="cat in cats.expenses" :key="cat.category">                    
+                                <td class="titulos"> {{cat.category}} </td> 
+                                <!-- <td v-bind:class="{alert: cat.value > cat.budget}"> ${{cat.value}}</td> -->
+                                <td class="bad"> ${{Number(cat.budget).toLocaleString()}} </td>
+                                <td v-if="cat.recurrency==true" class="titulos"> {{cat.day}}</td>                                          
+                            </tr>                    
+                        </table>
+                    </div>                                                          
                 </div>            
-                <div class ="pasivos">
-                    <h1 class="pas"> Pasivos </h1>
-                    <h2 class="pas"> ${{Number(t_pass).toLocaleString()}} </h2>
-                    <table border="1px">
-                        <tr class = "columnas">
-                            <td> </td>
-                            <td> Valor </td>
-                        </tr>
-                        <tr v-for="cat in cats.passives" :key="cat.category">                    
-                            <th class="titulos"> {{cat.category}} </th> 
-                            <th class="pas"> ${{Number(cat.value).toLocaleString()}} </th>
-                        </tr>                    
-                    </table>
-                </div>
-            </div>            
-        </div>  
-</div>
+                <div class="assets">
+                    <div class ="activos">
+                        <h1 class="act"> Activos </h1>
+                        <h2 class="act"> ${{Number(t_lia).toLocaleString()}} </h2>
+                        <table border="1px">
+                            <tr class = "columnas">
+                                <td> </td>
+                                <td> Valor </td>
+                            </tr>
+                            <tr v-for="cat in cats.liabilities" :key="cat.category">                    
+                                <th class="titulos"> {{cat.category}} </th> 
+                                <th class="act"> ${{Number(cat.value).toLocaleString()}} </th>
+                            </tr>                    
+                        </table>
+                    </div>            
+                    <div class ="pasivos">
+                        <h1 class="pas"> Pasivos </h1>
+                        <h2 class="pas"> ${{Number(t_pass).toLocaleString()}} </h2>
+                        <table border="1px">
+                            <tr class = "columnas">
+                                <td> </td>
+                                <td> Valor </td>
+                            </tr>
+                            <tr v-for="cat in cats.passives" :key="cat.category">                    
+                                <th class="titulos"> {{cat.category}} </th> 
+                                <th class="pas"> ${{Number(cat.value).toLocaleString()}} </th>
+                            </tr>                    
+                        </table>
+                    </div>
+                </div>            
+            </div>  
+        </div>
+    </b-container>
 </template>
 
 <script>

@@ -1,5 +1,6 @@
-<template>
-  <b-container fluid id = "app" >
+<template >
+  <b-container fluid id = "app" style="background-color: #000;
+                                      color: rgb(0, 107, 107);">
     <b-row align-h="between">
       <b-col cols="2" style="margin: 1%;">
         <b-button v-b-toggle.sidebar id="main" v-if="is_auth"> ☰ </b-button>  
@@ -125,11 +126,7 @@ export default {
 </script>
 
 <style>
-body{
-  background-color: black;
-  color: rgb(0, 107, 107);
-  width: 99%;
-}
+
 h1{
   color: #00E8FF;
 }

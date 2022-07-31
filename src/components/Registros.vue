@@ -1,5 +1,5 @@
 <template>
-    <b-container>
+    <b-container fluid>
         <b-row>
             <b-col cols="10"  sm="4" class = "mx-auto" style="border-radius: 10px;  
                                             padding: 3%;
