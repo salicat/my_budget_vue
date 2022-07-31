@@ -402,13 +402,6 @@ export default {
 }
 </script>
 <style>
-.main{
-    font-family: Arial, Helvetica, sans-serif;
-    overflow-y: scroll;
-    overflow: auto;
-    max-height: 90vh;  
-    background-color: black;
-}
 .nombres{
     display: flex;
     flex-direction: row;

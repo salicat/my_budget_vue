@@ -1,14 +1,14 @@
 <template>
   <b-container fluid id = "app" >
     <b-row align-h="between">
-      <b-col cols="2">
+      <b-col cols="2" style="margin: 1%;">
         <b-button v-b-toggle.sidebar id="main" v-if="is_auth"> ☰ </b-button>  
       </b-col>
       <b-col cols="2" style="border-radius: 10px;
-                                            margin: 1%;  
-                                            padding: 1%; 
-                                            border:1px solid rgb(0, 107, 107); 
-                                            box-shadow: 0 5px 15px rgba(0, 148, 148, 0.774);">
+                            margin: 1%;  
+                            padding: 1%; 
+                            border:1px solid rgb(0, 107, 107); 
+                            box-shadow: 0 5px 15px rgba(0, 148, 148, 0.774);">
         <div v-if="is_auth">
           <h2>{{username}}</h2>    
         </div>
