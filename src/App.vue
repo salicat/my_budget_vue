@@ -1,41 +1,58 @@
 <template>
-  <div id = "app" >
-    <div class = "top_right_vigneta" v-if="is_auth">
-      <h2>{{username}}</h2>    
-      </div>
-    <div  class = "sidebar" v-if="is_auth"
-          v-bind:class="[open ? 'sidebar_on' : 'sidebar']"
-          >       
-      <nav>  
-        <button id="none" v-on:click="close_bar">X </button>
-        <h2>Menú</h2 >
-        <button v-on:click="go_to_resumen">Resumen</button>
-        <button v-on:click="go_to_goals">Metas</button>
-        <button v-on:click="go_to_cats">Categorias</button>
-        <button v-on:click="go_to_reg">Registros</button>
-        <button v-on:click="logOut" id="cerrar"> Cerrar Cesión </button>
-        <button v-on:click="go_to_carloscortes"> About the author </button>       
-      </nav>
-    </div>
-    <div id="main" v-if="is_auth">
-      <button class="openbtn" v-on:click="open_bar" v-if="!open"> ☰ </button>
-    </div>
-    <div v-bind:class="[!open ? 'main-component_2' : 'main-component' ]">  
-      <router-view v-on:log-in="logIn"> </router-view>
-    </div>        
-  </div>
+  <b-container fluid id = "app" >
+    <b-row align-h="between">
+      <b-col cols="2">
+        <b-button v-b-toggle.sidebar id="main" v-if="is_auth"> ☰ </b-button>  
+      </b-col>
+      <b-col cols="2" style="border-radius: 10px;
+                                            margin: 1%;  
+                                            padding: 1%; 
+                                            border:1px solid rgb(0, 107, 107); 
+                                            box-shadow: 0 5px 15px rgba(0, 148, 148, 0.774);">
+        <div v-if="is_auth">
+          <h2>{{username}}</h2>    
+        </div>
+      </b-col>
+    </b-row>    
+        <b-sidebar id="sidebar" v-if="is_auth" bg-variant="dark">       
+        <b-button-group vertical>
+          <b-col cols="12">  
+            <b-button variant="secondary" v-on:click="go_to_resumen">Resumen</b-button>
+          </b-col>
+          <b-col cols="12">
+            <b-button variant="secondary" v-on:click="go_to_goals">Metas</b-button>
+          </b-col>
+          <b-col cols="12">
+            <b-button variant="secondary" v-on:click="go_to_cats">Categorias</b-button>
+          <b-col cols="12">  
+            <b-button variant="secondary" v-on:click="go_to_reg">Registros</b-button>
+          </b-col>
+            <b-button variant="secondary" v-on:click="logOut" id="cerrar"> Cerrar Cesión </b-button>     
+          </b-col>
+        </b-button-group>
+      </b-sidebar>
+      <b-row>
+        <b-col cols="12">
+          <div v-bind:class="[!open ? 'main-component_2' : 'main-component' ]">  
+            <router-view v-on:log-in="logIn"> </router-view>
+          </div>
+        </b-col>
+      </b-row>          
+  </b-container>
 </template>
 
 <script>
 import vueRouter from 'vue-router'
 import Vue from 'vue'
 import { BootstrapVue } from 'bootstrap-vue'
+import Resumen from './components/Resumen.vue'
+import Registros from './components/Registros.vue'
 
 Vue.use(BootstrapVue)
 
 export default {
     name: 'App',    
-    components: {},
+    components: { Resumen, Registros },
     data: function(){
       return {
               is_auth: localStorage.getItem('isAuth') || false, 
@@ -87,10 +104,6 @@ export default {
       this.open = false;
       }
     },
-    go_to_carloscortes: function () {
-      this.$router.push({name: "CarlosCortes", params: {}});
-      this.open = false;
-    },
     logIn: function(username){
       localStorage.setItem('current_username', username)
       localStorage.setItem('isAuth', true)
@@ -109,237 +122,15 @@ export default {
     }    
   }
 }
-
 </script>
 
 <style>
 body{
   background-color: black;
-  color:#fff;
+  color: rgb(0, 107, 107);
+  width: 99%;
 }
-.sidebar {
-  position: absolute;
-  left: 0%;
-  top: 5%;  
-  width: 15%;
-  width: 0;
-  position: fixed;
-  z-index: 1;
-  height: 50%;
-  overflow-x: hidden;
-  transition: 0.5s;  
-}
-.sidebar {
-    position: absolute;
-    left: 0%;
-    top: 5%;  
-    width: 15%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    background-color: #000000 ;
-    color:#fff ;
-    background-color: rgba(0, 0, 0, 0.85);
-    display: flex;
-    border-radius: 0px 10px 10px 0px;
-    box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);        
-    height: 50%;
-    transition: 0.5s;  
-  }
-  #none{
-    border: none;
-  }
-  #none :hover{
-    box-shadow: 10px 5px 20px 5px rgb(255, 9, 9);
-  }
-  .sidebar_on {
-    position: absolute;
-    left: 0%;
-    top: 5%;  
-    width: 30%;
-    max-width: 150px;
-    min-height: 400px;
-    background-color: #000000 ;
-    color:#fff ;
-    background-color: rgba(0, 0, 0, 0.85);
-    display: flex;
-    border-radius: 0px 10px 10px 0px;
-    box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);    
-    transition: 0.5s;
-  }
-  .sidebar .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-  }
-  .openbtn {
-    font-size: 20px;
-    background-color: #111;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-  }
-  .sidebar nav{
-    font-family: Arial;
-    display: flex;
-    padding: 5%;
-    flex-direction: column;
-    justify-content:space-evenly;
-  }
-  .sidebar nav button{ 
-    font-family: Arial;
-    color: #fff;
-    background: #000000;
-    border: 1px solid #E5E7E9;
-    border-radius: 5px;
-    border: 1px solid rgba(1, 98, 98);    
-    padding: 10px 20px;
-  }
- 
-  .top_right_vigneta{
-    padding: 5px;  
-    position: fixed;
-    top: 0;
-    right: 0;
-    display: flex;
-    flex-direction: row;
-    align-content: space-around;
-    border-radius: 0px 0px 0px 10px;
-    box-shadow: -10px 10px 20px 5px rgb(1, 41, 41);  
-  }
-  .top_right_vigneta h2{
-    font-family: Arial;
-    text-align: center;
-    width: 80%;
-  }
-  .main-component{
-    position: fixed;
-    top: 100px;
-    left: 280px;
-    width: 75%;
-    height: 86%;
-    padding: 10px;  
-    background-color: #000000;
-    transition: 0.5s;  
-  }
-  .main-component_2{
-    position: fixed;
-    top: 100px;
-    left: 20px;
-    width: 98%;
-    height: 86%;
-    transition: 0.5s;      
-  }
-
-
-@media screen and (min-width: 700px) {
-  body{
-    background-color: black;
-    color:#fff;    
-  }
-  .sidebar {
-    position: absolute;
-    left: 0%;
-    top: 5%;  
-    width: 15%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    height: 50%;
-    overflow-x: hidden;
-    transition: 0.5s;  
-  }
-  .sidebar nav button{
-    font-family: Arial;
-    color: #fff;
-    background: #000000;
-    border: 1px solid rgba(1, 98, 98);
-    border-radius: 5px;
-    padding: 10px 20px;
-  }
-  .sidebar nav button:hover{
-    color: rgb(3, 161, 161);
-    box-shadow: 10px 5px 20px 5px rgb(1, 41, 4);
-  }  
-  .sidebar_on {
-    position: absolute;
-    left: 0%;
-    top: 5%;  
-    width: 15%;
-    max-width: 150px;
-    min-height: 400px;
-    background-color: #000000 ;
-    color:#fff ;
-    background-color: rgba(0, 0, 0, 0.85);
-    display: flex;
-    border-radius: 0px 10px 10px 0px;
-    box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);
-  }
-  .sidebar .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-  }
-  .openbtn {
-    font-size: 20px;
-    cursor: pointer;
-    background-color: #111;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-  }
-  .openbtn:hover {
-    box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);
-  }
-  .sidebar nav{
-    font-family: Arial;
-    display: flex;
-    padding: 5%;
-    flex-direction: column;
-    justify-content:space-evenly;
-  }  
-  .top_right_vigneta{
-    padding: 5px;  
-    position: fixed;
-    top: 0;
-    right: 0;
-    display: flex;
-    flex-direction: row;
-    align-content: space-around;
-    border-radius: 0px 0px 0px 10px;
-    box-shadow: -10px 10px 20px 5px rgb(1, 41, 41);  
-  }
-  .top_right_vigneta h2{
-    font-family: Arial;
-    text-align: center;
-    width: 80%;
-  }
-  .main-component{
-    position: fixed;
-    top: 100px;
-    left: 10%;
-    width: 90%;
-    height: 86%;
-    padding: 10px;  
-    background-color: #000000;
-    transition: 0.5s;  
-  }
-  .main-component_2{
-    position: fixed;
-    top: 100px;
-    left: 0px;
-    width: 100%;
-    height: 86%;
-    padding: 10px;
-    transition: 0.5s;      
-  }
-  .cerrar button:hover{
-    box-shadow: -10px 10px 20px 5px rgb(255, 0, 212); 
-    color: red;
-  }
+h1{
+  color: #00E8FF;
 }
 </style>

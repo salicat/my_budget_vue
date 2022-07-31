@@ -1,52 +1,101 @@
 <template>
-    <div class="main">    
-        <div class="selector"><div>
-            <select v-model="month">                        
-                <option selected> {{month}} </option>
-                <option v-for="mes in meses" 
-                        :key="mes" > {{mes}} </option>
-            </select>
-        </div>
-        <div>
-            <select v-model="anio">                        
-                <option selected> {{curr_year}} </option>
-                <option v-for="anio in anios" 
-                        :key="anio" > {{anio}} </option>
-            </select>
-        </div>
-            <button v-on:click="reload"> Consultar </button>
-        </div>
-        <div class="barras">   
-            <div class="gastorta" v-if="expenses > 0" >
-                <h2> Distribucion de Gastos </h2>
-                <pie-chart
-                    :donut  ="false"
-                    :data   ="exp_pie"
-                    :colors ="['Red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black', 'white', 'grey' ]"
-                    :library="{animation:{easing:'easeOutQuart'},
-                    elements: {arc: {borderWidth: 0},
-                    }}"
-                    >
-                </pie-chart>
-                <h1>Gasto del mes: ${{Number(expenses).toLocaleString()}}</h1>
-            </div>
-            <div class="chart1" v-if="incomes||expenses != 0">
-                <h2 v-bind:class="{ goo: incomes > expenses,
-                    bad: expenses > incomes
-                    }"
-                    >Balance ${{Number(incomes - expenses).toLocaleString()}}
-                </h2>
-                <pie-chart                             
-                    :donut="true" 
-                    :data="[['Ingresos', incomes], ['Gastos', expenses]]"
-                    :colors="[ '#79FF00', '#FF00D5']"
-                    :library="{animation:{easing:'easeOutQuad'}, 
-                    elements: {arc: {borderWidth: 0}}}"
-                    >
-                </pie-chart>                                                                         
-            </div>                                 
-        </div>
-            <div class="otrico">
+    <b-container fliud class="main">    
+        <b-row>
+            <b-col cols="4" sm="3" style="border-radius: 10px;
+                                    padding: 1%; 
+                                    border:1px solid rgb(0, 107, 107); 
+                                    box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">
+                <b-col cols=8>
+                    <b-form-select v-model="month" style="background-color:black; color: white;">                        
+                        <option selected> {{month}} </option>
+                        <option v-for="mes in meses" 
+                                :key="mes" > {{mes}} </option>
+                    </b-form-select>   
+                </b-col>
+                <b-col cols=8>
+                    <select v-model="anio" style="background-color:black; color: white;">                        
+                        <option selected> {{curr_year}} </option>
+                        <option v-for="anio in anios" 
+                                :key="anio" > {{anio}} </option>
+                    </select>
+                </b-col>
+                <b-col cols=8>
+                    <b-button variant="dark" v-on:click="reload" > Consultar </b-button>
+                </b-col>
+            </b-col>
+            <b-col cols="7"> 
+
+            </b-col>
+        </b-row>
+        <b-row> 
+            <b-col cols="10" class="mx-auto" sm="7" style="border-radius: 10px;
+                                            margin-top: 3%;  
+                                            padding: 3%; 
+                                            border:1px solid rgb(0, 107, 107); 
+                                            box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">    
+                <div class="gastorta" v-if="expenses > 0" >
+                    <h2 class="act"> Distribucion de Gastos </h2>
+                    <pie-chart
+                        :donut  ="false"
+                        :data   ="exp_pie"
+                        :colors ="['Red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black', 'white', 'grey' ]"
+                        :library="{animation:{easing:'easeOutQuart'},
+                        elements: {arc: {borderWidth: 0},
+                        }}"
+                        >
+                    </pie-chart>
+                    <h1>Gasto del mes: ${{Number(expenses).toLocaleString()}}</h1>
+                </div>
+            </b-col>
+            <b-col cols="10" class="mx-auto" sm="4" style="border-radius: 10px;  
+                                            margin-top: 3%;
+                                            padding: 3%;
+                                            border:1px solid rgb(0, 107, 107); 
+                                            box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">
+                <div class="chart1" v-if="incomes||expenses != 0">
+                    <h2 class="act">Ingre Vs Egresos</h2>
+                    <pie-chart                             
+                        :donut="true" 
+                        :data="[['Ingresos', incomes], ['Gastos', expenses]]"
+                        :colors="[ '#79FF00', '#FF00D5']"
+                        :library="{animation:{easing:'easeOutQuad'}, 
+                        elements: {arc: {borderWidth: 0}}}"
+                        >
+                    </pie-chart>                                  
+                    <h1 v-bind:class="{ goo: incomes > expenses,
+                        bad: expenses > incomes
+                        }"
+                        >Balance ${{Number(incomes - expenses).toLocaleString()}}
+                    </h1>                                       
+                </div>
+            </b-col>
+        </b-row>      
+        <b-row>
+            <b-col cols="10" class="mx-auto" sm="4" style="border-radius: 10px;
+                                            padding: 3%;  
+                                            margin-top: 3%;
+                                            border:1px solid rgb(0, 107, 107); 
+                                            box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">
+                <div>
+                        <h1> Pagos pendientes {{month}} {{anio}}</h1>                                  
+                    </div>
+                        <div class="cua_father" v-if="recurrents.length > 0">  
+                        <div class="cuadraditos" v-for="item in recurrents" :key="item.name"
+                                        v-bind:class="{pagok: item.value > 1,
+                                        pagofail: item.value <= 0}">
+                            <h3>{{item.category}} : ${{Number(item.budget).toLocaleString()}}</h3>
+                            <h3>{{item.expires}}</h3>                                
+                        </div> 
+                    </div>
+                    <div v-if="!recurrents.length > 0">
+                        <h1> NO TIENES PAGOS RECURRENTES </h1>
+                    </div>
+            </b-col>
+            <b-col cols="10" class="mx-auto" sm="7" style="border-radius: 10px;  
+                                            margin-top: 3%;
+                                            padding: 3%;
+                                            border:1px solid rgb(0, 107, 107); 
+                                            box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">
                 <div class="left">
                     <div class="left_title">
                         <h1> Gastos por Categoria </h1>
@@ -93,24 +142,14 @@
                         </div>
                     </div>
                 </div>
-                <div  class="right">
-                    <div>
-                        <h1> Pagos pendientes {{month}} {{anio}}</h1>                                  
-                    </div>
-                        <div class="cua_father" v-if="recurrents.length > 0">  
-                        <div class="cuadraditos" v-for="item in recurrents" :key="item.name"
-                                        v-bind:class="{pagok: item.value > 1,
-                                        pagofail: item.value <= 0}">
-                            <h3>{{item.category}} : ${{Number(item.budget).toLocaleString()}}</h3>
-                            <h3>{{item.expires}}</h3>                                
-                        </div> 
-                    </div>
-                    <div v-if="!recurrents.length > 0">
-                        <h1> NO TIENES PAGOS RECURRENTES </h1>
-                    </div>
-                </div>
-            </div>
-            <div>
+            </b-col>         
+        </b-row>
+        <b-row>
+            <b-col cols="11" class="mx-auto" sm="11" style="border-radius: 10px;
+                                            margin-top: 3%;
+                                            padding: 3%;  
+                                            border:1px solid rgb(0, 107, 107); 
+                                            box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">
                 <h1>Rastreo por categoria </h1>
                 <p>EN MANTENIMIENTO ;)</p>
                 <select >
@@ -124,8 +163,9 @@
                     
                 >
                 </line-chart>
-            </div> 
-    </div>                      
+            </b-col>
+        </b-row>
+    </b-container>                      
 </template>
 
 <script>
@@ -134,11 +174,13 @@ import Datepicker from 'vuejs-datepicker';
 import Vue from 'vue'
 import Chart from 'chart.js'
 import VueChartkick from 'vue-chartkick'
+
 Vue.use(Chartkick.use(Chart))
+
 
 export default {
     components: {
-        Datepicker        
+        Datepicker
     },    
     name: 'Resumen',
     data: function (){
@@ -361,72 +403,19 @@ export default {
 </script>
 <style>
 .main{
-    font-family: arial;
-    display: flex;
-    flex-direction: column;
-    width: 98%;
+    font-family: Arial, Helvetica, sans-serif;
     overflow-y: scroll;
     overflow: auto;
-    max-height: 85vh;  
-}
-.selector{
-    position:fixed;
-    z-index: 1;    
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-}
-.selector select{ 
-    color:white;
-    background-color: #000000;
-}
-.barras{
-    min-width: 90%;
-    font-family: arial;
-    display: flex;
-    width: auto;
-    flex-direction:column;
-    justify-content: center;
-    padding-top: 2em;
-    margin: 3%; 
-}
-.chart1{
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-    max-width: 70%;  
-    padding: 10%; 
-    border-radius: 10px;  
-    box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);  
-}
-.gastorta{
-    display: flex;
-    flex-direction: column;
-    align-content: center; 
-    max-width: 85%;
-    margin-top: 10%;
-    padding: 3%;
-    border-radius: 10px;  
-    border:1px solid rgb(0, 107, 107); 
-    box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);  
-}
-.otrico{
-    font-family: arial;    
-    display: flex;
-    margin: 2%;
-    flex-direction: column;    
-    padding-top: 1em;
-    padding-bottom: 2em;        
+    max-height: 90vh;  
+    background-color: black;
 }
 .nombres{
-    font-size: 0.8em;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     padding-top: 2em;
 }
 .progres{
-    font-family: arial;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -480,44 +469,6 @@ export default {
     background-color:#ff0000;
     background-size: 25px 25px;
 }
-.left{    
-    width: 90%;
-    padding: 2%;
-    height: auto;
-    border-radius: 10px;         
-    box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);  
-}
-.left_title{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-.left_title select{
-    color:white;
-    background-color: #000000;
-}
-.right{
-    padding: 1em;
-    margin-top: 10%;
-    min-width: 85%;
-    border:1px solid rgb(0, 107, 107);
-    border-radius: 10px;        
-    box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);       
-}
-.divider{
-    width: 90%;
-    border-color: rgba(0, 148, 148, 0.774);
-}  
-.cua_father{
-    display: grid;
-    grid-template-columns: 30% 30% 30%;
-    gap: 10px;
-} 
-.cuadraditos{
-    padding: 1em;
-    margin-top: 5px;
-    max-width: 80%;        
-}
 .pagok{     
     text-align: center;
     background-color: #79FF00;
@@ -532,21 +483,8 @@ export default {
     color: rgb(0, 0, 0);
     border-radius: 60px; 
 }
-
-.pagos h3, p{
-    margin-left: 30px;
-}
-.exp_cat{
-    padding-top: 1em;
-}
-.right{
-    width: 48%;
-}
 .goo{
     color: #79FF00;
-}
-.maso{
-    color:#fbff00;
 }
 .bad{
     color: #FF00D5;
@@ -556,140 +494,5 @@ export default {
 }
 .pas{
     color:#FF8600;
-}
-
-@media screen and (min-width: 480px) {
-
-.main{    
-    font-family: arial;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    overflow-y: scroll;
-    overflow: auto;
-    max-height: 85vh; 
-}
-.selector select{
-    color:white;
-    background-color: black;
-}
-.barras{    
-    min-width: 95%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-}
-.chart1{ 
-    max-width: 30%;       
-    font-size: 1em;
-    display: flex;
-    flex-direction: column;
-    justify-items: center;
-    border:1px solid rgb(0, 107, 107);
-    border-radius: 10px;    
-    width: 45%;
-    padding: 1em;    
-}
-.gastorta{
-    margin-top: 0;
-    min-width: 55%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border:1px solid rgb(0, 107, 107);
-    border-radius: 10px;
-    width: 45%;
-    padding: 2e m;
-}
-.otrico{    
-    font-size: 1em;
-    margin-left: 2%;
-    padding-top:2em;
-    width: 95%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-.left{
-    padding: 1em;
-    min-width: 45%;
-    border:1px solid rgb(0, 107, 107);
-    border-radius: 10px;           
-}
-.left_title{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-.left_title select{
-    color:white;
-    background-color: #000000;
-    max-height: 30px;
-}
-.exp_cat{
-    overflow-y: scroll;
-    overflow: auto;
-    max-height: 40vh;            
-}
-.nombres{    
-    padding-top:1em;
-    color: white;
-}
-.right{
-    padding: 1em;
-    margin-top: 0;
-    margin-left: 5%;
-    min-width: 45%;
-    border:1px solid rgb(0, 107, 107);
-    border-radius: 10px;    
-}
-.cuadraditos{
-    width: 100%;    
-    overflow-y: scroll;
-    overflow: auto;
-    max-height: 40vh;        
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-.progres{
-    font-family: arial;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-.bar{
-    width: 80%;
-}
-.divider{
-    width: 90%;
-    border-block-color: rgba(255, 255, 255, 0.411);
-}
-.pagos{
-    display: flex;
-    flex-direction: column;   
-    width:50%;
-    font-size: 1em;
-    color: rgb(0, 0, 0);
-    border-radius: 60px; 
-}
-.pagos h3, p{
-    margin-left: 30px;
-}
-.goo{
-    color: #79FF00;
-}
-.maso{
-    color:#fbff00;
-}
-.bad{
-    color: #FF00D5;
-}
-.act{
-    color: #00E8FF; 
-}
-.pas{
-    color:#FF8600;
-}
 }
 </style>

@@ -1,95 +1,132 @@
 <template>
-    <div id = "Registros" class="compo_transaction">
-        <div class = "container_transaction">            
-            <h2 class ="usuario">Registrar Transaccion</h2><br>
-            <p>Selecciona:</p>
-            
-            <select v-model ="type">    
-                <option value= "incomes"> Ingreso </option>
-                <option value= "expenses"> Egreso </option>
-                <option value= "liabilities"> Activo </option>
-                <option value= "passives"> Pasivo </option>
-            </select>
-            <p>Selecciona la Categoria </p>            
-            <select v-model="category" v-if="type === 'incomes'">
-                <option  v-for="cat in cats.incomes" :key="cat.type" >
-                    {{cat.category}} 
-                </option>
-            </select> 
-            <select v-model="category" v-if="type === 'expenses'">
-                <option  v-for="cat in cats.expenses" :key="cat.category" >
-                    {{cat.category}}
-                </option>
-            </select>
-            <select v-model="category" v-if="type === 'liabilities'">
-                <option  v-for="cat in cats.liabilities" :key="cat.type" >
-                    {{cat.category}} 
-                </option>            
-            </select>   
-            <select v-model="category" v-if="type === 'passives'">
-                <option  v-for="cat in cats.passives" :key="cat.type" >
-                    {{cat.category}} 
-                </option>
-            </select>             
-            <p>Descripcion</p>
-            <input type= "text" v-model ="descripcion"><br>
+    <b-container>
+        <b-row>
+            <b-col cols="10"  sm="4" class = "mx-auto" style="border-radius: 10px;  
+                                            padding: 3%;
+                                            border:1px solid rgb(0, 107, 107); 
+                                            box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);"> 
+                <b-row>
+                   <h2 class ="act">Registrar Transaccion</h2><br>
+                    <p>Selecciona tipo de Transaccion</p>
+                </b-row>               
+                <b-row>
+                    <b-col cols="10">
+                        <b-form-select v-model ="type" style="background-color:black; color: white;">    
+                            <option value= "incomes"> Ingreso </option>
+                            <option value= "expenses"> Egreso </option>
+                        </b-form-select>
+                    </b-col>
+                    <b-col cols="10">
+                        <p> Selecciona la Categoria </p>     
+                        <b-form-select v-model="category" v-if="type === 'incomes'" style="background-color:black; color: white;">
+                            <option  v-for="cat in cats.incomes" :key="cat.type" >
+                                {{cat.category}} 
+                            </option>
+                        </b-form-select>        
+                    </b-col>
+                    <b-col cols="10">
+                        <b-form-select v-model="category" v-if="type === 'expenses'" style="background-color:black; color: white;">
+                            <option  v-for="cat in cats.expenses" :key="cat.category" >
+                                {{cat.category}}
+                            </option>
+                        </b-form-select>
+                    </b-col>
+                    <b-col cols="10">
+                        <b-form-select v-model="category" v-if="type === 'liabilities'" style="background-color:black; color: white;">
+                            <option  v-for="cat in cats.liabilities" :key="cat.type" >
+                                {{cat.category}} 
+                            </option>            
+                        </b-form-select>   
+                    </b-col>
+                    <b-col cols="10">
+                        <b-form-select v-model="category" v-if="type === 'passives'" style="background-color:black; color: white;">
+                            <option  v-for="cat in cats.passives" :key="cat.type" >
+                                {{cat.category}} 
+                            </option>
+                        </b-form-select> 
+                    </b-col>
+                    <b-col cols="7">
+                        <p>Descripcion</p>
+                        <b-form-input placeholder="Descripcion" size="sm" type= "text" v-model ="descripcion" style="background-color:black; color: white;"> </b-form-input>
+                    </b-col>            
+                    <b-col cols="7">
+                        <p>Ingresa el valor</p>
+                        <b-form-input placeholder="0.00" type="number" v-model ="value" style="background-color:black; color: white;"> </b-form-input><br>            
+                    </b-col>
+                    <b-col cols="8">
+                        <b-button v-on:click="save_reg" variant="dark"> Guardar Registro </b-button>            
+                    </b-col>
+                </b-row>
+                    
+            </b-col>
+            <b-col cols="10" sm="7" class = "tarjeta" style="border-radius: 10px;  
+                                            padding: 3%;
+                                            border:1px solid rgb(0, 107, 107); 
+                                            box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">
+                <h2 class="act">Consultar Registros</h2>
+                <b-row class="botones" align-h="between">
+                    <b-col cols="5">
+                        <b-form-select v-model="month" style="background-color:black; color: white;">
+                            <option v-for="mes in meses" :key="mes"> 
+                                {{mes}} 
+                            </option>
+                        </b-form-select >
+                    </b-col>
+                    <b-col cols="6">
+                        <select v-model="year" style="background-color:black; color: white;">
+                            <option value="2021"> 2021 </option>
+                            <option value="2022"> 2022 </option>
+                        </select>
+                    </b-col>
+                    <b-col cols="6" >
+                        <b-button v-on:click="get_regs" variant="dark"> Consultar </b-button>                    
+                    </b-col>
+                    <b-col cols="5" >
+                        <b-button id="del" v-if="selected.length" v-on:click="reg_del" variant="dark"> Eliminar  </b-button>
+                    </b-col>               
+                </b-row>
+                <b-row  v-if="registers.length > 0">
+                    <h2>Mis Registros</h2>  
+                    <div class="tabla">
+                        <table>
+                            <thead>
+                                <tr class = "columns">                    
+                                    <label >
+                                        <input type="checkbox" v-model="selectedAll" v-on:click="select">
+                                    </label>
+                                    <th> Categoria </th>
+                                    <th> Descripción </th>
+                                    <th> Valor </th>
+                                    <th> Fecha </th>
+                                </tr >
+                            </thead>
+                            <tbody>
+                                <tr v-for="reg in registers" :key="reg.id"
+                                    v-bind:class="{ goo: reg.type == 'incomes',
+                                                    bad: reg.type == 'expenses',
+                                                    pas: reg.type == 'passives',
+                                                    act: reg.type == 'liabilities'
 
-             <p>Ingresa el valor</p>
-            <input type= "number" placeholder="0.00" v-model ="value"><br>            
-            <button v-on:click="save_reg"> Guardar Registro </button>            
-        </div>
-        <div class = "tarjeta">
-            <div class="botones">
-                <select v-model="month">
-                    <option v-for="mes in meses" 
-                            :key="mes"> {{mes}} 
-                    </option>
-                </select>
-                <select v-model="year">
-                    <option value="2021"> 2021 </option>
-                    <option value="2022"> 2022 </option>
-                </select>
-                <button v-on:click="get_regs"> Ver movimientos </button>
-                <button id="del" v-if="selected.length" v-on:click="reg_del"> Eliminar Seleccion </button>                        
-            </div>
-            <h1>Mis Registros</h1>  
-            <div class="tabla">
-                <table border="1px" v-if="registers.length > 0">
-                    <thead>
-                        <tr class = "columns">                    
-                            <label >
-                                <input type="checkbox" v-model="selectedAll" v-on:click="select">
-                            </label>
-                            <th> Categoria </th>
-                            <th> Descripción </th>
-                            <th> Valor </th>
-                            <th> Fecha </th>
-                        </tr >
-                    </thead>
-                    <tbody>
-                        <tr v-for="reg in registers" :key="reg.id"
-                            v-bind:class="{ goo: reg.type == 'incomes',
-                                            bad: reg.type == 'expenses',
-                                            pas: reg.type == 'passives',
-                                            act: reg.type == 'liabilities'
-
-                            }">     
-                            <td>
-                            <label> <input type="checkbox" :value="reg.id" v-model="selected"> </label>
-                            </td>               
-                            <td class= "titls2">{{reg.category}}</td>                                      
-                            <td class= "titls5">{{reg.description}} </td>                        
-                            <td class= "titls3" >${{Number(reg.value).toLocaleString()}}</td>
-                            <td class= "titls4">{{reg.date}}</td>                           
-                        </tr>
-                    </tbody>
-                </table>
-            </div>                                             
-        </div>
-    </div> 
+                                    }">     
+                                    <td>
+                                    <label> <input type="checkbox" :value="reg.id" v-model="selected"> </label>
+                                    </td>               
+                                    <td class= "titls2">{{reg.category}}</td>                                      
+                                    <td class= "titls5">{{reg.description}} </td>                        
+                                    <td class= "titls3" >${{Number(reg.value).toLocaleString()}}</td>
+                                    <td class= "titls4">{{reg.date}}</td>                           
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </b-row>                                          
+            </b-col>
+        </b-row>
+    </b-container> 
 </template>
 <script>
 import axios from "axios";
+
 
 export default {
     name: "Registros", 
@@ -184,71 +221,10 @@ export default {
 
 </script>
 <style>
-
-
 #del:hover{
     color: rgb(255, 8, 8);
     box-shadow: 10px 5px 20px 5px rgb(255, 2, 2);
 }
-.compo_transaction{
-    width: 100%;
-    font-family: arial;    
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items:center;   
-    color: rgb(255, 255, 255);
-    overflow-y: scroll;
-    overflow: auto;
-    max-height: 85vh;           
-}
-.container_transaction{    
-    width: 50%;
-    padding: 6%;
-    border: .5px;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);    
-}
-.container_transaction select, input{    
-    color:white;
-    background-color: #000000;
-}
-.container_transaction button{
-    font-family: Arial;
-    color: #fff;
-    background: #000000;
-    border: 1px solid #E5E7E9;
-    border-radius: 5px;
-    padding: 10px 20px;
-}
-.container_transaction button:hover{
-    color: rgb(1, 41, 41);
-    box-shadow: 10px 5px 20px 5px rgb(1, 41, 4);
-}
-.tarjeta{
-    width: 90%;  
-    font-size: 0.75em;        
-    border:1px solid rgb(0, 107, 107);
-    border-radius: 10px; 
-    padding: 2px;    
-    margin-top: 50px;
-    box-shadow: 0 5px 20px rgba(0, 148, 148, 0.774);
-    padding-bottom: 30px;  
-}
-.tarjeta table{
-    padding: 2px;    
-    text-align: center;
-    border: 0.5px rgba(1, 41, 41, 0.856); 
-    width: 100%;     
-    padding-bottom: 30px;   
-    padding-top: 10px;
-}
-.tarjeta select{
-    color:white;
-    background-color: #000000;
-}
 .columns {
     color: rgb(255, 255, 255);
     padding: 5px;
@@ -273,22 +249,6 @@ export default {
     font-weight: 100;
     padding: 4px ;
 }
-.tarjeta button{
-    font-family: Arial;
-    color: #fff;
-    background: #000000;
-    border: 1px solid #E5E7E9;
-    border-radius: 5px;
-    padding: 10px 20px;        
-}
-.tarjeta button:hover{
-    color: rgb(1, 41, 41);
-    box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);
-}
-.botones{
-    display: flex;
-    flex-direction: row;    
-}
 .goo{
     color: #79FF00;
 }
@@ -300,131 +260,5 @@ export default {
 }
 .pas{
     color:#FF8600;
-}
-
-@media screen and (min-width: 500px) {
-
-#Registros{
-    padding: 15px;
-}
-#del:hover{
-    color: rgb(255, 8, 8);
-    box-shadow: 10px 5px 20px 5px rgb(134, 0, 0);
-}
-.compo_transaction{
-    font-family: arial;    
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: top;   
-    color: rgb(255, 255, 255);    
-}
-.container_transaction{
-    min-width: 150px;
-    max-width: 15%;
-    padding: 6%;
-    border: .5px;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 10px 25px rgba(1, 41, 41, 0.774);
-}
-.container_transaction select, input{
-    background-color: #000000;
-    color: #E5E7E9;
-}
-
-.container_transaction button{
-    font-family: Arial;
-    color: #fff;
-    background: #000000;
-    border: 1px solid #E5E7E9;
-    border-radius: 5px;        
-    border: 1px solid rgba(1, 98, 98);
-    padding: 10px 20px;
-}
-.container_transaction button:hover{
-    color: rgb(3, 161, 161);
-    box-shadow: 10px 5px 20px 5px rgb(1, 41, 4);
-}
-.tarjeta{    
-    font-size: 1em; 
-    width: 50%;
-    max-width: 40%;    
-    font-size: 1em;
-}
-.tarjeta table{
-    font-size: 1em;
-    padding: 2px;    
-    text-align: center;
-    border: 0.5px rgba(1, 41, 41, 0.856);    
-    width: 100%;       
-    padding-bottom: 30px;        
-}
-.tabla{
-    overflow-y: scroll;
-    overflow: auto;
-    max-height: 65vh;
-}
-.columns {
-    color: rgb(255, 255, 255);
-    padding: 5px;
-    font-weight: Bold;
-}
-.titls1{
-    font-weight: 100;
-    text-align: left;
-    padding: 4px ;
-}
-.titls2{
-    font-weight: 100;
-    text-align: left;
-    padding: 4px ;
-}
-.titls3{
-    font-weight: 100;
-    text-align: right;
-    padding: 4px ;
-}
-.titls4{
-    font-weight: 100;
-    padding: 4px ;
-}
-.tarjeta button{
-    font-family: Arial;
-    color: #fff;
-    background: #000000;
-    border: 1px solid #E5E7E9;
-    border-radius: 5px;    
-    border: 1px solid rgba(1, 98, 98);
-    padding: 10px 20px;        
-}
-.tarjeta button:hover{
-    color: rgb(3, 161, 161);
-    box-shadow: 10px 5px 20px 5px rgb(1, 98, 98);
-}
-.botones{    
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-}
-.botones select{
-    background-color: #000000;
-    color: #E5E7E9;
-    border: 1px solid rgba(1, 98, 98);
-}
-.goo{
-    color: #79FF00;
-}
-.bad{
-    color: #FF00D5;
-}
-.act{
-    color: #00E8FF; 
-}
-.pas{
-    color:#FF8600;
-}
-
 }
 </style>
