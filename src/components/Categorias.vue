@@ -9,6 +9,7 @@
                     <select id="" v-model="action">
                         <option value="" selected disabled> Selecciona </option>
                         <option value="crear"> Crear Categoria </option>
+                        <option value="modificar"> modificar Categoria</option>
                         <option value="eliminar"> Eliminar Categoria </option>
                     </select>
                     <div v-if="action ==='crear'">
@@ -44,6 +45,11 @@
                             <button v-on:click="cat_create"> Crear Categoria</button>
                         </div>                    
                     </div>               
+                    <div v-if="action === 'modificar'">
+                        <div class="mod_class">
+                            <p>Elige la categoria que quieres modificar</p>
+                        </div>
+                    </div>
                     <div v-if="action ==='eliminar'">
                         <div class="del_cat">
                             <p> Elige la categoria que deseas eliminar </p>
@@ -245,19 +251,16 @@ export default {
         },
         delete_cat : function () {
             var data = {
-                category : this.category,
-                type : this.type,
-                username : this.username
+                category    : this.category,
+                type        : this.type,
+                username    : this.$route.params.username
             }
+            console.log(typeof(data.username), " ",typeof(data.category), " ",typeof(data.type))
             let self = this
             axios
             .delete("https://mybudgetback.herokuapp.com/user/delete/category/", data)
-            .then((response) => {
-                alert(response.data.message); 
+            .then((response) => { 
                 window.location.reload();
-            })
-            .catch((error) =>{
-                alert(error.data.message)
             })
         }
     }
