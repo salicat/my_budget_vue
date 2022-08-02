@@ -9,7 +9,7 @@
                     <select id="" v-model="action">
                         <option value="" selected disabled> Selecciona </option>
                         <option value="crear"> Crear Categoria </option>
-                        <option value="modificar"> modificar Categoria</option>
+                        <option value="modificar"> Modificar Categoria</option>
                         <option value="eliminar"> Eliminar Categoria </option>
                     </select>
                     <div v-if="action ==='crear'">
@@ -44,10 +44,64 @@
                             </div>
                             <button v-on:click="cat_create"> Crear Categoria</button>
                         </div>                    
-                    </div>               
+                    </div>       
                     <div v-if="action === 'modificar'">
                         <div class="mod_class">
                             <p>Elige la categoria que quieres modificar</p>
+                            <select v-model ="type">    
+                                <option value= "incomes"> Ingreso </option>
+                                <option value= "expenses"> Egreso </option>
+                                <option value= "liabilities"> Activo </option>
+                                <option value= "passives"> Pasivo </option>
+                            </select><br>
+                            <select v-model="category" v-if="type === 'incomes'">
+                                <option value="income" v-for="cat in cats.incomes" :key="cat.type" >
+                                    {{cat.category}} 
+                                </option>
+                            </select><br> 
+                            <select v-model="category" v-if="type === 'expenses'">
+                                <option value="expense"  v-for="cat in cats.expenses" :key="cat.type" >
+                                    {{cat.category}} 
+                                </option>
+                            </select><br>
+                            <select v-model="category" v-if="type === 'liabilities'">
+                                <option value="liability" v-for="cat in cats.liabilities" :key="cat.type" >
+                                    {{cat.category}} 
+                                </option>            
+                            </select><br>   
+                            <select v-model="category" v-if="type === 'passives'">
+                                <option value="passive" v-for="cat in cats.passives" :key="cat.type" >
+                                    {{cat.category}} 
+                                </option>
+                            </select><br>
+                        </div>
+                        <div v-if="category === 'income'">
+                            <div>
+                                <p>Ingresa el nuevo valor de tu categoria</p>
+                                <input type="number" v-model="budget" cols="12" rows="1"> 
+                            </div>
+                            <button v-on:click="modify_cat"> Guardar </button>
+                        </div>
+                        <div v-if="category === 'expense'">
+                            <div>
+                                <p>Ingresa el nuevo valor de tu categoria</p>
+                                <input type="number" v-model="budget" cols="12" rows="1"> 
+                            </div>
+                            <button v-on:click="modify_cat"> Guardar </button>
+                        </div>
+                        <div v-if="category === 'liability'">
+                            <div>
+                                <p>Ingresa el nuevo valor de tu categoria</p>
+                                <input type="number" v-model="value" cols="12" rows="1">
+                            </div>
+                            <button v-on:click="modify_cat"> Guardar </button>
+                        </div>
+                        <div v-if="category === 'passive'">
+                            <div>
+                                <p>Ingresa el nuevo valor de tu categoria</p>
+                                <input type="number" v-model="value" cols="12" rows="1">
+                            </div>
+                            <button v-on:click="modify_cat"> Guardar </button>
                         </div>
                     </div>
                     <div v-if="action ==='eliminar'">
@@ -173,8 +227,8 @@
                 <div>
                     <h1 class="act">Alertas:</h1>
                     <h2 v-if="t_pass < t_lia && t_bud < t_in" class="act"> Tus finanzas lucen saludables</h2>
-                    <h2 v-if="t_pass > t_lia" class="bad"> Tus Pasivos son mayores que tus activos</h2>
-                    <h2 v-if="t_bud > t_in " class="bad"> Tus egresos exceden tus ingresos </h2>
+                    <h2 v-if="t_pass > t_lia" class="bad"> Tus Pasivos son mayores que tus activos en ${{Number(t_pass-t_lia).toLocaleString()}}</h2>
+                    <h2 v-if="t_bud > t_in " class="bad"> Tus egresos exceden tus ingresos en ${{Number(t_bud - t_in).toLocaleString()}}</h2>
                 </div>
             </b-col>
         </b-row>
@@ -241,12 +295,27 @@ export default {
             axios
             .post("https://mybudgetback.herokuapp.com/user/create/category/", data)
             .then((response) => {
-                alert(response.data.message) 
-                window.location.reload();                               
+                window.location.reload()
             })
             .catch((error) =>{
-                alert(error.response.data)
-                console.log(error.response.data)                                                             
+                alert(error.response.data)                                                         
+            })
+        },
+        modify_cat : function () {
+            var data = {
+                category    : this.category,
+                username    : this.$route.params.username,
+                budget      : this.budget,
+                value       : this.value
+            }
+            axios
+            .patch("https://mybudgetback.herokuapp.com/user/modify/category/", data)
+            .then((response) => {
+                window.location.reload()
+
+            })
+            .catch((error) =>{
+                alert(error.response.data)                                                         
             })
         },
         delete_cat : function () {
@@ -255,12 +324,15 @@ export default {
                 type        : this.type,
                 username    : this.$route.params.username
             }
-            console.log(typeof(data.username), " ",typeof(data.category), " ",typeof(data.type))
+            console.log(data.category + data.type + data.username)
             let self = this
             axios
-            .delete("https://mybudgetback.herokuapp.com/user/delete/category/", data)
+            .delete("https://mybudgetback.herokuapp.com/user/delete/category/", {data})
             .then((response) => { 
                 window.location.reload();
+            })
+            .catch((error) =>{
+            alert(error.response.data)                                                         
             })
         }
     }

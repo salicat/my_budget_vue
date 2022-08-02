@@ -9,7 +9,7 @@
                     <b-form-select v-model="month" style="background-color:black; color: white;">                        
                         <option selected> {{month}} </option>
                         <option v-for="mes in meses" 
-                                :key="mes" > {{mes}} </option>
+                                :key="mes" > {{mes}} </option>  
                     </b-form-select>   
                 </b-col>
                 <b-col cols=8>
@@ -71,31 +71,44 @@
             </b-col>
         </b-row>      
         <b-row>
-            <b-col cols="10" class="mx-auto" sm="4" style="border-radius: 10px;
+            <b-col cols="10" class="mx-auto" sm="5" style="border-radius: 10px;
                                             padding: 3%;  
                                             margin-top: 3%;
                                             border:1px solid rgb(0, 107, 107); 
                                             box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">
-                <div>
-                        <h1> Pagos pendientes {{month}} {{anio}}</h1>                                  
-                    </div>
-                        <div class="cua_father" v-if="recurrents.length > 0">  
-                        <div class="cuadraditos" v-for="item in recurrents" :key="item.name"
-                                        v-bind:class="{pagok: item.value > 1,
-                                        pagofail: item.value <= 0}">
-                            <h3>{{item.category}} : ${{Number(item.budget).toLocaleString()}}</h3>
-                            <h3>{{item.expires}}</h3>                                
-                        </div> 
-                    </div>
-                    <div v-if="!recurrents.length > 0">
-                        <h1> NO TIENES PAGOS RECURRENTES </h1>
-                    </div>
+                    <b-col cols="12">
+                        <div>
+                            <h1> Pagos pendientes {{month}} {{anio}}</h1>                                  
+                        </div>
+                        <b-row v-if="recurrents.length > 0">  
+                            <b-col cols="5" lg="5"  style=" padding:3%;
+                                                            margin: 3%;
+                                                            font-size: 0.8em;"
+                                                    v-for="item in recurrents" :key="item.name"
+                                                    v-bind:class="{pagok: item.value > 1,
+                                                        pagofail: item.value <= 0}">
+                                <p style="font-weight:bold;">
+                                    {{item.category}} : ${{Number(item.budget).toLocaleString()}}
+                                </p>
+                                <p style="font-size:0.8em;">
+                                    {{item.expires}}
+                                </p>                                
+                            </b-col> 
+                        </b-row>
+                        <b-col cols="6" sm="5" v-if="!recurrents.length > 0">
+                            <h1> NO TIENES PAGOS RECURRENTES </h1>
+                        </b-col>
+
+                    </b-col>
             </b-col>
-            <b-col cols="10" class="mx-auto" sm="7" style="border-radius: 10px;  
+            <b-col cols="10" class="mx-auto" sm="6" style="border-radius: 10px;  
                                             margin-top: 3%;
                                             padding: 3%;
                                             border:1px solid rgb(0, 107, 107); 
-                                            box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">
+                                            box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);
+                                            max-height:100vh;
+                                            overflow-y:scroll; 
+                                            overflow:auto;">
                 <div class="left">
                     <div class="left_title">
                         <h1> Gastos por Categoria </h1>
@@ -145,8 +158,9 @@
             </b-col>         
         </b-row>
         <b-row>
-            <b-col cols="11" class="mx-auto" sm="11" style="border-radius: 10px;
+            <b-col cols="10" class="mx-auto" sm="12" style="border-radius: 10px;
                                             margin-top: 3%;
+                                            margin-bottom: 5%;
                                             padding: 3%;  
                                             border:1px solid rgb(0, 107, 107); 
                                             box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">
@@ -466,15 +480,13 @@ export default {
 .pagok{     
     text-align: center;
     background-color: #79FF00;
-    font-size: 0.8em;
     color: rgb(0, 0, 0);
     border-radius: 60px; 
 }
 .pagofail{
     text-align: center;
     background-color: #FF00D5;
-    font-size: 0.8em;
-    color: rgb(0, 0, 0);
+    color: white;
     border-radius: 60px; 
 }
 .goo{
