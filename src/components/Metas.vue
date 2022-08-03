@@ -1,7 +1,7 @@
 <template>
-    <div class = "Goals">
-        <div class = "las_metas">
-            <div class="modif">
+    <b-container fluid>
+        <b-row>
+            <b-col cols="10" md="3" class="mx-auto" style="margin-top:3%">
                 <h1>Metas</h1> 
                 <select id="" v-model="elige"> 
                     <option value="1"> Crear Metas </option>                
@@ -16,8 +16,10 @@
                         <input type="number" step="0.01" placeholder="$" v-model="final_value">
                         <p>Cuando vas a cumplirla?</p>
                         <input type="date" id="start" name="trip-start" value="2018-07-22"
-                            min="2021-03-12" max="2040-12-31" v-model="final_date"> <br>
-                        <button v-on:click="create_goal" >Crear Meta</button>
+                            min="2021-03-12" max="2040-12-31" v-model="final_date"> 
+                        <br>
+                        <br>
+                        <b-button variant="secondary" v-on:click="create_goal" >Crear Meta</b-button>
                     </form>
                 </div>
                 <div class = "actualizar_meta" v-if="elige === '2'">
@@ -26,10 +28,10 @@
                         <option v-for="meta in tus_metas" :key="meta.nombre">
                             {{meta.nombre}}
                         </option>
-                    </select>   <br> <br>
+                    </select>   <br> <br> 
                     <p1>Valor</p1>  <br>                     
                     <input type="number" placeholder="$" v-model="value"> <br> <br>
-                    <button v-on:click="update_goal"> Actualizar </button>                    
+                    <b-button variant="secondary" v-on:click="update_goal"> Actualizar </b-button>                    
                 </div>
                 <div class="borrar_meta" v-if="elige === '3'" >
                     <p>Escoge la meta que vas a borrar</p>
@@ -38,35 +40,42 @@
                             {{meta.nombre}}
                         </option>
                     </select>   <br> <br>
-                    <button v-on:click="delete_goal"> Eliminar </button>
+                    <b-button variant="secondary" v-on:click="delete_goal"> Eliminar </b-button>
                 </div>
-            </div>
-            <div class="los_reportes">            
-                <div class = "informes">
-                    <h1>Mis metas</h1>
-                    <table  >
-                        <tr class = "columnas">
-                            <th> Meta </th>
-                            <th> % </th>
-                            <th> Valor Final </th>
-                            <th> Valor Actual </th>                    
-                            <th> Dias Restantes </th>
-                        </tr>
-                        <tr v-for="goal in tus_metas" :key="goal.nombre">
-                            <td class="titulos">{{goal.nombre}}</td>
-                            <td>{{goal.porc}}%</td>
-                            <td>${{goal.meta}}</td>
-                            <td>${{goal.actual}}</td>
-                            <td>{{goal.dias}}</td>
-                        </tr>
-                    </table>                
-                </div>            
-            </div>     
-        </div>
-        <div>
-            <h1>los reportes</h1>
-        </div>
-    </div>                               
+            </b-col>
+            <b-col cols="11" md="9" class="mx-auto" style="margin-top:3% ">
+                <div class="los_reportes">            
+                    <div class = "informes">
+                        <h1>Mis metas</h1>
+                        <table  >
+                            <tr class = "columnas">
+                                <th> Meta </th>
+                                <th> % </th>
+                                <th> Valor Final </th>
+                                <th> Valor Actual </th>                    
+                                <th> Dias Restantes </th>
+                            </tr>
+                            <tr v-for="goal in tus_metas" :key="goal.nombre">
+                                <td class="titulos">{{goal.nombre}}</td>
+                                <td>{{goal.porc}}%</td>
+                                <td>${{goal.meta}}</td>
+                                <td>${{goal.actual}}</td>
+                                <td>{{goal.dias}}</td>
+                            </tr>
+                        </table>                
+                    </div>            
+                </div>   
+            </b-col>
+        </b-row>
+        <b-row>
+            <b-col cols="12" mx-class="auto" style="border-radius: 10px;  
+                                            margin-top: 5%;
+                                            margin-bottom: 5%;
+                                            padding: 3%;
+                                            border:1px solid rgb(0, 107, 107); ">
+            </b-col>
+        </b-row>
+    </b-container>                            
 </template>
 
 <script>
@@ -146,121 +155,44 @@ export default {
 
 <style>
 .Goals{
-    font-family: arial;    
-    display: flex;
-    flex-direction: column;
     background: rgb(0, 0, 0);
     color: rgb(255, 255, 255);
-    overflow-y: scroll;
-    overflow: auto;
-    max-height: auto;  
-}
-.las_metas{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    padding: 3%;
-    margin: 3%;
-}
-.modif{
-    width: 30%;
-    padding-left: 3%;
-    border-radius: 10px;
-    box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);  
-}
-.crear_metas{
-    border: .5px;   
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: initial;
-    background: rgba(0, 0, 0 );
-    box-shadow: 0 10px 25px rgba(1, 41, 41, 0.431);
-}
-.crear_metas button{
-    font-family: Arial;
-    color: #fff;
-    background: #000000;
-    border: 1px solid #E5E7E9;
-    border-radius: 5px;
-    margin: 10px;
-    padding: 10px 20px;
-}
-.crear_metas button:hover{
-    color: rgb(0, 249, 249);
-    box-shadow: 10px 5px 20px 5px rgb(1, 41, 41);
 }
 .crear_metas input, select{
     color:#E5E7E9;
     background-color:#000000;
 }
 .los_reportes{
-    width: 60%;
     border-radius: 10px;
-    box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);  
+    border:1px solid rgb(0, 107, 107);  
 }
 .informes{
     padding-left: 6%;
     padding-bottom: 4%;
-    border: .5px;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    background: rgba(0, 0, 0 );
     box-shadow: 0 10px 25px rgba(1, 41, 41, 0.431);
 }
 .informes table {
     padding: 2px;
     text-align: center;
-    border: 0.5px rgba(1, 41, 41, 0.856)
 }
 .columnas {
     color: rgb(0, 107, 107);
     padding: 5px;
+    font-size: 90%;
 }
 .titulos{
     color: rgb(0, 107, 107);
     font-weight: 100;
     text-align: left;
     padding: 4px ;
-}
-.actualizar_meta{
-    font-family: Arial;
-    text-align: inherit;
-    color: #fff;
-    background: #000000;
-    margin: 10px;
-    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 0.9em;
 }
 .actualizar_meta input{
     color:#E5E7E9;
     background-color:#000000;
-}
-.actualizar_meta button{
-    font-family: Arial;
-    color: #fff;
-    background: #000000;
-    border: 1px solid #E5E7E9;
-    border-radius: 5px;
-    padding: 10px 20px;
-}
-.actualizar_meta button:hover{
-    color: rgb(249, 240, 2);
-    box-shadow: 10px 5px 20px 5px rgb(72, 72, 0);
-}
-.borrar_meta{
-    padding: 10px 20px;
-}
-.borrar_meta button{
-    font-family: Arial;
-    color: #fff;
-    background: #000000;
-    border: 1px solid #E5E7E9;
-    border-radius: 5px;
-    padding: 10px 20px;
-}
-.borrar_meta button:hover{
-    color: rgb(255, 8, 8);
-    box-shadow: 10px 5px 20px 5px rgb(87, 1, 1);
 }
 </style>

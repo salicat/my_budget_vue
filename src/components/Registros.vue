@@ -89,18 +89,18 @@
                     </b-col>               
                 </b-row>
                 <b-row  v-if="registers.length > 0">
-                    <h2>Mis Registros</h2>  
-                    <div class="tabla">
-                        <table>
+                    <h2 class="act">Mis Registros</h2>  
+                    <div>
+                        <table style="font-size:01.8vw">
                             <thead>
-                                <tr class = "columns">                    
-                                    <label >
+                                <tr>                    
+                                    <label>
                                         <input type="checkbox" v-model="selectedAll" v-on:click="select">
                                     </label>
-                                    <th> Categoria </th>
-                                    <th> Descripción </th>
-                                    <th> Valor </th>
-                                    <th> Fecha </th>
+                                    <th class="act"> Categoria </th>
+                                    <th class="act"> Descripción </th>
+                                    <th class="act"> Valor </th>
+                                    <th class="act"> Fecha </th>
                                 </tr >
                             </thead>
                             <tbody>
@@ -112,12 +112,12 @@
 
                                     }">     
                                     <td>
-                                    <label> <input type="checkbox" :value="reg.id" v-model="selected"> </label>
+                                        <label> <input type="checkbox" :value="reg.id" v-model="selected"> </label>
                                     </td>               
-                                    <td class= "titls2">{{reg.category}}</td>                                      
-                                    <td class= "titls5">{{reg.description}} </td>                        
-                                    <td class= "titls3" >${{Number(reg.value).toLocaleString()}}</td>
-                                    <td class= "titls4">{{reg.date}}</td>                           
+                                    <td> {{reg.category}}</td>                                      
+                                    <td>{{reg.description}} </td>                        
+                                    <td>${{Number(reg.value).toLocaleString()}}</td>
+                                    <td>{{reg.date}}</td>                           
                                 </tr>
                             </tbody>
                         </table>
@@ -231,31 +231,6 @@ export default {
 
 </script>
 <style>
-
-.columns {
-    color: rgb(255, 255, 255);
-    padding: 5px;
-    font-weight: Bold;
-}
-.titls1{
-    font-weight: 100;
-    text-align: left;
-    padding: 4px ;
-}
-.titls2{
-    font-weight: 100;
-    text-align: left;
-    padding: 4px ;
-}
-.titls3{
-    font-weight: 100;
-    text-align: right;
-    padding: 4px ;
-}
-.titls4{
-    font-weight: 100;
-    padding: 4px ;
-}
 .goo{
     color: #79FF00;
 }
@@ -267,5 +242,16 @@ export default {
 }
 .pas{
     color:#FF8600;
+}
+table{
+    border-collapse:separate; 
+    border-spacing:1em;
+}
+tr{
+    padding-bottom: 1%;
+}
+td {
+  padding-left: 1%;
+  font-weight: 300;
 }
 </style>

@@ -1,7 +1,7 @@
 <template> 
     <b-container fluid> 
         <b-row align-h="between">
-            <b-col cols="11" sm="3" class="mx-auto" style="border-radius: 10px;
+            <b-col cols="10" sm="3" class="mx-auto" style="border-radius: 10px;
                                             margin-top: 3%;  
                                             padding: 3%; 
                                             border:1px solid rgb(0, 107, 107);">
@@ -137,7 +137,7 @@
                         </div>
                     </div>               
             </b-col>
-            <b-col cols="11" class="mx-auto" sm="4">
+            <b-col cols="10" class="mx-auto" sm="4">
                 <div class = "ing_egr" style="border-radius: 10px;
                                             margin-top: 3%;  
                                             padding: 3%; 
@@ -174,7 +174,7 @@
                         </table>
                     </div>                                                        
             </b-col>
-            <b-col cols="11" sm="4">
+            <b-col cols="10" class="mx-auto" sm="4">
                     <div class ="activos" style="border-radius: 10px;
                                             margin-top: 3%;  
                                             padding: 3%; 
@@ -216,11 +216,12 @@
                             </tbody>
                         </table>
                     </div> 
-            </b-col>
+            </b-col> 
         </b-row>
         <b-row>
             <b-col cols="12" mx-class="auto" style="border-radius: 10px;  
                                             margin-top: 5%;
+                                            margin-bottom: 5%;
                                             padding: 3%;
                                             border:1px solid rgb(0, 107, 107); 
                                             box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">

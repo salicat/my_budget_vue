@@ -3,8 +3,7 @@
         <b-row align-h="between">
             <b-col cols="4" sm="3" style="border-radius: 10px;
                                     padding: 1%; 
-                                    border:1px solid rgb(0, 107, 107); 
-                                    box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">
+                                    border:1px solid rgb(0, 107, 107);">
                 <b-col cols=8>
                     <b-form-select v-model="month" style="background-color:black; color: white;">                        
                         <option selected> {{month}} </option>
@@ -31,8 +30,7 @@
             <b-col cols="10" class="mx-auto" sm="7" style="border-radius: 10px;
                                             margin-top: 3%;  
                                             padding: 3%; 
-                                            border:1px solid rgb(0, 107, 107); 
-                                            box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">    
+                                            border:1px solid rgb(0, 107, 107);">    
                 <div class="gastorta" v-if="expenses > 0" >
                     <h2 class="act"> Distribucion de Gastos </h2>
                     <pie-chart
@@ -50,23 +48,24 @@
             <b-col cols="10" class="mx-auto" sm="4" style="border-radius: 10px;  
                                             margin-top: 3%;
                                             padding: 3%;
-                                            border:1px solid rgb(0, 107, 107); 
-                                            box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">
-                <div class="chart1" v-if="incomes||expenses != 0">
-                    <h2 class="act">Ingresos Vs Egresos</h2>
-                    <pie-chart                             
-                        :donut="true" 
-                        :data="[['Ingresos', incomes], ['Gastos', expenses]]"
-                        :colors="[ '#79FF00', '#FF00D5']"
-                        :library="{animation:{easing:'easeOutQuad'}, 
-                        elements: {arc: {borderWidth: 0}}}"
-                        >
-                    </pie-chart>                                  
-                    <h1 v-bind:class="{ goo: incomes > expenses,
-                        bad: expenses > incomes
-                        }"
-                        >Balance ${{Number(incomes - expenses).toLocaleString()}}
-                    </h1>                                       
+                                            border:1px solid rgb(0, 107, 107);">
+                <div class="right">
+                    <div v-if="incomes||expenses != 0" >
+                        <h2 >Ingresos Vs Egresos</h2>
+                        <pie-chart                             
+                            :donut="true" 
+                            :data="[['Ingresos', incomes], ['Gastos', expenses]]"
+                            :colors="[ '#79FF00', '#FF00D5']"
+                            :library="{animation:{easing:'easeOutQuad'}, 
+                            elements: {arc: {borderWidth: 0}}}"
+                            >
+                        </pie-chart>                                  
+                        <h1 v-bind:class="{ goo: incomes > expenses,
+                                            bad: expenses > incomes
+                            }"
+                            >Balance ${{Number(incomes - expenses).toLocaleString()}}
+                        </h1>                                       
+                    </div>    
                 </div>
             </b-col>
         </b-row>      
@@ -74,8 +73,7 @@
             <b-col cols="10" class="mx-auto" sm="5" style="border-radius: 10px;
                                             padding: 3%;  
                                             margin-top: 3%;
-                                            border:1px solid rgb(0, 107, 107); 
-                                            box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">
+                                            border:1px solid rgb(0, 107, 107); ">
                     <b-col cols="12">
                         <div>
                             <h1> Pagos pendientes {{month}} {{anio}}</h1>                                  
@@ -104,8 +102,7 @@
             <b-col cols="10" class="mx-auto" sm="6" style="border-radius: 10px;  
                                             margin-top: 3%;
                                             padding: 3%;
-                                            border:1px solid rgb(0, 107, 107); 
-                                            box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);
+                                            border:1px solid rgb(0, 107, 107);
                                             max-height:100vh;
                                             overflow-y:scroll; 
                                             overflow:auto;">
@@ -162,8 +159,7 @@
                                             margin-top: 3%;
                                             margin-bottom: 5%;
                                             padding: 3%;  
-                                            border:1px solid rgb(0, 107, 107); 
-                                            box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">
+                                            border:1px solid rgb(0, 107, 107); ">
                 <h1>Rastreo por categoria </h1>
                 <p>EN MANTENIMIENTO ;)</p>
                 <select >
@@ -465,7 +461,6 @@ export default {
     border-radius: 15px;
     background-color:#09ff00;
     background-size: 25px 25px;
-
 }
 .perce_bad{    
     color: white;
@@ -475,6 +470,7 @@ export default {
     height: 100%;
     border-radius: 15px;
     background-color:#ff0000;
+    box-shadow: 10px 10px 25px rgb(255, 0, 0);
     background-size: 25px 25px;
 }
 .pagok{     
@@ -494,6 +490,7 @@ export default {
 }
 .bad{
     color: #FF00D5;
+    font-weight: bold;
 }
 .act{
     color: #00E8FF; 
