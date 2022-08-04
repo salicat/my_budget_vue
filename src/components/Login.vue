@@ -1,27 +1,42 @@
 <template>
-  <div id = "Login" >
-    <div class="auth_user">
-      <div class="bienvenida">
-        <h1> Bienvenido a <span id="app"> My Budget!! </span> </h1> 
-      </div>
-      <div class="ingresa">
-        <p> Ingresa o crea tu usuario </p> 
-      </div>
-      <div class = "container_auth_user">
-        <p>Ingresar</p>
-        <form v-on:submit.prevent="processAuthUser">
-          <input type ="text" v-model="user_in.username" placeholder="Usuario" />
-          <br />
-          <input type ="password" v-model="user_in.password" placeholder="Contraseña" />
-          <br />
-          <button type="submit"> Iniciar Sesión </button>
-        </form>
-        <button v-on:click="to_singup"> Crea tu usuario </button>
-      </div>
-    </div>
-  </div>
+  <b-container fluid>
+    <b-row>
+        <b-col cols="10" md="10" class="mx-auto">
+          <h1 style="text-align:center;"> Bienvenido a My Budget!!</h1>
+        </b-col>
+        <b-col cols="2" md="4"></b-col>
+        <b-col cols="8" md="4" class="vh-100 text-center" align-v="center">
+            <b-col>
+              <p> Ingresa o crea tu usuario </p> 
+            </b-col>
+            <b-col cols="11" style="border-radius: 10px;
+                            height: 50vh;
+                            margin: 1%;  
+                            padding: 1%;
+                            justify-content: center; 
+                            font-size: 1.5em;
+                            border:1px solid rgb(0, 107, 107); 
+                            box-shadow: 0 5px 15px rgba(0, 148, 148, 0.774);">
+              
+              <div style="margin-top:5%;">
+                <p>Ingresar</p>
+              </div>
+              <div >
+                <input class="input" type ="text" v-model="user_in.username" placeholder="Usuario"/>
+              </div>
+              <div>
+                <input class="input" type ="password" v-model="user_in.password" placeholder="Contraseña" />
+              </div>
+                <button class="input" v-on:click="processAuthUser"> Iniciar Sesión </button>
+            </b-col>
+            <b-col cols="11" style="justify-items: center;">
+              <button class="input" v-on:click="to_singup"> Crea tu usuario </button>
+            </b-col>
+          </b-col>
+        <b-col cols="2" md="4"></b-col>
+    </b-row>
+  </b-container>
 </template>
-
 <script>
 import axios from 'axios';
 
@@ -64,122 +79,12 @@ export default {
 </script>
 
 <style>
-
-.auth_user{
-  display:flex;
-  flex-direction: column;
-  align-items: center;
-  position: fixed;
-  padding: 3%;
+body{
+  background-color: black;
 }
-.bienvenida{
-  font-family:Arial, Helvetica, sans-serif;
-  color: white;
+.input{ 
+  background-color:black; 
+  color:white;
+  margin-top:5%;
 }
-.ingresa{
-  color: white;
-}
-#app{
-  font-family: Tahoma; 
-  color:darkturquoise
-}
-.container_auth_user{
-    max-width: 190px;
-    max-height: 250px;
-    border: 1px solid #3b3b3b;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 10px;    
-    box-shadow: 10px 10px 45px 5px rgb(0, 107, 107);
-}
-.auth_user h2{
-    color: #ffffff;
-}
-.auth_user form{
-    width:60%;    
-}
-.auth_user input{
-    height: 40px;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 10px 20px;
-    margin: 5px 0;
-    border: 1px solid #383747;
-    background-color: #181818;
-    color: #a0a0a0;    
-}
-.auth_user button{
-    width: 100%;
-    height: 40px;
-    color: #818181;
-    background: #000000;
-    border-radius: 12px;
-    padding: 10 px 25px;
-    margin:5px 0;
-    border: 1px solid rgba(1, 98, 98);
-}
-
-@media screen and (min-width: 500px) {
-.auth_user{
-  display:flex;
-  flex-direction: column;
-  align-items: center;
-  position: fixed;
-  padding: 3%;
-  margin-left: 35%;
-}
-.bienvenida{
-  font-family:Arial, Helvetica, sans-serif;
-  color: white;
-}
-.ingresa{
-  color: white;
-}
-#app{
-  font-family: Tahoma; 
-  color:darkturquoise
-}
-.container_auth_user{
-    max-width: 190px;
-    max-height: 250px;
-    border: 1px solid #3b3b3b;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 10px;    
-    box-shadow: 10px 10px 45px 5px rgb(0, 107, 107);
-  }
-.auth_user h2{
-    color: #ffffff;
-}
-.auth_user form{
-    width:60%;    
-}
-.auth_user input{
-    height: 40px;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 10px 20px;
-    margin: 5px 0;
-    border: 1px solid #383747;
-    background-color: #181818;
-    color: #a0a0a0;    
-}
-.auth_user button{
-    width: 100%;
-    height: 40px;
-    color: #818181;
-    background: #000000;
-    border-radius: 12px;
-    padding: 10 px 25px;
-    margin:5px 0;
-    border: 1px solid rgba(1, 98, 98);
-}
-.auth_user button:hover{
-    color: rgb(3, 161, 161);
-    box-shadow: 10px 5px 20px 5px rgb(1, 41, 4);    
-}
-}
-
 </style>

@@ -154,27 +154,7 @@
                 </div>
             </b-col>         
         </b-row>
-        <b-row>
-            <b-col cols="10" class="mx-auto" sm="12" style="border-radius: 10px;
-                                            margin-top: 3%;
-                                            margin-bottom: 5%;
-                                            padding: 3%;  
-                                            border:1px solid rgb(0, 107, 107); ">
-                <h1>Rastreo por categoria </h1>
-                <p>EN MANTENIMIENTO ;)</p>
-                <select >
-                    <option v-for="exp in alertas" v-bind:key="exp.name">
-                    {{exp.name}}
-                    </option>
-                </select>
-                <p>{{alertas}}</p>
-                <line-chart
-                    :data="[['Ene', 690000], ['Feb', 1200000], ['Mar', 290000], ['Abril', 540000], ['Mayo', 1100000]]"
-                    
-                >
-                </line-chart>
-            </b-col>
-        </b-row>
+        
     </b-container>                      
 </template>
 
@@ -195,29 +175,29 @@ export default {
     name: 'Resumen',
     data: function (){
         return {
-            assets: 0,
-            expenses: 0,
-            balance: 0,
-            liabilities: 0,
-            passives: 0,
-            incomes: 0,
-            gen_budget : 0,
-            cats: [],
-            regs: [],
-            alertas: [],
-            recurrents: [],
-            color_pie: [],
-            curr_year : new Date().getFullYear(),
-            curr_month : new Date().getMonth(),
-            curr_day : undefined,
-            month : undefined,
-            months : [],
-            exp_pie : [],
-            anio : undefined,
-            anios : [2021, 2022],
-            meses : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 
-                    'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 
-                    'Noviembre', 'Diciembre']                        
+            assets      : 0,
+            expenses    : 0,
+            balance     : 0,
+            liabilities : 0,
+            passives    : 0,
+            incomes     : 0,
+            gen_budget  : 0,
+            cats        : [],
+            regs        : [],
+            alertas     : [],
+            recurrents  : [],
+            color_pie   : [],
+            curr_year   : new Date().getFullYear(),
+            curr_month  : new Date().getMonth(),
+            curr_day    : undefined,
+            month       : undefined,
+            months      : [],
+            exp_pie     : [],
+            anio        : undefined,
+            anios       : [2021, 2022],
+            meses       : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 
+                            'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 
+                            'Noviembre', 'Diciembre']                        
         }
     },
     created: function(){                       
@@ -262,7 +242,6 @@ export default {
                 let fecha = date.split("-");
                 return fecha[1]
             }            
-            
             for (var i = 0; i < responseOne.data.length; i++){                
                 if (mes(responseOne.data[i].date) == month_cons) {                    
                     if ( responseOne.data[i].type == "incomes") {
@@ -273,17 +252,13 @@ export default {
                 };
                 }                                                                                 
             }       
-            
             const ano = function (odate){
                 let anof = odate.split("-")
                 return "" +anof[0] +"-"+ anof[1]
             }
-
             for(var m = 0; m < responseOne.data.length; m++){
                 self.months = ano(responseOne.data[m].date)
             }
-        
-
             const responseTwo = responses[1]                  
             for (var j = 0; j < responseTwo.data.liabilities.length; j++){
                 this.liabilities = this.liabilities + responseTwo.data.liabilities[j].value;       
@@ -291,7 +266,6 @@ export default {
             for (var k = 0; k < responseTwo.data.passives.length; k++){
                 this.passives = this.passives + responseTwo.data.passives[k].value
             }        
-
             const responseThree = responses[2]
             var estemes = month_cons.toString()                
             var actualiza = function(date){
@@ -300,14 +274,12 @@ export default {
                 var actualizada = fecha[0]+"-"+fecha[1]+"-"+fecha[2];                
                 return actualizada;                                 
             }
-
             for (var l = 0; l < responseThree.data.length; l++) {                
                 if (mes(responseThree.data[l].expires) < month_cons) {
                     responseThree.data[l].expires = actualiza(responseThree.data[l].expires)                                        
                 }                
                 self.recurrents[l] = responseThree.data[l]
             }       
-           
             const responseFour = responses[3]
                 for (var b = 0; b < responseFour.data.length; b++){
                 this.gen_budget = this.gen_budget + responseFour.data[b].budget;
@@ -316,30 +288,20 @@ export default {
                         self.exp_pie[b] = [this.alertas[b].name, this.alertas[b].value]           
                     }
                 }
-            
                 for (var f = 0; f < this.exp_pie.length; f++ ) {
                     this.color_pie.push('#'+Math.floor(Math.random()*16777215).toString(16));
                 }      
-                
-            
-            
         })) 
-
         .catch((error) => {
             alert(error);
         });        
     },       
     methods : {
         reload : function () {
-            
             this.exp_pie = []
-
             const today = new Date()
-
             today.toLocaleString('default', { month: 'long' })
             var new_month = today.getMonth(); 
-
-
             var month_cons = this.meses.indexOf(this.month) + 1;
 
             var datos = {
@@ -385,29 +347,25 @@ export default {
                 var actualizada = fecha[0]+"-"+fecha[1]+"-"+fecha[2];                
                 return actualizada;                                 
             }
-
             for (var l = 0; l < responseTwo.data.length; l++) {                
                 if (mes(responseTwo.data[l].expires) < new_month) {
                     responseTwo.data[l].expires = actualiza(responseTwo.data[l].expires)
                 }                
                 self.recurrents[l] = responseTwo.data[l]
             }        
-            
             const responseFour = responses[2]
             this.gen_budget = 0;
                 for (var b = 0; b < responseFour.data.length; b++){
                     this.gen_budget = this.gen_budget + responseFour.data[b].budget;
                 }    
                 self.alertas = responseFour.data
-            
             for (var r = 0; r < this.alertas.length; r++){
                 if (this.alertas[r].value > 0) {
                         self.exp_pie[r] = [this.alertas[r].name, this.alertas[r].value]           
                     }
             }
-            
             }))                           
-        },
+        }
     }     
 }
 </script>

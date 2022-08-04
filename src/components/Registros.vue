@@ -52,7 +52,7 @@
                     </b-col>            
                     <b-col cols="7">
                         <p>Ingresa el valor</p>
-                        <b-form-input placeholder="0.00" type="number" v-model ="value" style="background-color:black; color: white;"> </b-form-input><br>            
+                        <b-form-input placeholder="0.00" v-model ="value" style="background-color:black; color: white;"> </b-form-input><br>            
                     </b-col>
                     <b-col cols="8">
                         <b-button v-on:click="save_reg" variant="dark"> Guardar Registro </b-button>            
@@ -126,11 +126,21 @@
             </b-col>
         </b-row>
         <b-row>
-            <b-col cols="12" mx-class="auto" style="border-radius: 10px;  
-                                            margin-top: 5%;
-                                            padding: 3%;
-                                            border:1px solid rgb(0, 107, 107); 
-                                            box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);"></b-col>
+            <b-col cols="10" class="mx-auto" sm="12" style="border-radius: 10px;
+                                            margin-top: 3%;
+                                            margin-bottom: 5%;
+                                            padding: 3%;  
+                                            border:1px solid rgb(0, 107, 107); ">
+                <h1>Variaciones en Gastos</h1>
+                <select v-model="track" v-on:change="onChange">
+                    <option v-for="exp in alertas" v-bind:key="exp.name">
+                    {{exp.name}}
+                    </option>
+                </select>
+                <line-chart
+                    :data="[['Ene', 690000], ['Feb', 1200000], ['Mar', 290000], ['Abril', 540000], ['Mayo', 1100000]]">
+                </line-chart>
+            </b-col>
         </b-row>
     </b-container> 
 </template>
@@ -143,21 +153,23 @@ export default {
     components: {},
     data: function (){
         return {
-            username: localStorage.getItem('current_username'),
-            category: "",
-            type: "",
-            descripcion: "",
-            value: 0,
-            cats: [],
-            registers : [],
-            selected : [], 
+            username    : localStorage.getItem('current_username'),
+            category    : "",
+            type        : "",
+            descripcion : "",
+            value       : 0,
+            cats        : [],
+            registers   : [],
+            selected    : [], 
             selectedAll : false,
-            id : undefined,
-            month: undefined,
-            year: [2021, 2022],
-            meses : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 
-                    'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 
-                    'Noviembre', 'Diciembre']            
+            id          : undefined,
+            month       : undefined,
+            track       : undefined,
+            alertas     : [],
+            year        : [2021, 2022],
+            meses       : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 
+                        'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 
+                        'Noviembre', 'Diciembre']            
         };       
     },
         created: function() {
@@ -225,7 +237,10 @@ export default {
                     window.location.reload()
             }) 
             }            
-        },       
+        },
+        onChange : function () {
+          
+        }       
     }        
 }
 
