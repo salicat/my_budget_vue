@@ -182,7 +182,7 @@
                             </tr>
                             <tr v-for="cat in cats.incomes" :key="cat.category">                    
                                 <td class="titulos"> {{cat.category}} </td> 
-                                <td class="goo"> ${{cat.budget}} </td>                                                
+                                <td class="goo"> ${{Number(cat.budget).toLocaleString()}} </td>                                                
                             </tr>
                         </table>                                                                                    
                     </div>
