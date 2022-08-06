@@ -60,7 +60,7 @@
                 </b-row>
                     
             </b-col>
-            <b-col cols="10" sm="7" mx-class="auto" style="border-radius: 10px;  
+                     <b-col cols="10" sm="7" mx-class="auto" style="border-radius: 10px;  
                                             padding: 3%;
                                             margin-left: 8%;
                                             margin-top: 3%;
@@ -109,7 +109,6 @@
                                                     bad: reg.type == 'expenses',
                                                     pas: reg.type == 'passives',
                                                     act: reg.type == 'liabilities'
-
                                     }">     
                                     <td>
                                         <label> <input type="checkbox" :value="reg.id" v-model="selected"> </label>
@@ -292,5 +291,6 @@ tr{
 td {
   padding-left: 1%;
   font-weight: 300;
+  text-align: left;
 }
 </style>

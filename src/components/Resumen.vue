@@ -1,5 +1,20 @@
 <template>
-    <b-container fliud class="main">    
+    <b-container fliud class="main">
+        <b-modal ref="wellcome" hide-header content-class="modal">
+            <div >
+                <p>Acá podras ver graficos e historial de tus gastos en meses anteriores</p>
+                <p> Primero debes crear tus categorias y luego registrar gastos</p>
+                <b-row>
+                    <b-col cols="4">
+                        <b-button v-on:click="go_to_cats" size="sm"> Ir a Categorias </b-button>
+                    </b-col>
+                    <b-col cols="4"></b-col>
+                    <b-col cols="4">
+                        <b-button v-on:click="go_to_registers" size="sm"> Ir a Registros</b-button>
+                    </b-col>
+                </b-row> 
+            </div>
+        </b-modal>
         <b-row align-h="between">
             <b-col cols="4" sm="3" style="border-radius: 10px;
                                     padding: 1%; 
@@ -26,11 +41,15 @@
 
             </b-col>
         </b-row>
-        <b-row> 
+        <b-row > 
             <b-col cols="10" class="mx-auto" sm="7" style="border-radius: 10px;
                                             margin-top: 3%;  
                                             padding: 3%; 
-                                            border:1px solid rgb(0, 107, 107);">    
+                                            border:1px solid rgb(0, 107, 107);">   
+                <div v-if="expenses < 1">
+                    <p> No tienes registro de gastos en este mes </p>
+                    <p>regs {{regs}} recurrents:{{recurrents}} alertas:{{alertas}}</p> 
+                </div> 
                 <div class="gastorta" v-if="expenses > 0" >
                     <h2 class="act"> Distribucion de Gastos </h2>
                     <pie-chart
@@ -49,6 +68,9 @@
                                             margin-top: 3%;
                                             padding: 3%;
                                             border:1px solid rgb(0, 107, 107);">
+                <div v-if="incomes||expenses == 0">
+                    <p>Aca podrás ver el grafico de Ingresos VS Egresos </p>
+                </div>
                 <div class="right">
                     <div v-if="incomes||expenses != 0" >
                         <h2 >Ingresos Vs Egresos</h2>
@@ -69,14 +91,17 @@
                 </div>
             </b-col>
         </b-row>      
-        <b-row>
+        <b-row >
             <b-col cols="10" class="mx-auto" sm="5" style="border-radius: 10px;
                                             padding: 3%;  
                                             margin-top: 3%;
                                             border:1px solid rgb(0, 107, 107); ">
+                    <div v-if="recurrents.length < 1">
+                        <p> Acá se visualizarán tus compromisos mensuales</p>
+                    </div>
                     <b-col cols="12">
-                        <div>
-                            <h1> Pagos pendientes {{month}} {{anio}}</h1>                                  
+                        <div v-if="recurrents.length > 0">
+                            <h1> Pagos pendientes {{month}} {{anio}}</h1>                                   
                         </div>
                         <b-row v-if="recurrents.length > 0">  
                             <b-col cols="5" lg="5"  style=" padding:3%;
@@ -93,10 +118,6 @@
                                 </p>                                
                             </b-col> 
                         </b-row>
-                        <b-col cols="6" sm="5" v-if="!recurrents.length > 0">
-                            <h1> NO TIENES PAGOS RECURRENTES </h1>
-                        </b-col>
-
                     </b-col>
             </b-col>
             <b-col cols="10" class="mx-auto" sm="6" style="border-radius: 10px;  
@@ -106,8 +127,11 @@
                                             max-height:100vh;
                                             overflow-y:scroll; 
                                             overflow:auto;">
-                <div class="left">
-                    <div class="left_title">
+                <div v-if="alertas.length < 1">
+                    <p> Aca podrás ver el progreso de tus gastos por categoria</p>
+                </div>
+                <div class="left" v-if="alertas.length != 0">
+                    <div class="left_title" >
                         <h1> Gastos por Categoria </h1>
                     </div>
                     <div> 
@@ -129,14 +153,14 @@
                             })}} dias </p>
                     </div>
                     <div class="exp_cat" >                    
-                        <div v-for="item in alertas" v-bind:key="item.name" >
+                        <div v-for="item in alertas" v-bind:key="item.name" v-if="item.value > 0">
                             <hr class="divider">                            
-                            <div class="nombres" >
+                            <div class="nombres">
                                 <div>{{item.name}}</div>
                                 <div>{{Math.round(item.value/item.budget*100)}}%</div> 
                             </div>                            
                             <div class="progres" >
-                                <div class="bar" v-if="item.value > 0">
+                                <div class="bar" >
                                     <div v-bind:class="{perce_goo: item.value/item.budget < 0.9999,
                                                         perce_ok: item.value/item.budget == 1,
                                                         perce_bad: item.value/item.budget > 1}"  
@@ -290,7 +314,8 @@ export default {
                 }
                 for (var f = 0; f < this.exp_pie.length; f++ ) {
                     this.color_pie.push('#'+Math.floor(Math.random()*16777215).toString(16));
-                }      
+                }
+                this.$refs.wellcome.focus
         })) 
         .catch((error) => {
             alert(error);
@@ -365,12 +390,34 @@ export default {
                     }
             }
             }))                           
+        },
+        go_to_cats: function () {
+            if (this.$route.name != "Categorias") {
+            let username = localStorage.getItem("current_username")
+            this.$router.push({name: "Categorias", params: {username: username}});                
+            this.open = false;
+            }
+        },
+        go_to_registers: function () {
+            if (this.$route.name != "Registros"){
+                let username = localStorage.getItem("current_username")
+                this.$router.push({name: "Registros", params: {username: username}});
+                this.open = false;
+            }
         }
     }     
 }
 </script>
 <style>
-
+body{
+    background-color: black;
+}
+.modal{
+    background-color: black;
+    color: white;
+    padding: 3%; 
+    border:1px solid rgb(0, 107, 107);
+}
 .nombres{
     display: flex;
     flex-direction: row;
@@ -391,7 +438,7 @@ export default {
     border-bottom: 1px solid rgb(0, 107, 107);
 }
 .perce_goo {
-    color: rgb(254, 167, 129);
+    color: rgba(255, 69, 2, 0.692);
     position: absolute;
     top: 1px; left: 1px; right: 1px;
     display: block;

@@ -5,7 +5,7 @@
                                             margin-top: 3%;  
                                             padding: 3%; 
                                             border:1px solid rgb(0, 107, 107);">
-                    <h2>Tus categorias</h2>  
+                    <h2>Tus categorias </h2>  
                     <select id="" v-model="action" style="background-color:black; color: white;">
                         <option value="" selected disabled> Selecciona </option>
                         <option value="crear"> Crear Categoria </option>
@@ -257,7 +257,7 @@
                                             box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">
                 <div>
                     <h1 class="act">Alertas:</h1>
-                    <h2 v-if="t_pass < t_lia && t_bud < t_in" class="act"> Tus finanzas lucen saludables</h2>
+                    <h2 v-if="t_bud - t_in > 0  " class="act"> Tus finanzas lucen saludables</h2>
                     <h2 v-if="t_pass > t_lia" class="bad"> Tus Pasivos son mayores que tus activos en ${{Number(t_pass-t_lia).toLocaleString()}}</h2>
                     <h2 v-if="t_bud > t_in " class="bad"> Tus egresos exceden tus ingresos en ${{Number(t_bud - t_in).toLocaleString()}}</h2>
                 </div>

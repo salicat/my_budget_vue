@@ -17,23 +17,15 @@
         </div>
       </b-col>
     </b-row>    
-        <b-sidebar id="sidebar" v-if="is_auth" bg-variant="dark">       
-        <b-button-group vertical>
-          <b-col cols="12">  
-            <b-button variant="secondary" v-on:click="go_to_resumen">Resumen</b-button>
-          </b-col>
-          <b-col cols="12">
-            <b-button variant="secondary" v-on:click="go_to_goals">Metas</b-button>
-          </b-col>
-          <b-col cols="12">
-            <b-button variant="secondary" v-on:click="go_to_cats">Categorias</b-button>
-          <b-col cols="12">  
-            <b-button variant="secondary" v-on:click="go_to_reg">Registros</b-button>
-          </b-col>
-            <b-button variant="secondary" v-on:click="logOut" id="cerrar"> Cerrar Cesión </b-button>     
-          </b-col>
-        </b-button-group>
-      </b-sidebar>
+        <b-sidebar id="sidebar" v-if="is_auth" bg-variant="dark" width="30%">       
+          <b-button-group vertical size="lg" >
+              <b-button variant="secondary" v-on:click="go_to_resumen">Resumen</b-button>
+              <b-button variant="secondary" v-on:click="go_to_goals">Metas</b-button>
+              <b-button variant="secondary" v-on:click="go_to_cats">Categorias</b-button>
+              <b-button variant="secondary" v-on:click="go_to_reg">Registros</b-button>
+              <b-button variant="secondary" v-on:click="logOut" id="cerrar"> Cerrar Cesión </b-button>    
+          </b-button-group>
+        </b-sidebar>
       <b-row>
         <b-col cols="12">
           <div v-bind:class="[!open ? 'main-component_2' : 'main-component' ]">  
@@ -116,18 +108,15 @@ export default {
       localStorage.removeItem('isAuth')
       localStorage.removeItem("current_username")
       this.updateAuth()
-    },
-    open_bar: function () {
-      this.open = true;
-    },
-    close_bar: function () {
-      this.open = false;
-    }    
+    }, 
   }
 }
 </script>
 <style>
 h1{
   color: #00E8FF;
+}
+.botones{
+  align-content: center;
 }
 </style>
