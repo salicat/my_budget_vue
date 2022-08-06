@@ -315,7 +315,6 @@ export default {
                 for (var f = 0; f < this.exp_pie.length; f++ ) {
                     this.color_pie.push('#'+Math.floor(Math.random()*16777215).toString(16));
                 }
-                this.$refs.wellcome.focus
         })) 
         .catch((error) => {
             alert(error);
