@@ -131,21 +131,13 @@
                                             padding: 3%;  
                                             border:1px solid rgb(0, 107, 107); ">
                 <h1>Variaciones en Gastos</h1>
-                <select v-model="track" v-on:change="track_months">
-                    <option v-for="cat in cats.expenses" v-bind:key="cat.name">
-                    {{cat.category}}
+                <select v-model="track" v-on:change="onChange">
+                    <option v-for="exp in alertas" v-bind:key="exp.name">
+                    {{exp.name}}
                     </option>
                 </select>
-                <line-chart :colors="['#00E8FF']"
-                            label="Value"    
-                            :curve="false"                         
-                            :discrete="true"
-                            prefix="$"
-                            thousands=","
-                            :messages="{empty: 'No tienes registro en esta categoria'}"
-                            :legend="false"
-                            xtitle="Meses" ytitle="Valor"
-                            :data="datos">
+                <line-chart
+                    :data="[['Ene', 690000], ['Feb', 1200000], ['Mar', 290000], ['Abril', 540000], ['Mayo', 1100000]]">
                 </line-chart>
             </b-col>
         </b-row>
@@ -173,7 +165,6 @@ export default {
             month       : undefined,
             track       : undefined,
             alertas     : [],
-            datos       : [],
             year        : [2021, 2022],
             meses       : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 
                         'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 
@@ -246,23 +237,8 @@ export default {
             }) 
             }            
         },
-        track_months : function () {
-            const d = new Date();
-            let month = d.getMonth();
-            this.month = month+1
-
-
-            var data = {
-                username    : this.$route.params.username,
-                month       : this.month,
-                category    : this.track
-            }
-            var self = this
-            axios
-            .get("https://mybudgetback.herokuapp.com/user/track/"+data.username + "/" + data.month + "/" + data.category)
-            .then((response) => {
-                self.datos = response.data
-            })
+        onChange : function () {
+          
         }       
     }        
 }
