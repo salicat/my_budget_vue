@@ -1,27 +1,29 @@
 <template>
     <b-container fluid>
         <b-row>
-            <b-col cols="10" md="3" class="mx-auto" style="margin-top:3%">
+            <b-col cols="10" md="3" class="mx-auto" style=" margin-top:3%;
+                                                            padding: 5%;
+                                                            border-radius: 10px;
+                                                            border:1px solid rgb(0, 107, 107);">
                 <h1>Metas</h1> 
-                <select id="" v-model="elige"> 
+                <select id="" v-model="elige">  
                     <option value="1"> Crear Metas </option>                
                     <option value="2"> Actualizar Meta </option>
                     <option value="3"> Borrar Meta </option>
                 </select>        
-                <div class = "crear_metas" v-if="elige === '1'">
+                <b-col cols="10" v-if="elige === '1'" >
                     <form>                    
                         <p>Nombra tu meta</p>
                         <input placeholder="Nombre" v-model="name"> 
                         <p>Cuanto $$$ necesitas?</p>
                         <input type="number" step="0.01" placeholder="$" v-model="final_value">
                         <p>Cuando vas a cumplirla?</p>
-                        <input type="date" id="start" name="trip-start" value="2018-07-22"
-                            min="2021-03-12" max="2040-12-31" v-model="final_date"> 
+                        <b-form-datepicker dark-true v-model="final_date" size="lg" style="background-color:black; color:white;"></b-form-datepicker>  
                         <br>
                         <br>
                         <b-button variant="secondary" v-on:click="create_goal" >Crear Meta</b-button>
                     </form>
-                </div>
+                </b-col>
                 <div class = "actualizar_meta" v-if="elige === '2'">
                     <p>Selecciona tu meta</p> 
                     <select v-model="name" >
@@ -43,20 +45,25 @@
                     <b-button variant="secondary" v-on:click="delete_goal"> Eliminar </b-button>
                 </div>
             </b-col>
-            <b-col cols="11" md="9" class="mx-auto" style="margin-top:3% ">
-                <div class="los_reportes">            
+            <b-col cols="11" md="8" class="mx-auto" style=" margin-top:3%;
+                                                            padding: 5%;
+                                                            border-radius: 10px;
+                                                            border:1px solid rgb(0, 107, 107);">           
                     <div class = "informes">
                         <h1>Mis metas</h1>
-                        <table  >
-                            <tr class = "columnas">
+                        <table  style="font-size:2.2vw">
+                            <tr class = "act">
                                 <th> Meta </th>
                                 <th> % </th>
                                 <th> Valor Final </th>
                                 <th> Valor Actual </th>                    
                                 <th> Dias Restantes </th>
                             </tr>
-                            <tr v-for="goal in tus_metas" :key="goal.nombre">
-                                <td class="titulos">{{goal.nombre}}</td>
+                            <tr v-for="goal in tus_metas" :key="goal.nombre" v-bind:class="{pas: goal.porc < 1,
+                                                                                            act: goal.porc > 1 && goal.porc < 99,
+                                                                                            goo: goal.porc >= 100 
+                                    }">
+                                <td>{{goal.nombre}}</td>
                                 <td>{{goal.porc}}%</td>
                                 <td>${{goal.meta}}</td>
                                 <td>${{goal.actual}}</td>
@@ -64,7 +71,6 @@
                             </tr>
                         </table>                
                     </div>            
-                </div>   
             </b-col>
         </b-row>
         <b-row>
@@ -162,22 +168,6 @@ export default {
     color:#E5E7E9;
     background-color:#000000;
 }
-.los_reportes{
-    border-radius: 10px;
-    border:1px solid rgb(0, 107, 107);  
-}
-.informes{
-    padding-left: 6%;
-    padding-bottom: 4%;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 10px 25px rgba(1, 41, 41, 0.431);
-}
-.informes table {
-    padding: 2px;
-    text-align: center;
-}
 .columnas {
     color: rgb(0, 107, 107);
     padding: 5px;
@@ -194,5 +184,26 @@ export default {
 .actualizar_meta input{
     color:#E5E7E9;
     background-color:#000000;
+}
+table{
+    border-collapse:separate; 
+    border-spacing:1em;
+}
+tr{
+    padding-bottom: 1%;
+}
+td {
+  padding-left: 1%;
+  font-weight: 300;
+  text-align: left;
+}
+.goo{
+    color: #79FF00;
+}
+.act{
+    color: #00E8FF; 
+}
+.pas{
+    color:#FF8600;
 }
 </style>

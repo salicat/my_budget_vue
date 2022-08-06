@@ -40,8 +40,7 @@
                             </div> 
                             <div v-if="recurrency == true">
                                 <p> Elige la fecha del proximo vencimiento</p>
-                                <input type="date" id="start" name="trip-start" value="2018-07-22"
-                                        min="2000-03-12" max="2040-12-31" v-model="day" style="background-color:black; color: white;"> <br>
+                                <b-form-datepicker id="datepicker" v-model="day" size="sm" dark="true" style="background-color:black; color:white;"></b-form-datepicker> <br>
                             </div>
                             <button v-on:click="cat_create"> Crear Categoria</button>
                         </div>                    
