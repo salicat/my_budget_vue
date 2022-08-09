@@ -256,7 +256,7 @@
                                             box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">
                 <div>
                     <h1 class="act">Alertas:</h1>
-                    <h2 v-if="t_bud - t_in > 0  " class="act"> Tus finanzas lucen saludables</h2>
+                    <h2 v-if="t_bud < t_in" class="act"> Tus finanzas lucen saludables</h2>
                     <h2 v-if="t_pass > t_lia" class="bad"> Tus Pasivos son mayores que tus activos en ${{Number(t_pass-t_lia).toLocaleString()}}</h2>
                     <h2 v-if="t_bud > t_in " class="bad"> Tus egresos exceden tus ingresos en ${{Number(t_bud - t_in).toLocaleString()}}</h2>
                 </div>
@@ -288,12 +288,13 @@ export default {
             t_pass      : 0
         }
     },    
-    created: function(){
+    created: function(){ 
         this.username = this.$route.params.username
         let self = this        
         axios
         .get("https://mybudgetback.herokuapp.com/user/cats/" + this.username)
         .then((result) => {
+            console.log(result.data)
             self.cats = result.data;
             for (var i= 0; i < result.data.incomes.length; i++){
                 this.t_in = this.t_in + result.data.incomes[i].budget;
@@ -307,7 +308,6 @@ export default {
             for ( var l = 0; l < result.data.passives.length; l++) {
                 this.t_pass = this.t_pass + result.data.passives[l].value;
             }
-
         })
     },    
     methods : {

@@ -4,8 +4,7 @@
             <b-col cols="10"  sm="4" class = "mx-auto" style="border-radius: 10px;  
                                             padding: 3%;
                                             margin-top: 3%;
-                                            border:1px solid rgb(0, 107, 107); 
-                                            box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);"> 
+                                            border:1px solid rgb(0, 107, 107); "> 
                 <b-row>
                    <h2 class ="act">Registrar Transaccion</h2><br>
                     <p>Selecciona tipo de Transaccion</p>
@@ -64,8 +63,7 @@
                                             padding: 3%;
                                             margin-left: 8%;
                                             margin-top: 3%;
-                                            border:1px solid rgb(0, 107, 107); 
-                                            box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">
+                                            border:1px solid rgb(0, 107, 107);">
                 <h2 class="act">Consultar Registros</h2>
                 <b-row class="botones" align-h="between">
                     <b-col cols="5">
