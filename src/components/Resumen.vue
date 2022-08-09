@@ -296,7 +296,8 @@ export default {
             }
             for (var k = 0; k < responseTwo.data.passives.length; k++){
                 this.passives = this.passives + responseTwo.data.passives[k].value
-            }        
+            }    
+                
             const responseThree = responses[2]
             var estemes = month_cons.toString()                
             var actualiza = function(date){
@@ -321,6 +322,9 @@ export default {
                 }
                 for (var f = 0; f < this.exp_pie.length; f++ ) {
                     this.color_pie.push('#'+Math.floor(Math.random()*16777215).toString(16));
+                }
+                if (this.expenses == 0 && this.incomes == 0) {
+                    this.$refs['wellcome'].show()
                 }
         })) 
         .catch((error) => {
