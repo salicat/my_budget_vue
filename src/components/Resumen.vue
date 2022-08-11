@@ -216,7 +216,6 @@ export default {
             regs        : [],
             alertas     : [],
             recurrents  : [],
-            color_pie   : [],
             curr_year   : new Date().getFullYear(),
             curr_month  : new Date().getMonth(),
             curr_day    : undefined,
@@ -254,7 +253,7 @@ export default {
         
         let one     = "https://mybudgetback.herokuapp.com/user/month_records/" + data.username + "/" + data.year + "/" + data.month
         let two     = "https://mybudgetback.herokuapp.com/user/cats/" + data.username
-        let three   = "https://mybudgetback.herokuapp.com/user/month_regs/"+ data.username + "/" +  data.year + "/" + data.month
+        let three   = "https://mybudgetback.herokuapp.com/user/month_regs/" + data.username + "/" +  data.year + "/" + data.month
         let four    = "https://mybudgetback.herokuapp.com/user/cats/" + data.username + "/" + data.year + "/" + data.month
         
         const requestOne    = axios.get(one)
@@ -319,9 +318,6 @@ export default {
                     if (this.alertas[b].value > 0) {
                         self.exp_pie[b] = [this.alertas[b].name, this.alertas[b].value]           
                     }
-                }
-                for (var f = 0; f < this.exp_pie.length; f++ ) {
-                    this.color_pie.push('#'+Math.floor(Math.random()*16777215).toString(16));
                 }
                 if (this.expenses == 0 && this.incomes == 0) {
                     this.$refs['wellcome'].show()

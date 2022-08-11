@@ -1,7 +1,7 @@
 <template >
   <b-container fluid id = "app" style="background-color: #000;
                                       color: rgb(0, 107, 107);">
-    <b-row align-h="between">
+    <b-row align-h="between" >
       <b-col cols="2" style="margin: 1%;">
         <b-button v-b-toggle.sidebar id="main" v-if="is_auth"> ☰ </b-button>  
       </b-col>

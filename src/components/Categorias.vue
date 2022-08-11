@@ -1,5 +1,19 @@
 <template> 
     <b-container fluid> 
+        <b-row>
+            <b-col cols="12" mx-class="auto" style="border-radius: 10px;  
+                                            margin-top: 5%;
+                                            margin-bottom: 5%;
+                                            padding: 3%;
+                                            border:1px solid rgb(0, 107, 107);">
+                <div>
+                    <h1 class="act">Alertas:</h1>
+                    <h2 v-if="t_bud < t_in" class="act"> Tus finanzas lucen saludables</h2>
+                    <h2 v-if="t_pass > t_lia" class="bad"> Tus Pasivos son mayores que tus activos en ${{Number(t_pass-t_lia).toLocaleString()}}</h2>
+                    <h2 v-if="t_bud > t_in " class="bad"> Tus egresos exceden tus ingresos en ${{Number(t_bud - t_in).toLocaleString()}}</h2>
+                </div>
+            </b-col>
+        </b-row>
         <b-row align-h="between">
             <b-col cols="9" sm="3" class="mx-auto" style="border-radius: 10px;
                                             margin-top: 3%;  
@@ -246,21 +260,6 @@
                         </table>
                     </div> 
             </b-col> 
-        </b-row>
-        <b-row>
-            <b-col cols="12" mx-class="auto" style="border-radius: 10px;  
-                                            margin-top: 5%;
-                                            margin-bottom: 5%;
-                                            padding: 3%;
-                                            border:1px solid rgb(0, 107, 107); 
-                                            box-shadow: 0 10px 25px rgba(0, 148, 148, 0.774);">
-                <div>
-                    <h1 class="act">Alertas:</h1>
-                    <h2 v-if="t_bud < t_in" class="act"> Tus finanzas lucen saludables</h2>
-                    <h2 v-if="t_pass > t_lia" class="bad"> Tus Pasivos son mayores que tus activos en ${{Number(t_pass-t_lia).toLocaleString()}}</h2>
-                    <h2 v-if="t_bud > t_in " class="bad"> Tus egresos exceden tus ingresos en ${{Number(t_bud - t_in).toLocaleString()}}</h2>
-                </div>
-            </b-col>
         </b-row>
     </b-container>
 </template>

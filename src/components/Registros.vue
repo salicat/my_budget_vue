@@ -1,6 +1,33 @@
 <template>
     <b-container fluid>
         <b-row >
+            <b-row>
+            <b-col cols="10" class="mx-auto" sm="12" style="border-radius: 10px;
+                                            margin-top: 3%;
+                                            margin-bottom: 5%;
+                                            padding: 3%;  
+                                            border:1px solid rgb(0, 107, 107); ">
+                <div v-if="cats.expenses.length > 0">
+                    <h1>Variaciones en Gastos</h1>
+                    <select v-model="track" v-on:change="track_months">
+                        <option v-for="cat in cats.expenses" v-bind:key="cat.name">
+                        {{cat.category}}
+                        </option>
+                    </select>
+                    <line-chart :colors="['#00E8FF']"
+                                label="Value"    
+                                :curve="false"                         
+                                :discrete="true"
+                                prefix="$"
+                                thousands=","
+                                :messages="{empty: 'Selecciona la categoria'}"
+                                :legend="false"
+                                xtitle="Meses" ytitle="Valor"
+                                :data="datos">
+                    </line-chart>
+                </div>
+            </b-col>
+        </b-row>
             <b-col cols="10"  sm="4" class = "mx-auto" style="border-radius: 10px;  
                                             padding: 3%;
                                             margin-top: 3%;
@@ -57,7 +84,6 @@
                         <b-button v-on:click="save_reg" variant="dark"> Guardar Registro </b-button>            
                     </b-col>
                 </b-row>
-                    
             </b-col>
                      <b-col cols="10" sm="7" mx-class="auto" style="border-radius: 10px;  
                                             padding: 3%;
@@ -86,7 +112,7 @@
                         <b-button id="del" v-if="selected.length" v-on:click="reg_del" variant="dark"> Eliminar  </b-button>
                     </b-col>               
                 </b-row>
-                <b-row  v-if="registers.length > 0">
+                <b-row >
                     <h2 class="act">Mis Registros</h2>  
                     <div>
                         <table style="font-size:01.8vw">
@@ -122,31 +148,7 @@
                 </b-row>                                          
             </b-col>
         </b-row>
-        <b-row>
-            <b-col cols="10" class="mx-auto" sm="12" style="border-radius: 10px;
-                                            margin-top: 3%;
-                                            margin-bottom: 5%;
-                                            padding: 3%;  
-                                            border:1px solid rgb(0, 107, 107); ">
-                <h1>Variaciones en Gastos</h1>
-                <select v-model="track" v-on:change="track_months">
-                    <option v-for="cat in cats.expenses" v-bind:key="cat.name">
-                    {{cat.category}}
-                    </option>
-                </select>
-                <line-chart :colors="['#00E8FF']"
-                            label="Value"    
-                            :curve="false"                         
-                            :discrete="true"
-                            prefix="$"
-                            thousands=","
-                            :messages="{empty: 'No tienes registro en esta categoria'}"
-                            :legend="false"
-                            xtitle="Meses" ytitle="Valor"
-                            :data="datos">
-                </line-chart>
-            </b-col>
-        </b-row>
+        
     </b-container> 
 </template>
 <script>
