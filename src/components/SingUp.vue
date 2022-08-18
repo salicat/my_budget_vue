@@ -2,7 +2,7 @@
     <div id="SingUp">
         <div class="crea_user">
             <h2>Crea tu Usuario</h2>
-            <form v-on:submit.prevent="user_create">
+            <form v-on:submit.prevent="user_create">  
                 <p>Escoge tu nombre de usuario </p>
                 <input required type ="text" v-model="username" placeholder="Escribe tu usuario"/>
                 <p>Elige una contraseña </p>
