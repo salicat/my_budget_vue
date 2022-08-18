@@ -1,7 +1,7 @@
 <template>
   <b-container fluid>
     <b-row>
-        <b-col cols="10" md="10" class="mx-auto">
+        <b-col cols="10" md="10" class="mx-auto"> 
           <h1 style="text-align:center;"> Bienvenido a My Budget!!</h1>
         </b-col>
         <b-col cols="2" md="4"></b-col>
