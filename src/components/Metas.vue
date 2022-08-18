@@ -1,5 +1,5 @@
 <template>
-    <b-container fluid>
+    <b-container fluid> 
         <b-row>
             <b-col cols="12" mx-class="auto" style="border-radius: 10px;  
                                             margin-top: 5%;
