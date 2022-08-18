@@ -36,7 +36,7 @@
                                 <option value="expenses"> Egresos </option>
                                 <option value="liabilities"> Activos </option>
                                 <option value="passives"> Pasivos </option>
-                            </select>
+                            </select> 
                             <p> Elige un tipo de categoria </p>
                             <div v-if="type == 'liabilities' || type ==  'passives'">
                                 <input type="text" v-model="value" style="background-color:black; color: white;">
