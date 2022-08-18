@@ -14,7 +14,7 @@
                         {{cat.category}}
                         </option>
                     </select>
-                    <line-chart :colors="['#00E8FF']"
+                    <area-chart :colors="['#00E8FF']"
                                 label="Value"    
                                 :curve="false"                         
                                 :discrete="true"
@@ -24,7 +24,7 @@
                                 :legend="false"
                                 xtitle="Meses" ytitle="Valor"
                                 :data="datos">
-                    </line-chart>
+                    </area-chart>
                 </div>
             </b-col>
         </b-row>
