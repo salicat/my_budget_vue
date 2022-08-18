@@ -20,10 +20,10 @@
         <b-sidebar id="sidebar" v-if="is_auth" bg-variant="dark" width="30%">       
           <b-button-group vertical size="lg" >
               <b-button variant="secondary" v-on:click="go_to_resumen">Resumen</b-button>
-              <b-button variant="secondary" v-on:click="go_to_goals">Metas</b-button>
-              <b-button variant="secondary" v-on:click="go_to_cats">Categorias</b-button>
+              <b-button variant="secondary" v-on:click="go_to_incomes"> Ingresos </b-button>
               <b-button variant="secondary" v-on:click="go_to_reg">Registros</b-button>
-              <b-button variant="secondary" v-on:click="logOut" id="cerrar"> Cerrar Cesión </b-button>    
+              <b-button variant="secondary" v-on:click="go_to_goals">Metas</b-button>
+              <b-button variant="secondary" v-on:click="go_to_cats">Categorias</b-button>              <b-button variant="secondary" v-on:click="logOut" id="cerrar"> Cerrar Cesión </b-button>    
           </b-button-group>
         </b-sidebar>
       <b-row>
@@ -69,6 +69,13 @@ export default {
       else{
         let username = localStorage.getItem("current_username")
         self.$router.push({name: "Resumen", params:{ username: username }})
+      }
+    },
+    go_to_incomes: function () {
+      if (this.$route,name != "Ingresos"){
+        let username = localStorage.getItem("current_username")
+        this.$router.push({name:"Ingresos", params: {username: username}});
+        this.open = false;
       }
     },
     go_to_goals: function () {
