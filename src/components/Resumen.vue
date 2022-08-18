@@ -18,7 +18,7 @@
         <b-row align-h="between">
             <b-col cols="4" sm="3" style="border-radius: 10px;
                                     padding: 1%;">
-                <b-col cols=8>
+                <b-col cols=8> 
                     <b-form-select v-model="month" style="background-color:black; color: white;">                        
                         <option selected> {{month}} </option>
                         <option v-for="mes in meses" 
@@ -36,32 +36,50 @@
                     <b-button variant="dark" v-on:click="reload" > Consultar </b-button>
                 </b-col>
             </b-col>
-            <b-col cols="7" md="8"    style="border-radius: 10px;
+        </b-row>
+        <b-row >
+            <b-col cols="10" md="8" class="mx-auto"   style="border-radius: 10px;
                                             margin-bottom: 3%;
                                             padding: 2%;
                                             border:1px solid rgb(0, 107, 107); "> 
-                <p v-bind:class="{  goo: expenses/gen_budget < 0.99999,
+                <div style="display:flex; flex-direction:row; justify-content: space-between;">    
+                        <p v-bind:class="{  goo: expenses/gen_budget < 0.99999,
                                             act: expenses/gen_budget == 1,
                                             bad: expenses/gen_budget > 1                                
-                    }"> 
-                    Has gastado el {{Math.round(expenses/gen_budget*100)}}% 
-                    de tu presupuesto de ${{Number(gen_budget).toLocaleString()}} 
-                </p> 
-                <p v-bind:class="{  goo: gen_budget-expenses > 1,
-                                    bad: gen_budget-expenses <= 0 }"> 
-                    Presupuesto restante: ${{Number(gen_budget-expenses).toLocaleString()}}
-                </p>
-                <p class="act"> Gasto promedio por dia: ${{Number(expenses/curr_day).toLocaleString("en", {   
+                                        }"> 
+                            Gasto ${{Number(expenses).toLocaleString()}} 
+                        </p>
+                        <p v-bind:class="{  goo: gen_budget-expenses > 1,
+                                            bad: gen_budget-expenses <= 0 }"> 
+                            Presupuesto: ${{Number(gen_budget).toLocaleString()}}
+                        </p>    
+                </div> 
+                <div class="bar" style="width:100%; height: 40px;">
+                    <div    v-bind:class="{perce_goo: expenses/gen_budget < 0.9999,
+                                            perce_ok: expenses/gen_budget == 1,
+                                            perce_bad: expenses/gen_budget > 1}"
+                            :style="{
+                                    width: (expenses/gen_budget*100)+'%'}"> 
+                        <h2 >{{Math.round(expenses/gen_budget*100)}}%</h2>
+                    </div>                                                                                                           
+                </div>
+                <br>
+                <div v-if="expenses > gen_budget">
+                    <h2 class="bad"> Tu presupuesto se ha agotado!!!</h2>
+                </div>
+                <div v-if="expenses < gen_budget">
+                    <p class="act"> Gasto promedio por dia: ${{Number(expenses/curr_day).toLocaleString("en", {   
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 0,
-                    })}}
-                </p>
-                <p class="act"> Tu presupuesto se agotará en  
-                    {{Number((gen_budget-expenses)/(expenses/curr_day)).toLocaleString("en", {   
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 0,
-                    })}} dias 
-                </p>
+                        })}}
+                    </p>
+                    <p class="act"> Tu presupuesto se agotará en  
+                        {{Number((gen_budget-expenses)/(expenses/curr_day)).toLocaleString("en", {   
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                        })}} dias 
+                    </p>
+                </div>    
             </b-col>
         </b-row>
         <b-row > 
@@ -70,17 +88,20 @@
                                             padding: 3%; 
                                             border:1px solid rgb(0, 107, 107);">   
                 <div class="gastorta" v-if="expenses > 0" >
-                    <h2 class="act"> Distribucion de Gastos </h2>
+                    <h2 class="act"> Gastos </h2> 
                     <pie-chart
                         :donut  ="false"
                         :data   ="exp_pie"
-                        :colors ="['Red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black', 'white', 'grey' ]"
-                        :library="{animation:{easing:'easeOutQuart'},
-                        elements: {arc: {borderWidth: 0},
-                        }}"
+                        :colors ="['#ff7f50','#87cefa','#da70d6','#32cd32','#6495ed', '#ff69b4','#ba55d3','#cd5c5c','#ffa500','#40e0d0']"
+                        :library="  {animation:{easing:'easeOutQuart'},
+                        elements: {arc: {borderWidth: 0}},
+                        }"
+                        :legend="false"
+                        loading="Loading..."
+                        prefix="$"
+                        thousands=","
                         >
                     </pie-chart>
-                    <h1>Gasto del mes: ${{Number(expenses).toLocaleString()}}</h1>
                 </div> 
             </b-col>
             <b-col cols="10" class="mx-auto" sm="4" style="border-radius: 10px;  
@@ -92,20 +113,17 @@
                 </div>
                 <div class="right">
                     <div v-if="incomes||expenses != 0" >
-                        <h2 class="act">Ingresos Vs Egresos</h2>
-                        <pie-chart                             
-                            :donut="true" 
+                        <h2 class="act">Balance</h2>
+                        <column-chart        
                             :data="[['Ingresos', incomes], ['Gastos', expenses]]"
-                            :colors="[ '#79FF00', '#FF00D5']"
-                            :library="{animation:{easing:'easeOutQuad'}, 
-                            elements: {arc: {borderWidth: 0}}}"
+                            :colors="[['#79FF00', '#FF00D5']]"
+                            :library="{animation:{easing:'easeOutQuad'}}"
+                            loading="Loading..."
+                            :stacked="true"
+                            prefix="$"
+                            thousands=","
                             >
-                        </pie-chart>                                  
-                        <h1 v-bind:class="{ goo: incomes > expenses,
-                                            bad: expenses > incomes
-                            }"
-                            >Balance ${{Number(incomes - expenses).toLocaleString()}}
-                        </h1>                                       
+                        </column-chart>                                
                     </div>    
                 </div>
             </b-col>
@@ -120,7 +138,7 @@
                     </div>
                     <b-col cols="12">
                         <div v-if="recurrents.length > 0">
-                            <h1> Pagos pendientes {{month}} {{anio}}</h1>                                   
+                            <h1> Pagos {{month}} </h1>                                   
                         </div>
                         <b-row v-if="recurrents.length > 0">  
                             <b-col cols="5" lg="5"  style=" padding:3%;
@@ -170,7 +188,7 @@
                                                         perce_bad: item.value/item.budget > 1}"  
                                                         :style="{
                                                         width: (item.value/item.budget*100)+'%'}"> 
-                                        ${{Number(item.value).toLocaleString()}}
+                                        <p style="padding-left:10px;">${{Number(item.value).toLocaleString()}}</p>
                                     </div>                                                                                                           
                                 </div>
                                 <div class="budget">
@@ -441,6 +459,7 @@ body{
     height: 25px;
     border-radius: 15px;
     overflow: hidden;
+    background-color: black;
     border-bottom: 1px solid rgb(0, 107, 107);
 }
 .perce_goo {
