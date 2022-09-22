@@ -66,20 +66,7 @@
                 <br>
                 <div v-if="expenses > gen_budget">
                     <h2 class="bad"> Tu presupuesto se ha agotado!!!</h2>
-                </div>
-                <div v-if="expenses < gen_budget">
-                    <p class="act"> Gasto promedio por dia: ${{Number(expenses/curr_day).toLocaleString("en", {   
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 0,
-                        })}}
-                    </p>
-                    <p class="act"> Tu presupuesto se agotará en  
-                        {{Number((gen_budget-expenses)/(expenses/curr_day)).toLocaleString("en", {   
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 0,
-                        })}} dias 
-                    </p>
-                </div>    
+                </div>  
             </b-col>
         </b-row>
         <b-row > 
@@ -92,7 +79,11 @@
                     <pie-chart
                         :donut  ="false"
                         :data   ="exp_pie"
-                        :colors ="['#ff7f50','#87cefa','#da70d6','#32cd32','#6495ed', '#ff69b4','#ba55d3','#cd5c5c','#ffa500','#40e0d0']"
+                        :colors ="['#ff7f50','#87cefa','#da70d6','#32cd32','#6495ed', 
+                                    '#ff69b4','#ba55d3','#cd5c5c','#ffa500','#40e0d0',
+                                    '#ff7f50','#87cefa','#da70d6','#32cd32','#6495ed', 
+                                    '#ff69b4', '#ff7f50','#87cefa','#da70d6','#32cd32',
+                                    '#6495ed', '#ff69b4']"
                         :library="  {animation:{easing:'easeOutQuart'},
                         elements: {arc: {borderWidth: 0}},
                         }"

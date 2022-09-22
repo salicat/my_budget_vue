@@ -11,7 +11,7 @@
                     <h1>Variaciones en Gastos</h1>
                     <select v-model="track" v-on:change="track_months">
                         <option v-for="cat in cats.expenses" v-bind:key="cat.name">
-                        {{cat.category}}
+                        {{cat.category}} 
                         </option>
                     </select>
                     <area-chart :colors="['#00E8FF']"
@@ -248,7 +248,7 @@ export default {
         },
         track_months : function () {
             const d = new Date();
-            let month = d.getMonth();
+            let month = d.getMonth(); 
             this.month = month+1
 
 
