@@ -145,9 +145,9 @@ export default {
             month       : m,
         }
 
-        let one     = "https://mybudgetback.herokuapp.com/user/goals/track/" + data.username 
-        let two     = "https://mybudgetback.herokuapp.com/user/month_records/" + data.username + "/" + data.year + "/" + data.month
-        let three   = "https://mybudgetback.herokuapp.com/user/cats/" + data.username 
+        let one     = "http://localhost:8000/user/goals/track/" + data.username 
+        let two     = "http://localhost:8000/user/month_records/" + data.username + "/" + data.year + "/" + data.month
+        let three   = "http://localhost:8000/user/cats/" + data.username 
 
         const requestOne    = axios.get(one)
         const requestTwo    = axios.get(two)
@@ -197,7 +197,7 @@ export default {
                 final_date : this.final_date                
             }            
             axios
-            .post("https://mybudgetback.herokuapp.com/user/goals/set/", data)
+            .post("https://localhost:8000/user/goals/set/", data)
             .then((result) => {
                 window.location.reload(); 
             })            
@@ -210,7 +210,7 @@ export default {
             }
             var self = this;
             axios
-            .put("https://mybudgetback.herokuapp.com/user/goals/update", data)
+            .put("http://localhost:8000/user/goals/update", data)
             .then((result) => {    
                 window.location.reload();          
             })
@@ -221,7 +221,7 @@ export default {
                 username : this.username
             }            
             axios
-            .delete("https://mybudgetback.herokuapp.com/user/goals/delete", {data})
+            .delete("http://localhost:8000/user/goals/delete", {data})
             .then((result) => {        
                 alert(data.name + " borrado")
                 window.location.reload();                       
@@ -232,50 +232,3 @@ export default {
 }
 </script>
 
-<style>
-.Goals{
-    background: rgb(0, 0, 0);
-    color: rgb(255, 255, 255);
-}
-.crear_metas input, select{
-    color:#E5E7E9;
-    background-color:#000000;
-}
-.columnas {
-    color: rgb(0, 107, 107);
-    padding: 5px;
-    font-size: 90%;
-}
-.titulos{
-    color: rgb(0, 107, 107);
-    font-weight: 100;
-    text-align: left;
-    padding: 4px ;
-    font-weight: bold;
-    font-size: 0.9em;
-}
-input{
-    color:#E5E7E9;
-    background-color:#000000;
-}
-table{
-    border-collapse:separate; 
-    border-spacing:1em;
-}
-tr{
-    padding-bottom: 1%;
-}
-td {
-  padding-left: 1%;
-  font-weight: 300;
-}
-.goo{
-    color: #79FF00;
-}
-.act{
-    color: #00E8FF; 
-}
-.pas{
-    color:#FF8600;
-}
-</style>

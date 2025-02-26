@@ -34,10 +34,10 @@
                                             border:1px solid rgb(0, 107, 107); "> 
                 <b-row>
                    <h2 class ="act">Registrar Transaccion</h2><br>
-                    <p>Selecciona tipo de Transaccion</p>
                 </b-row>               
                 <b-row>
                     <b-col cols="10">
+                        <p>Selecciona tipo de Transaccion</p>
                         <b-form-select v-model ="type" style="background-color:black; color: white;">    
                             <option value= "incomes"> Ingreso </option>
                             <option value= "expenses"> Egreso </option>
@@ -80,6 +80,10 @@
                         <p>Ingresa el valor</p>
                         <b-form-input placeholder="0.00" v-model ="value" style="background-color:black; color: white;"> </b-form-input><br>            
                     </b-col>
+                    <b-col cols="7">
+                        <p>Elige la fecha del registro</p>
+                        <b-form-datepicker id="datepicker" v-model="day" size="sm" dark="true"></b-form-datepicker> <br>
+                    </b-col>
                     <b-col cols="8">
                         <b-button v-on:click="save_reg" variant="dark"> Guardar Registro </b-button>            
                     </b-col>
@@ -103,6 +107,9 @@
                         <select v-model="year" style="background-color:black; color: white;">
                             <option value="2021"> 2021 </option>
                             <option value="2022"> 2022 </option>
+                            <option value="2023"> 2023 </option>
+                            <option value="2024"> 2024 </option>
+                            <option value="2025"> 2025 </option>
                         </select>
                     </b-col>
                     <b-col cols="6" >
@@ -153,6 +160,7 @@
 </template>
 <script>
 import axios from "axios";
+import { cat } from "shelljs";
 
 
 export default {
@@ -162,6 +170,7 @@ export default {
         return {
             username    : localStorage.getItem('current_username'),
             category    : "",
+            day         : "",
             type        : "",
             descripcion : "",
             value       : 0,
@@ -174,7 +183,7 @@ export default {
             track       : undefined,
             alertas     : [],
             datos       : [],
-            year        : [2021, 2022],
+            year        : [2021, 2022, 2023, 2024, 2025],
             meses       : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 
                         'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 
                         'Noviembre', 'Diciembre']            
@@ -184,7 +193,7 @@ export default {
             this.username = localStorage.getItem("current_username");
             var self = this;            
             axios            
-            .get("https://mybudgetback.herokuapp.com/user/cats/" + this.username)
+            .get("http://localhost:8000/user/cats/" + this.username)
             .then((response) => {                
                 self.cats = response.data;                
             })            
@@ -201,9 +210,9 @@ export default {
             }  
             var self = this  
             axios
-            .get("https://mybudgetback.herokuapp.com/user/month_records/" + data.username + "/" + data.year + "/" + data.month)
+            .get("http://localhost:8000/user/month_records/" + data.username + "/" + data.year + "/" + data.month)
             .then((response) => {
-                self.registers = response.data
+                self.registers = response.data.sort((a, b) => new Date(a.date) - new Date(b.date));
             })  
             .catch((error) => {
             alert(error + username + " ERROR en el server!")
@@ -212,13 +221,14 @@ export default {
         save_reg: function () {
             var data = {
                 username    : this.username,
+                date        : this.day,
                 type        : this.type,
                 category    : this.category,
                 description : this.descripcion,
                 value       : this.value
             }
             axios
-            .post("https://mybudgetback.herokuapp.com/user/register/", data)
+            .post("http://localhost:8000/user/register/", data)
             .then((response) => {   
                 window.location.reload();         
             })
@@ -239,7 +249,7 @@ export default {
             var self = this;
             if(confirm("Eliminar registros afectara otros datos en la aplicación")){
                 axios
-                .delete("https://mybudgetback.herokuapp.com/user/records/delete/", {data})
+                .delete("http://localhost:8000/user/records/delete/", {data})
                 .then((response) => {
                     alert("Regristos borrados " + response.data)
                     window.location.reload()
@@ -257,9 +267,10 @@ export default {
                 month       : this.month,
                 category    : this.track
             }
+            console.log(data.month)
             var self = this
             axios
-            .get("https://mybudgetback.herokuapp.com/user/track/"+data.username + "/" + data.month + "/" + data.category)
+            .get("http://localhost:8000/user/track/"+ data.username + "/" + 2025 + "/" + data.month + "/" + data.category)
             .then((response) => {
                 self.datos = response.data
             })
@@ -268,29 +279,3 @@ export default {
 }
 
 </script>
-<style>
-.goo{
-    color: #79FF00;
-}
-.bad{
-    color: #FF00D5;
-}
-.act{
-    color: #00E8FF; 
-}
-.pas{
-    color:#FF8600;
-}
-table{
-    border-collapse:separate; 
-    border-spacing:1em;
-}
-tr{
-    padding-bottom: 1%;
-}
-td {
-  padding-left: 1%;
-  font-weight: 300;
-  text-align: left;
-}
-</style>

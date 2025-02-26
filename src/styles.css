@@ -1,0 +1,255 @@
+#SingUp{
+    height: 80%;
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#sidebar{
+    width: 15vw;
+    
+}
+.crea_user{
+    padding: 2%;
+    display: flex;
+    flex-direction: column;
+    max-width: 290px;
+    max-height: 600px;    
+    align-items: center;
+    border-radius: 10px;    
+    box-shadow: 10px 10px 45px 5px rgb(107, 70, 0);
+}
+.crea_user form{
+    width: 90%;
+}
+.crea_user input{
+    height: 40px;
+    width: 90%;
+    box-sizing: border-box;
+    padding: 10px 20px;
+    margin: 5px 0;
+    border: 1px solid #383747;
+    background-color: #181818;
+    color: #a0a0a0;    
+}
+.crea_user button{
+    height: 40px;
+    width: 40%;
+    color: #ffffff;
+    background: #000000;
+    border-radius: 12px;
+    padding: 10 px 25px;
+    margin:5px 0;
+    border: 1px solid rgba(1, 98, 98);
+}
+.crea_user button:hover{
+    color: rgb(106, 173, 4);
+    box-shadow: 5px 5px 15px 5px rgb(7, 107, 0);
+}
+.back{
+    color: rgb(255, 255, 255);
+}
+h1{
+    color: #00E8FF;
+  }
+  .botones{
+    align-content: center;
+  }
+  body{
+    background-color: black;
+}
+.modal{
+    background-color: black;
+    color: white;
+    padding: 3%; 
+    border:1px solid rgb(0, 107, 107);
+}
+.nombres{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 2em;
+}
+.progres{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.bar{
+    position: relative;
+    width: 80%;
+    height: 25px;
+    border-radius: 15px;
+    overflow: hidden;
+    background-color: black;
+    border-bottom: 1px solid rgb(0, 107, 107);
+}
+.perce_goo {
+    color: rgba(255, 69, 2, 0.692);
+    position: absolute;
+    top: 1px; left: 1px; right: 1px;
+    display: block;
+    height: 100%;
+    border-radius: 15px;
+    background-color:#00E8FF;
+    background-size: 25px 25px;
+}
+.perce.maso{
+    color: rgb(255, 226, 226);
+    position: absolute;
+    top: 1px; left: 1px; right: 1px;
+    display: block;
+    height: 100%;
+    border-radius: 15px;
+    background-color:#ff7700;
+    background-size: 25px 25px;
+}
+.perce_ok{
+    color: black;
+    position: absolute;
+    top: 1px; left: 1px; right: 1px;
+    display: block;
+    height: 100%;
+    border-radius: 15px;
+    background-color:#09ff00;
+    background-size: 25px 25px;
+}
+.perce_bad{    
+    color: white;
+    position: absolute;
+    top: 1px; left: 1px; right: 1px;
+    display: block;
+    height: 100%;
+    border-radius: 15px;
+    background-color:#ff0000;
+    box-shadow: 10px 10px 25px rgb(255, 0, 0);
+    background-size: 25px 25px;
+}
+.pagok{     
+    text-align: center;
+    background-color: #79FF00;
+    color: rgb(0, 0, 0);
+    border-radius: 60px; 
+}
+.pagofail{
+    text-align: center;
+    background-color: #FF00D5;
+    color: white;
+    border-radius: 60px; 
+}
+.goo{
+    color: #79FF00;
+}
+.bad{
+    color: #FF00D5;
+    font-weight: bold;
+}
+.act{
+    color: #00E8FF; 
+}
+.pas{
+    color:#FF8600;
+}
+.goo{
+    color: #79FF00;
+}
+.bad{
+    color: #FF00D5;
+}
+.act{
+    color: #00E8FF; 
+}
+.pas{
+    color:#FF8600;
+}
+table{
+    border-collapse:separate; 
+    border-spacing:1em;
+}
+tr{
+    padding-bottom: 1%;
+}
+td {
+  padding-left: 1%;
+  font-weight: 300;
+  text-align: left;
+}
+.Goals{
+    background: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+}
+.crear_metas input, select{
+    color:#E5E7E9;
+    background-color:#000000;
+}
+.columnas {
+    color: rgb(0, 107, 107);
+    padding: 5px;
+    font-size: 90%;
+}
+.titulos{
+    color: rgb(0, 107, 107);
+    font-weight: 100;
+    text-align: left;
+    padding: 4px ;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+input{
+    color:#E5E7E9;
+    background-color:#000000;
+}
+table{
+    border-collapse:separate; 
+    border-spacing:1em;
+}
+tr{
+    padding-bottom: 1%;
+}
+td {
+  padding-left: 1%;
+  font-weight: 300;
+}
+.goo{
+    color: #79FF00;
+}
+.act{
+    color: #00E8FF; 
+}
+.pas{
+    color:#FF8600;
+}
+body{
+    background-color: black;
+  }
+  .input{ 
+    background-color:black; 
+    color:white;
+    margin-top:5%;
+  }
+  .goo{
+    color: #79FF00;
+}
+.bad{
+    color: #FF00D5;
+}
+.act{
+    color: #00E8FF; 
+}
+.pas{
+    color:#FF8600;
+}
+.titulos{
+    font-weight: bold;
+}
+td:nth-child(2){
+    text-align: right;
+}
+table{
+    justify-content: space-between;
+}
+button{
+    background-color: black ;
+    color: white;
+}
+  

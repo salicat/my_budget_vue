@@ -207,9 +207,8 @@
                         <h2 class="bad"> ${{Number(t_bud).toLocaleString()}} </h2>
                         <table class="tab_egresos">
                             <tr class = "columnas">
-                                <th>  </th>
                                 <th> Presupuesto </th>
-                            <tr>                           
+                            </tr>                           
                             <tr v-for="cat in cats.expenses" :key="cat.category">                    
                                 <td class="titulos"> {{cat.category}} </td> 
                                 <!-- <td v-bind:class="{alert: cat.value > cat.budget}"> ${{cat.value}}</td> -->
@@ -291,7 +290,7 @@ export default {
         this.username = this.$route.params.username
         let self = this        
         axios
-        .get("https://mybudgetback.herokuapp.com/user/cats/" + this.username)
+        .get("http://localhost:8000/user/cats/" + this.username)
         .then((result) => {
             console.log(result.data)
             self.cats = result.data;
@@ -322,7 +321,7 @@ export default {
                 }        
             let self = this
             axios
-            .post("https://mybudgetback.herokuapp.com/user/create/category/", data)
+            .post("http://localhost:8000/user/create/category/", data)
             .then((response) => {
                 window.location.reload()
             })
@@ -337,11 +336,12 @@ export default {
                 budget      : this.budget,
                 value       : this.value
             }
+            console.log(data.category)
+            console.log(data.value)
             axios
-            .patch("https://mybudgetback.herokuapp.com/user/modify/category/", data)
+            .patch("http://localhost:8000/user/modify/category/", data)
             .then((response) => {
-                window.location.reload()
-
+                
             })
             .catch((error) =>{
                 alert(error.response.data)                                                         
@@ -356,7 +356,7 @@ export default {
             console.log(data.category + data.type + data.username)
             let self = this
             axios
-            .delete("https://mybudgetback.herokuapp.com/user/delete/category/", {data})
+            .delete("http://localhost:8000/user/delete/category/", {data})
             .then((response) => { 
                 window.location.reload();
             })
@@ -368,31 +368,3 @@ export default {
     
 }
 </script>
-<style>
-.goo{
-    color: #79FF00;
-}
-.bad{
-    color: #FF00D5;
-}
-.act{
-    color: #00E8FF; 
-}
-.pas{
-    color:#FF8600;
-}
-.titulos{
-    font-weight: bold;
-}
-td:nth-child(2){
-    text-align: right;
-}
-table{
-    justify-content: space-between;
-}
-button{
-    background-color: black ;
-    color: white;
-}
-
-</style>

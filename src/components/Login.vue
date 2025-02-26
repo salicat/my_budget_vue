@@ -54,8 +54,9 @@ export default {
   methods: {
     processAuthUser : function () {
       var self = this;
+      console.log("autenticando...")
       axios
-      .post("https://mybudgetback.herokuapp.com/user/auth/", self.user_in, { headers: {} })
+      .post("http://localhost:8000/user/auth/", self.user_in, { headers: {} })
       .then ((response) => {
         alert("Bienvendo " + self.user_in.username);
         self.$emit("log-in", self.user_in.username)        
@@ -78,13 +79,3 @@ export default {
 }
 </script>
 
-<style>
-body{
-  background-color: black;
-}
-.input{ 
-  background-color:black; 
-  color:white;
-  margin-top:5%;
-}
-</style>

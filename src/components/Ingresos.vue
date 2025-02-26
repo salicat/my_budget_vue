@@ -107,8 +107,8 @@ export default {
             month       : month_cons
         }               
         
-        let one     = "https://mybudgetback.herokuapp.com/user/month_records/" + data.username + "/" + data.year + "/" + data.month
-        let two     = "https://mybudgetback.herokuapp.com/user/cats/" + data.username
+        let one     = "http://localhost:8000/user/month_records/" + data.username + "/" + data.year + "/" + data.month
+        let two     = "http://localhost:8000/user/cats/" + data.username
 
         const requestOne    = axios.get(one)
         const requestTwo    = axios.get(two)
@@ -176,9 +176,9 @@ export default {
                 category    : this.category
             }
 
-            let one     = "https://mybudgetback.herokuapp.com/user/month_records/" + datos.username + "/" + datos.year + "/" + datos.month
-            let two     = "https://mybudgetback.herokuapp.com/user/cats/" + datos.username
-            let three   = "https://mybudgetback.herokuapp.com/user/track/" + datos.username + "/" + datos.month + "/" + datos.category
+            let one     = "http://localhost:8000/user/month_records/" + datos.username + "/" + datos.year + "/" + datos.month
+            let two     = "http://localhost:8000/user/cats/" + datos.username
+            let three   = "http://localhost:8000/user/track/" + datos.username + "/" + datos.month + "/" + datos.category
    
             const requestOne    = axios.get(one)
             const requestTwo    = axios.get(two)
@@ -195,5 +195,3 @@ export default {
     }
 }
 </script>
-<style>
-</style>

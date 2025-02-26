@@ -1,7 +1,6 @@
 import vueRouter from 'vue-router'
 import Login from './components/Login'
 import App from './App'
-import Home from './components/Home'
 import Resumen from './components/Resumen'
 import Registros from  './components/Registros'
 import Metas from './components/Metas'
@@ -17,11 +16,6 @@ const router = new vueRouter({
             path:       '/',
             name:       "root",
             component:  App
-        },
-        {
-            path:       '/Home',
-            name:       "Home",
-            component:   Home
         },
         {
             path:       '/user/create',

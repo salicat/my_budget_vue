@@ -232,7 +232,7 @@ export default {
             months      : [],
             exp_pie     : [],
             anio        : undefined,
-            anios       : [2021, 2022],
+            anios       : [2021, 2022, 2023, 2024, 2025],
             meses       : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 
                             'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 
                             'Noviembre', 'Diciembre']                        
@@ -249,6 +249,7 @@ export default {
         var y = today.getFullYear();
         this.anio = y
 
+
         var d = String(today.getDate()).padStart(2, '0');
         this.curr_day = d
 
@@ -258,12 +259,14 @@ export default {
             username    : this.$route.params.username,
             year        : this.anio,
             month       : month_cons
-        }               
-        
-        let one     = "https://mybudgetback.herokuapp.com/user/month_records/" + data.username + "/" + data.year + "/" + data.month
-        let two     = "https://mybudgetback.herokuapp.com/user/cats/" + data.username
-        let three   = "https://mybudgetback.herokuapp.com/user/month_regs/" + data.username + "/" +  data.year + "/" + data.month
-        let four    = "https://mybudgetback.herokuapp.com/user/cats/" + data.username + "/" + data.year + "/" + data.month
+        }                
+
+        console.log(this.anio)
+
+        let one     = "http://localhost:8000/user/month_records/" + data.username + "/" + data.year + "/" + data.month
+        let two     = "http://localhost:8000/user/cats/" + data.username
+        let three   = "http://localhost:8000/user/month_regs/" + data.username + "/" +  data.year + "/" + data.month
+        let four    = "http://localhost:8000/user/cats/" + data.username + "/" + data.year + "/" + data.month
         
         const requestOne    = axios.get(one)
         const requestTwo    = axios.get(two)
@@ -350,9 +353,10 @@ export default {
                 month       : month_cons
             }
 
-            let one     = "https://mybudgetback.herokuapp.com/user/month_records/" + datos.username + "/" + datos.year + "/" + datos.month
-            let two     = "https://mybudgetback.herokuapp.com/user/month_regs/"+ datos.username + "/" + datos.year + "/" +  datos.month
-            let four    = "https://mybudgetback.herokuapp.com/user/cats/" + datos.username + "/" +datos.year + "/" + datos.month
+
+            let one     = "http://localhost:8000/user/month_records/" + datos.username + "/" + datos.year + "/" + datos.month
+            let two     = "http://localhost:8000/user/month_regs/"+ datos.username + "/" + datos.year + "/" +  datos.month
+            let four    = "http://localhost:8000/user/cats/" + datos.username + "/" +datos.year + "/" + datos.month
    
             const requestOne    = axios.get(one)
             const requestTwo    = axios.get(two)
@@ -423,100 +427,3 @@ export default {
     }     
 }
 </script>
-<style>
-body{
-    background-color: black;
-}
-.modal{
-    background-color: black;
-    color: white;
-    padding: 3%; 
-    border:1px solid rgb(0, 107, 107);
-}
-.nombres{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding-top: 2em;
-}
-.progres{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-.bar{
-    position: relative;
-    width: 80%;
-    height: 25px;
-    border-radius: 15px;
-    overflow: hidden;
-    background-color: black;
-    border-bottom: 1px solid rgb(0, 107, 107);
-}
-.perce_goo {
-    color: rgba(255, 69, 2, 0.692);
-    position: absolute;
-    top: 1px; left: 1px; right: 1px;
-    display: block;
-    height: 100%;
-    border-radius: 15px;
-    background-color:#00E8FF;
-    background-size: 25px 25px;
-}
-.perce.maso{
-    color: rgb(255, 226, 226);
-    position: absolute;
-    top: 1px; left: 1px; right: 1px;
-    display: block;
-    height: 100%;
-    border-radius: 15px;
-    background-color:#ff7700;
-    background-size: 25px 25px;
-}
-.perce_ok{
-    color: black;
-    position: absolute;
-    top: 1px; left: 1px; right: 1px;
-    display: block;
-    height: 100%;
-    border-radius: 15px;
-    background-color:#09ff00;
-    background-size: 25px 25px;
-}
-.perce_bad{    
-    color: white;
-    position: absolute;
-    top: 1px; left: 1px; right: 1px;
-    display: block;
-    height: 100%;
-    border-radius: 15px;
-    background-color:#ff0000;
-    box-shadow: 10px 10px 25px rgb(255, 0, 0);
-    background-size: 25px 25px;
-}
-.pagok{     
-    text-align: center;
-    background-color: #79FF00;
-    color: rgb(0, 0, 0);
-    border-radius: 60px; 
-}
-.pagofail{
-    text-align: center;
-    background-color: #FF00D5;
-    color: white;
-    border-radius: 60px; 
-}
-.goo{
-    color: #79FF00;
-}
-.bad{
-    color: #FF00D5;
-    font-weight: bold;
-}
-.act{
-    color: #00E8FF; 
-}
-.pas{
-    color:#FF8600;
-}
-</style>
