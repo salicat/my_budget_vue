@@ -55,7 +55,7 @@ export default {
     processAuthUser : function () {
 		var self = this;
 		var url;
-        if (process.env.NODE_ENV === 'production') {
+        if (process.env.NODE_ENV === 'development') {
             url = "https://front-24qp.onrender.com";  // URL de producción
         } else {
             url = "http://localhost:8000";  // URL local

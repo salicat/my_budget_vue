@@ -108,7 +108,7 @@ export default {
         }               
         
         var url;
-        if (process.env.NODE_ENV === 'production') {
+        if (process.env.NODE_ENV === 'development') {
             url = "https://front-24qp.onrender.com";  // URL de producción
         } else {
             url = "http://localhost:8000";  // URL local
@@ -182,7 +182,7 @@ export default {
                 category    : this.category
             }
             var url;
-            if (process.env.NODE_ENV === 'production') {
+            if (process.env.NODE_ENV === 'development') {
                 url = "https://front-24qp.onrender.com";  // URL de producción
             } else {
                 url = "http://localhost:8000";  // URL local

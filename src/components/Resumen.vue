@@ -239,6 +239,7 @@ export default {
         }
     },
     created: function(){                       
+        console.log(process.env.NODE_ENV);
 
         const today = new Date()
         today.toLocaleString('default', { month: 'long' })
@@ -262,7 +263,7 @@ export default {
         }                
 
         var url;
-            if (process.env.NODE_ENV === 'production') {
+            if (process.env.NODE_ENV === 'development') {
                 url = "https://front-24qp.onrender.com";  // URL de producción
             } else {
                 url = "http://localhost:8000";  // URL local
@@ -358,7 +359,7 @@ export default {
                 month       : month_cons
             }
             var url;
-            if (process.env.NODE_ENV === 'production') {
+            if (process.env.NODE_ENV === 'development') {
                 url = "https://front-24qp.onrender.com";  // URL de producción
             } else {
                 url = "http://localhost:8000";  // URL local

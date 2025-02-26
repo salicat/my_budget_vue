@@ -193,7 +193,7 @@ export default {
             this.username = localStorage.getItem("current_username");
             var self = this;            
             var url;
-            if (process.env.NODE_ENV === 'production') {
+            if (process.env.NODE_ENV === 'development') {
                 url = "https://front-24qp.onrender.com";  // URL de producción
             } else {
                 url = "http://localhost:8000";  // URL local
@@ -216,7 +216,7 @@ export default {
             month       : month_cons
             }  
             var url;
-            if (process.env.NODE_ENV === 'production') {
+            if (process.env.NODE_ENV === 'development') {
                 url = "https://front-24qp.onrender.com";  // URL de producción
             } else {
                 url = "http://localhost:8000";  // URL local
@@ -241,7 +241,7 @@ export default {
                 value       : this.value
             }
             var url;
-            if (process.env.NODE_ENV === 'production') {
+            if (process.env.NODE_ENV === 'development') {
                 url = "https://front-24qp.onrender.com";  // URL de producción
             } else {
                 url = "http://localhost:8000";  // URL local
@@ -267,7 +267,7 @@ export default {
             }
             var self = this;
             var url;
-            if (process.env.NODE_ENV === 'production') {
+            if (process.env.NODE_ENV === 'development') {
                 url = "https://front-24qp.onrender.com";  // URL de producción
             } else {
                 url = "http://localhost:8000";  // URL local
@@ -295,7 +295,7 @@ export default {
             console.log(data.month)
             var self = this
             var url;
-            if (process.env.NODE_ENV === 'production') {
+            if (process.env.NODE_ENV === 'development') {
                 url = "https://front-24qp.onrender.com";  // URL de producción
             } else {
                 url = "http://localhost:8000";  // URL local
