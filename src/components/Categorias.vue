@@ -289,12 +289,10 @@ export default {
     created: function(){ 
         this.username = this.$route.params.username
         let self = this   
-        var url;
-        if (process.env.NODE_ENV === 'development') {
-            url = "https://front-24qp.onrender.com";  // URL de producción
-        } else {
-            url = "http://localhost:8000";  // URL local
-        }     
+        const url = window.location.hostname.includes("localhost") 
+            ? "http://localhost:8000" 
+            : "https://back-24qp.onrender.com";
+     
         axios
         .get(`${url}/user/cats/` + this.username)
         .then((result) => {
@@ -326,12 +324,10 @@ export default {
                 day         : this.day          
                 }        
             let self = this
-            var url;
-            if (process.env.NODE_ENV === 'development') {
-                url = "https://front-24qp.onrender.com";  // URL de producción
-            } else {
-                url = "http://localhost:8000";  // URL local
-            }
+            const url = window.location.hostname.includes("localhost") 
+            ? "http://localhost:8000" 
+            : "https://back-24qp.onrender.com";
+
             axios
             .post(`${url}/user/create/category/`, data)
             .then((response) => {
@@ -348,12 +344,10 @@ export default {
                 budget      : this.budget,
                 value       : this.value
             }
-            var url;
-            if (process.env.NODE_ENV === 'development') {
-                url = "https://front-24qp.onrender.com";  // URL de producción
-            } else {
-                url = "http://localhost:8000";  // URL local
-            }
+            const url = window.location.hostname.includes("localhost") 
+            ? "http://localhost:8000" 
+            : "https://back-24qp.onrender.com";
+
             axios
             .patch(`${url}/user/modify/category/`, data)
             .then((response) => {
@@ -369,12 +363,10 @@ export default {
                 type        : this.type,
                 username    : this.$route.params.username
             }
-            var url;
-            if (process.env.NODE_ENV === 'development') {
-                url = "https://front-24qp.onrender.com";  // URL de producción
-            } else {
-                url = "http://localhost:8000";  // URL local
-            }
+            const url = window.location.hostname.includes("localhost") 
+            ? "http://localhost:8000" 
+            : "https://back-24qp.onrender.com";
+
             let self = this
             axios
             .delete(`${url}/user/delete/category/`, {data})

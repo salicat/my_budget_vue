@@ -144,12 +144,10 @@ export default {
             year        : y,
             month       : m,
         }
-        var url;
-        if (process.env.NODE_ENV === 'development') {
-            url = "https://front-24qp.onrender.com";  // URL de producción
-        } else {
-            url = "http://localhost:8000";  // URL local
-        }
+        const url = window.location.hostname.includes("localhost") 
+            ? "http://localhost:8000" 
+            : "https://back-24qp.onrender.com";
+
 
         let one     = `${url}/user/goals/track/` + data.username 
         let two     = `${url}/user/month_records/` + data.username + "/" + data.year + "/" + data.month
@@ -202,12 +200,10 @@ export default {
                 final_value : this.final_value,
                 final_date : this.final_date                
             }            
-            var url;
-        if (process.env.NODE_ENV === 'development') {
-            url = "https://front-24qp.onrender.com";  // URL de producción
-        } else {
-            url = "http://localhost:8000";  // URL local
-        }
+            const url = window.location.hostname.includes("localhost") 
+            ? "http://localhost:8000" 
+            : "https://back-24qp.onrender.com";
+
             axios
             .post(`${url}/user/goals/set/`, data)
             .then((result) => {
@@ -221,12 +217,10 @@ export default {
                 value : this.value
             }
             var self = this;
-            var url;
-                if (process.env.NODE_ENV === 'development') {
-                    url = "https://front-24qp.onrender.com";  // URL de producción
-                } else {
-                    url = "http://localhost:8000";  // URL local
-                }
+            const url = window.location.hostname.includes("localhost") 
+            ? "http://localhost:8000" 
+            : "https://back-24qp.onrender.com";
+
             axios
             .put(`${url}/user/goals/update`, data)
             .then((result) => {    
@@ -238,12 +232,10 @@ export default {
                 name: this.name,
                 username : this.username
             }  
-            var url;
-                if (process.env.NODE_ENV === 'development') {
-                    url = "https://front-24qp.onrender.com";  // URL de producción
-                } else {
-                    url = "http://localhost:8000";  // URL local
-                }          
+            const url = window.location.hostname.includes("localhost") 
+            ? "http://localhost:8000" 
+            : "https://back-24qp.onrender.com";
+         
             axios
             .delete(`${url}/user/goals/delete`, {data})
             .then((result) => {        

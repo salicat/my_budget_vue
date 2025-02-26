@@ -262,12 +262,10 @@ export default {
             month       : month_cons
         }                
 
-        var url;
-            if (process.env.NODE_ENV === 'development') {
-                url = "https://front-24qp.onrender.com";  // URL de producción
-            } else {
-                url = "http://localhost:8000";  // URL local
-            }
+        const url = window.location.hostname.includes("localhost") 
+            ? "http://localhost:8000" 
+            : "https://back-24qp.onrender.com";
+
 
         let one     = `${url}/user/month_records/` + data.username + "/" + data.year + "/" + data.month
         let two     = `${url}/user/cats/` + data.username
@@ -358,12 +356,10 @@ export default {
                 year        : this.anio,
                 month       : month_cons
             }
-            var url;
-            if (process.env.NODE_ENV === 'development') {
-                url = "https://front-24qp.onrender.com";  // URL de producción
-            } else {
-                url = "http://localhost:8000";  // URL local
-            }
+            const url = window.location.hostname.includes("localhost") 
+            ? "http://localhost:8000" 
+            : "https://back-24qp.onrender.com";
+
 
             let one     = `${url}/user/month_records/` + datos.username + "/" + datos.year + "/" + datos.month
             let two     = `${url}/user/month_regs/`+ datos.username + "/" + datos.year + "/" +  datos.month

@@ -35,13 +35,9 @@ export default {
                 username : this.username,
                 password : this.password 
             }
-            var url;
-
-            if (process.env.NODE_ENV === 'development') {
-                url = "https://front-24qp.onrender.com";  // URL de producción
-            } else {
-                url = "http://localhost:8000";  // URL local
-            }
+            const url = window.location.hostname.includes("localhost") 
+            ? "http://localhost:8000" 
+            : "https://back-24qp.onrender.com";
 
 
             if(confirm("No olvides tus datos no tenemos como recuperarlos XD")){
