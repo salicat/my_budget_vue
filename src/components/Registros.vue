@@ -192,8 +192,15 @@ export default {
         created: function() {
             this.username = localStorage.getItem("current_username");
             var self = this;            
+            var url;
+            if (process.env.NODE_ENV === 'production') {
+                url = "https://front-24qp.onrender.com";  // URL de producción
+            } else {
+                url = "http://localhost:8000";  // URL local
+            }
+
             axios            
-            .get("http://localhost:8000/user/cats/" + this.username)
+            .get(`${url}/user/cats/` + this.username)
             .then((response) => {                
                 self.cats = response.data;                
             })            
@@ -208,9 +215,15 @@ export default {
             year        : this.year,
             month       : month_cons
             }  
+            var url;
+            if (process.env.NODE_ENV === 'production') {
+                url = "https://front-24qp.onrender.com";  // URL de producción
+            } else {
+                url = "http://localhost:8000";  // URL local
+            }
             var self = this  
             axios
-            .get("http://localhost:8000/user/month_records/" + data.username + "/" + data.year + "/" + data.month)
+            .get(`${url}/user/month_records/` + data.username + "/" + data.year + "/" + data.month)
             .then((response) => {
                 self.registers = response.data.sort((a, b) => new Date(a.date) - new Date(b.date));
             })  
@@ -227,8 +240,14 @@ export default {
                 description : this.descripcion,
                 value       : this.value
             }
+            var url;
+            if (process.env.NODE_ENV === 'production') {
+                url = "https://front-24qp.onrender.com";  // URL de producción
+            } else {
+                url = "http://localhost:8000";  // URL local
+            }
             axios
-            .post("http://localhost:8000/user/register/", data)
+            .post(`${url}/user/register/`, data)
             .then((response) => {   
                 window.location.reload();         
             })
@@ -247,9 +266,15 @@ export default {
                 id : this.selected
             }
             var self = this;
+            var url;
+            if (process.env.NODE_ENV === 'production') {
+                url = "https://front-24qp.onrender.com";  // URL de producción
+            } else {
+                url = "http://localhost:8000";  // URL local
+            }
             if(confirm("Eliminar registros afectara otros datos en la aplicación")){
                 axios
-                .delete("http://localhost:8000/user/records/delete/", {data})
+                .delete(`${url}/user/records/delete/`, {data})
                 .then((response) => {
                     alert("Regristos borrados " + response.data)
                     window.location.reload()
@@ -269,8 +294,14 @@ export default {
             }
             console.log(data.month)
             var self = this
+            var url;
+            if (process.env.NODE_ENV === 'production') {
+                url = "https://front-24qp.onrender.com";  // URL de producción
+            } else {
+                url = "http://localhost:8000";  // URL local
+            }
             axios
-            .get("http://localhost:8000/user/track/"+ data.username + "/" + 2025 + "/" + data.month + "/" + data.category)
+            .get(`${url}/user/track/`+ data.username + "/" + 2025 + "/" + data.month + "/" + data.category)
             .then((response) => {
                 self.datos = response.data
             })

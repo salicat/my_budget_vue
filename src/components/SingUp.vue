@@ -35,9 +35,18 @@ export default {
                 username : this.username,
                 password : this.password
             }
+            var url;
+
+            if (process.env.NODE_ENV === 'production') {
+                url = "https://front-24qp.onrender.com";  // URL de producción
+            } else {
+                url = "http://localhost:8000";  // URL local
+            }
+
+
             if(confirm("No olvides tus datos no tenemos como recuperarlos XD")){
                 axios
-                .post("http://localhost:8000/user/create/", data)
+                .post(`${url}/user/create/`, data)
                 .then((response) => {                                     
                     alert("usuario creado con exito")   
                     this.$router.push({name:"root"})                             

@@ -53,20 +53,25 @@ export default {
   
   methods: {
     processAuthUser : function () {
-      var self = this;
-      console.log("autenticando...")
-      axios
-      .post("http://localhost:8000/user/auth/", self.user_in, { headers: {} })
-      .then ((response) => {
-        alert("Bienvendo " + self.user_in.username);
-        self.$emit("log-in", self.user_in.username)        
-      })
-      .catch((error) => {
-        if (error.response.status == "404")
-          alert("ERROR 404: Usuario no encontrado");
-        if (error.response.status == "403")
-          alert("ERROR 403 Contraseña errada")
-      })
+		var self = this;
+		var url;
+        if (process.env.NODE_ENV === 'production') {
+            url = "https://front-24qp.onrender.com";  // URL de producción
+        } else {
+            url = "http://localhost:8000";  // URL local
+        }
+		axios
+		.post(`${url}/user/auth/`, self.user_in, { headers: {} })
+		.then ((response) => {
+			alert("Bienvendo " + self.user_in.username);
+			self.$emit("log-in", self.user_in.username)        
+		})
+		.catch((error) => {
+			if (error.response.status == "404")
+			alert("ERROR 404: Usuario no encontrado");
+			if (error.response.status == "403")
+			alert("ERROR 403 Contraseña errada")
+		})
     },
     to_singup : function (){           
       if (this.$route.name != "SingUp"){

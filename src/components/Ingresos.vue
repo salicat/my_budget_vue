@@ -107,8 +107,14 @@ export default {
             month       : month_cons
         }               
         
-        let one     = "http://localhost:8000/user/month_records/" + data.username + "/" + data.year + "/" + data.month
-        let two     = "http://localhost:8000/user/cats/" + data.username
+        var url;
+        if (process.env.NODE_ENV === 'production') {
+            url = "https://front-24qp.onrender.com";  // URL de producción
+        } else {
+            url = "http://localhost:8000";  // URL local
+        }
+        let one     = `${url}/user/month_records/` + data.username + "/" + data.year + "/" + data.month
+        let two     = `${url}/user/cats/` + data.username
 
         const requestOne    = axios.get(one)
         const requestTwo    = axios.get(two)
@@ -175,10 +181,15 @@ export default {
                 month       : month_cons,
                 category    : this.category
             }
-
-            let one     = "http://localhost:8000/user/month_records/" + datos.username + "/" + datos.year + "/" + datos.month
-            let two     = "http://localhost:8000/user/cats/" + datos.username
-            let three   = "http://localhost:8000/user/track/" + datos.username + "/" + datos.month + "/" + datos.category
+            var url;
+            if (process.env.NODE_ENV === 'production') {
+                url = "https://front-24qp.onrender.com";  // URL de producción
+            } else {
+                url = "http://localhost:8000";  // URL local
+            }
+            let one     = `${url}/user/month_records/` + datos.username + "/" + datos.year + "/" + datos.month
+            let two     = `${url}/user/cats/` + datos.username
+            let three   = `${url}/user/track/` + datos.username + "/" + datos.month + "/" + datos.category
    
             const requestOne    = axios.get(one)
             const requestTwo    = axios.get(two)

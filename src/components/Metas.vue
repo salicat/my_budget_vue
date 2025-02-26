@@ -144,10 +144,16 @@ export default {
             year        : y,
             month       : m,
         }
+        var url;
+        if (process.env.NODE_ENV === 'production') {
+            url = "https://front-24qp.onrender.com";  // URL de producción
+        } else {
+            url = "http://localhost:8000";  // URL local
+        }
 
-        let one     = "http://localhost:8000/user/goals/track/" + data.username 
-        let two     = "http://localhost:8000/user/month_records/" + data.username + "/" + data.year + "/" + data.month
-        let three   = "http://localhost:8000/user/cats/" + data.username 
+        let one     = `${url}/user/goals/track/` + data.username 
+        let two     = `${url}/user/month_records/` + data.username + "/" + data.year + "/" + data.month
+        let three   = `${url}/user/cats/` + data.username 
 
         const requestOne    = axios.get(one)
         const requestTwo    = axios.get(two)
@@ -196,8 +202,14 @@ export default {
                 final_value : this.final_value,
                 final_date : this.final_date                
             }            
+            var url;
+        if (process.env.NODE_ENV === 'production') {
+            url = "https://front-24qp.onrender.com";  // URL de producción
+        } else {
+            url = "http://localhost:8000";  // URL local
+        }
             axios
-            .post("https://localhost:8000/user/goals/set/", data)
+            .post(`${url}/user/goals/set/`, data)
             .then((result) => {
                 window.location.reload(); 
             })            
@@ -209,8 +221,14 @@ export default {
                 value : this.value
             }
             var self = this;
+            var url;
+                if (process.env.NODE_ENV === 'production') {
+                    url = "https://front-24qp.onrender.com";  // URL de producción
+                } else {
+                    url = "http://localhost:8000";  // URL local
+                }
             axios
-            .put("http://localhost:8000/user/goals/update", data)
+            .put(`${url}/user/goals/update`, data)
             .then((result) => {    
                 window.location.reload();          
             })
@@ -219,9 +237,15 @@ export default {
             var data = {
                 name: this.name,
                 username : this.username
-            }            
+            }  
+            var url;
+                if (process.env.NODE_ENV === 'production') {
+                    url = "https://front-24qp.onrender.com";  // URL de producción
+                } else {
+                    url = "http://localhost:8000";  // URL local
+                }          
             axios
-            .delete("http://localhost:8000/user/goals/delete", {data})
+            .delete(`${url}/user/goals/delete`, {data})
             .then((result) => {        
                 alert(data.name + " borrado")
                 window.location.reload();                       

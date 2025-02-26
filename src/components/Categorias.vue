@@ -288,9 +288,15 @@ export default {
     },    
     created: function(){ 
         this.username = this.$route.params.username
-        let self = this        
+        let self = this   
+        var url;
+        if (process.env.NODE_ENV === 'production') {
+            url = "https://front-24qp.onrender.com";  // URL de producción
+        } else {
+            url = "http://localhost:8000";  // URL local
+        }     
         axios
-        .get("http://localhost:8000/user/cats/" + this.username)
+        .get(`${url}/user/cats/` + this.username)
         .then((result) => {
             console.log(result.data)
             self.cats = result.data;
@@ -320,8 +326,14 @@ export default {
                 day         : this.day          
                 }        
             let self = this
+            var url;
+            if (process.env.NODE_ENV === 'production') {
+                url = "https://front-24qp.onrender.com";  // URL de producción
+            } else {
+                url = "http://localhost:8000";  // URL local
+            }
             axios
-            .post("http://localhost:8000/user/create/category/", data)
+            .post(`${url}/user/create/category/`, data)
             .then((response) => {
                 window.location.reload()
             })
@@ -336,10 +348,14 @@ export default {
                 budget      : this.budget,
                 value       : this.value
             }
-            console.log(data.category)
-            console.log(data.value)
+            var url;
+            if (process.env.NODE_ENV === 'production') {
+                url = "https://front-24qp.onrender.com";  // URL de producción
+            } else {
+                url = "http://localhost:8000";  // URL local
+            }
             axios
-            .patch("http://localhost:8000/user/modify/category/", data)
+            .patch(`${url}/user/modify/category/`, data)
             .then((response) => {
                 
             })
@@ -353,10 +369,15 @@ export default {
                 type        : this.type,
                 username    : this.$route.params.username
             }
-            console.log(data.category + data.type + data.username)
+            var url;
+            if (process.env.NODE_ENV === 'production') {
+                url = "https://front-24qp.onrender.com";  // URL de producción
+            } else {
+                url = "http://localhost:8000";  // URL local
+            }
             let self = this
             axios
-            .delete("http://localhost:8000/user/delete/category/", {data})
+            .delete(`${url}/user/delete/category/`, {data})
             .then((response) => { 
                 window.location.reload();
             })

@@ -261,12 +261,17 @@ export default {
             month       : month_cons
         }                
 
-        console.log(this.anio)
+        var url;
+            if (process.env.NODE_ENV === 'production') {
+                url = "https://front-24qp.onrender.com";  // URL de producción
+            } else {
+                url = "http://localhost:8000";  // URL local
+            }
 
-        let one     = "http://localhost:8000/user/month_records/" + data.username + "/" + data.year + "/" + data.month
-        let two     = "http://localhost:8000/user/cats/" + data.username
-        let three   = "http://localhost:8000/user/month_regs/" + data.username + "/" +  data.year + "/" + data.month
-        let four    = "http://localhost:8000/user/cats/" + data.username + "/" + data.year + "/" + data.month
+        let one     = `${url}/user/month_records/` + data.username + "/" + data.year + "/" + data.month
+        let two     = `${url}/user/cats/` + data.username
+        let three   = `${url}/user/month_regs/` + data.username + "/" +  data.year + "/" + data.month
+        let four    = `${url}/user/cats/` + data.username + "/" + data.year + "/" + data.month
         
         const requestOne    = axios.get(one)
         const requestTwo    = axios.get(two)
@@ -352,11 +357,16 @@ export default {
                 year        : this.anio,
                 month       : month_cons
             }
+            var url;
+            if (process.env.NODE_ENV === 'production') {
+                url = "https://front-24qp.onrender.com";  // URL de producción
+            } else {
+                url = "http://localhost:8000";  // URL local
+            }
 
-
-            let one     = "http://localhost:8000/user/month_records/" + datos.username + "/" + datos.year + "/" + datos.month
-            let two     = "http://localhost:8000/user/month_regs/"+ datos.username + "/" + datos.year + "/" +  datos.month
-            let four    = "http://localhost:8000/user/cats/" + datos.username + "/" +datos.year + "/" + datos.month
+            let one     = `${url}/user/month_records/` + datos.username + "/" + datos.year + "/" + datos.month
+            let two     = `${url}/user/month_regs/`+ datos.username + "/" + datos.year + "/" +  datos.month
+            let four    = `${url}/user/cats/` + datos.username + "/" +datos.year + "/" + datos.month
    
             const requestOne    = axios.get(one)
             const requestTwo    = axios.get(two)
