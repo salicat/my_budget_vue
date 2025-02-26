@@ -56,7 +56,7 @@ export default {
 		var self = this;
 		const url = window.location.hostname.includes("localhost") 
             ? "http://localhost:8000" 
-            : "https://back-24qp.onrender.com";
+            : "https://my-budget-back.onrender.com";
 
 		axios
 		.post(`${url}/user/auth/`, self.user_in, { headers: {} })

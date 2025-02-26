@@ -291,7 +291,7 @@ export default {
         let self = this   
         const url = window.location.hostname.includes("localhost") 
             ? "http://localhost:8000" 
-            : "https://back-24qp.onrender.com";
+            : "https://my-budget-back.onrender.com";
      
         axios
         .get(`${url}/user/cats/` + this.username)
@@ -326,7 +326,7 @@ export default {
             let self = this
             const url = window.location.hostname.includes("localhost") 
             ? "http://localhost:8000" 
-            : "https://back-24qp.onrender.com";
+            : "https://my-budget-back.onrender.com";
 
             axios
             .post(`${url}/user/create/category/`, data)
@@ -346,7 +346,7 @@ export default {
             }
             const url = window.location.hostname.includes("localhost") 
             ? "http://localhost:8000" 
-            : "https://back-24qp.onrender.com";
+            : "https://my-budget-back.onrender.com";
 
             axios
             .patch(`${url}/user/modify/category/`, data)
@@ -365,7 +365,7 @@ export default {
             }
             const url = window.location.hostname.includes("localhost") 
             ? "http://localhost:8000" 
-            : "https://back-24qp.onrender.com";
+            : "https://my-budget-back.onrender.com";
 
             let self = this
             axios

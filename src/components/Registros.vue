@@ -194,7 +194,7 @@ export default {
             var self = this;            
             const url = window.location.hostname.includes("localhost") 
             ? "http://localhost:8000" 
-            : "https://back-24qp.onrender.com";
+            : "https://my-budget-back.onrender.com";
 
 
             axios            
@@ -215,7 +215,7 @@ export default {
             }  
             const url = window.location.hostname.includes("localhost") 
             ? "http://localhost:8000" 
-            : "https://back-24qp.onrender.com";
+            : "https://my-budget-back.onrender.com";
 
             var self = this  
             axios
@@ -238,7 +238,7 @@ export default {
             }
             const url = window.location.hostname.includes("localhost") 
             ? "http://localhost:8000" 
-            : "https://back-24qp.onrender.com";
+            : "https://my-budget-back.onrender.com";
 
             axios
             .post(`${url}/user/register/`, data)
@@ -262,7 +262,7 @@ export default {
             var self = this;
             const url = window.location.hostname.includes("localhost") 
             ? "http://localhost:8000" 
-            : "https://back-24qp.onrender.com";
+            : "https://my-budget-back.onrender.com";
 
             if(confirm("Eliminar registros afectara otros datos en la aplicación")){
                 axios
@@ -288,7 +288,7 @@ export default {
             var self = this
             const url = window.location.hostname.includes("localhost") 
             ? "http://localhost:8000" 
-            : "https://back-24qp.onrender.com";
+            : "https://my-budget-back.onrender.com";
 
             axios
             .get(`${url}/user/track/`+ data.username + "/" + 2025 + "/" + data.month + "/" + data.category)

@@ -146,7 +146,7 @@ export default {
         }
         const url = window.location.hostname.includes("localhost") 
             ? "http://localhost:8000" 
-            : "https://back-24qp.onrender.com";
+            : "https://my-budget-back.onrender.com";
 
 
         let one     = `${url}/user/goals/track/` + data.username 
@@ -202,7 +202,7 @@ export default {
             }            
             const url = window.location.hostname.includes("localhost") 
             ? "http://localhost:8000" 
-            : "https://back-24qp.onrender.com";
+            : "https://my-budget-back.onrender.com";
 
             axios
             .post(`${url}/user/goals/set/`, data)
@@ -219,7 +219,7 @@ export default {
             var self = this;
             const url = window.location.hostname.includes("localhost") 
             ? "http://localhost:8000" 
-            : "https://back-24qp.onrender.com";
+            : "https://my-budget-back.onrender.com";
 
             axios
             .put(`${url}/user/goals/update`, data)
@@ -234,7 +234,7 @@ export default {
             }  
             const url = window.location.hostname.includes("localhost") 
             ? "http://localhost:8000" 
-            : "https://back-24qp.onrender.com";
+            : "https://my-budget-back.onrender.com";
          
             axios
             .delete(`${url}/user/goals/delete`, {data})

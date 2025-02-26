@@ -264,7 +264,7 @@ export default {
 
         const url = window.location.hostname.includes("localhost") 
             ? "http://localhost:8000" 
-            : "https://back-24qp.onrender.com";
+            : "https://my-budget-back.onrender.com";
 
 
         let one     = `${url}/user/month_records/` + data.username + "/" + data.year + "/" + data.month
@@ -358,7 +358,7 @@ export default {
             }
             const url = window.location.hostname.includes("localhost") 
             ? "http://localhost:8000" 
-            : "https://back-24qp.onrender.com";
+            : "https://my-budget-back.onrender.com";
 
 
             let one     = `${url}/user/month_records/` + datos.username + "/" + datos.year + "/" + datos.month

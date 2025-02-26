@@ -37,7 +37,7 @@ export default {
             }
             const url = window.location.hostname.includes("localhost") 
             ? "http://localhost:8000" 
-            : "https://back-24qp.onrender.com";
+            : "https://my-budget-back.onrender.com";
 
 
             if(confirm("No olvides tus datos no tenemos como recuperarlos XD")){
