@@ -12,7 +12,7 @@
             </select>
             <area-chart :colors="['#00E8FF']"
                         label="Value"
-                        :curve="false"
+                        :curve="true"
                         :discrete="true"
                         prefix="$"
                         thousands=","
@@ -143,13 +143,13 @@ export default {
             type        : "",
             descripcion : "",
             value       : 0,
-            cats        : [],
+            cats		: { expenses: [] },
+      		track		: "",
             registers   : [],
             selected    : [], 
             selectedAll : false,
             id          : undefined,
             month       : undefined,
-            track       : undefined,
             alertas     : [],
             datos       : [],
             year        : [2021, 2022, 2023, 2024, 2025],
@@ -169,9 +169,29 @@ export default {
             axios            
             .get(`${url}/user/cats/` + this.username)
             .then((response) => {                
-                self.cats = response.data;                
+                this.cats = response.data;
+				if (this.cats.expenses) {
+					this.cats.expenses.sort((a, b) => a.category.localeCompare(b.category));
+				}
             })            
         },
+		mounted() {
+			const url = window.location.hostname.includes("localhost") 
+            ? "http://localhost:8000" 
+            : "https://my-budget-back.onrender.com";
+
+			axios.get(`${url}/user/cats/` + this.username)
+			.then((response) => {
+				this.cats = response.data;
+				this.cats.expenses.sort((a, b) => a.category.localeCompare(b.category));
+
+				// Asignar la primera categoría automáticamente
+				if (this.cats.expenses.length > 0) {
+				this.track = this.cats.expenses[0].category;
+				this.track_months(); // Llamar la función con la primera categoría
+				}
+			});
+		},
     methods:{
         get_regs: function (){            
             

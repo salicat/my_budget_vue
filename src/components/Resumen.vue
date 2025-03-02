@@ -67,10 +67,7 @@
             </b-col>
         </b-row>
         <b-row > 
-            <b-col cols="10" class="mx-auto" sm="7" style="border-radius: 10px;
-                                            margin-top: 3%;  
-                                            padding: 3%; 
-                                            border:1px solid rgb(0, 107, 107);">   
+            <b-col cols="12" sm="12" md="6" lg="6" class="module">   
                 <div class="gastorta" v-if="expenses > 0" >
                     <h2 class="act"> Gastos </h2> 
                     <pie-chart
@@ -92,10 +89,7 @@
                     </pie-chart>
                 </div> 
             </b-col>
-            <b-col cols="10" class="mx-auto" sm="4" style="border-radius: 10px;  
-                                            margin-top: 3%;
-                                            padding: 3%;
-                                            border:1px solid rgb(0, 107, 107);">
+            <b-col cols="12" sm="12" md="6" lg="6" class="module">
                 <div v-if="incomes && expenses == 0">
                     <p>Aca podrás ver el grafico de Ingresos VS Egresos </p>
                 </div>
@@ -117,10 +111,7 @@
             </b-col>
         </b-row>      
         <b-row >
-            <b-col cols="10" class="mx-auto" sm="5" style="border-radius: 10px;
-                                            padding: 3%;  
-                                            margin-top: 3%;
-                                            border:1px solid rgb(0, 107, 107); ">
+            <b-col cols="12" sm="12" md="6" lg="6" class="module">
                     <div v-if="recurrents.length < 1">
                         <p> Acá se visualizarán tus compromisos mensuales</p>
                     </div>
@@ -145,20 +136,14 @@
                         </b-row>
                     </b-col> 
             </b-col>
-            <b-col cols="10" class="mx-auto" sm="6" style="border-radius: 10px;  
-                                            margin-top: 3%;
-                                            padding: 3%;
-                                            border:1px solid rgb(0, 107, 107);
-                                            max-height:100vh;
-                                            overflow-y:scroll; 
-                                            overflow:auto;">
+            <b-col cols="12" sm="12" md="6" lg="6" class="module">
                 <div v-if="alertas.length < 1">
                     <p> Aca podrás ver el progreso de tus gastos por categoria</p>
                 </div>
                 <div class="left" v-if="alertas.length != 0">
                     <div class="left_title" >
                         <h1> Gastos por Categoria </h1>
-                        <b-button v-on:click="print()">Imprimir</b-button>
+                        <b-button v-on:click="print()" class="button_request">Imprimir</b-button>
                     </div>
                     <div class="exp_cat" >                    
                         <div v-for="item in alertas" v-bind:key="item.name" v-if="item.value > 0">
@@ -428,6 +413,57 @@ export default {
                 this.$router.push({name: "Registros", params: {username: username}});
                 this.open = false;
             }
+        },
+        print() {
+            const printWindow = window.open("", "_blank");
+            if (!printWindow) return;
+
+            const content = `
+            <html>
+            <head>
+                <title>Gastos por Categoría</title>
+                <style>
+                body { font-family: Arial, sans-serif; padding: 20px; }
+                h1 { text-align: center; }
+                .divider { border-top: 2px solid #000; margin: 10px 0; }
+                .nombres { display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; }
+                .progres { display: flex; flex-direction: column; margin: 10px 0; }
+                .bar { background: #eee; height: 45px; border-radius: 5px; position: relative; overflow: hidden; }
+                .bar div { height: 100%; line-height: 30px; color: white; font-weight: bold; padding-left: 10px; }
+                .perce_goo { background: green; }
+                .perce_ok { background: orange; }
+                .perce_bad { background: red; }
+                .budget { font-size: 16px; font-weight: bold; text-align: right; }
+                </style>
+            </head>
+            <body>
+                <h1>Gastos por Categoría</h1>
+                ${this.alertas
+                .filter(item => item.value > 0)
+                .map(item => `
+                    <hr class="divider">
+                    <div class="nombres">
+                    <div class="act">${item.name}</div>
+                    <div>${Math.round((item.value / item.budget) * 100)}%</div>
+                    </div>
+                    <div class="progres">
+                    <div class="bar">
+                        <div class="${item.value / item.budget < 1 ? "perce_goo" : item.value / item.budget === 1 ? "perce_ok" : "perce_bad"}" 
+                            style="width: ${(item.value / item.budget) * 100}%">
+                        <p>${Number(item.value).toLocaleString()}</p>
+                        </div>
+                    </div>
+                    <div class="budget">$${Number(item.budget).toLocaleString()}</div>
+                    </div>
+                `)
+                .join("")}
+            </body>
+            </html>
+            `;
+
+            printWindow.document.write(content);
+            printWindow.document.close();
+            printWindow.print();
         }
     }     
 }

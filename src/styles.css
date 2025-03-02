@@ -364,10 +364,7 @@ td:nth-child(2){
 table{
     justify-content: space-between;
 }
-button{
-    background-color: black ;
-    color: white;
-}
+
   
 @media screen and (max-width: 768px) {
     #SingUp {
@@ -396,10 +393,6 @@ button{
     .registered{
         font-size: 0.8rem;
     }
-    .nombres, .progres {
-        flex-direction: column;
-        align-items: center;
-    }
 }
 
 @media screen and (max-width: 480px) {
@@ -419,9 +412,6 @@ button{
     }
     #sidebar{
         width: 40vw;
-    }
-    .bar {
-        height: 15px;
     }
     .registered{
         font-size: 0.5rem;
