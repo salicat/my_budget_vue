@@ -5,6 +5,16 @@
     flex-direction: column;
     align-items: center;
 }
+.header{
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background-color: #121212; /* Color oscuro para modo oscuro */
+    z-index: 1000; /* Asegura que esté sobre otros elementos */
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
 #sidebar{
     width: 15vw;
     background-color: #00000087 !important;
@@ -20,7 +30,12 @@
     box-shadow: 0 5px 15px rgba(0, 148, 148, 0.774);
     color: #00E8FF;
 }
-
+.el_padrshe{
+    display: flex;
+    gap: 20px; /* Espacio entre los módulos */
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
 .module{
     border-radius: 10px; 
     padding: 3%; 
@@ -299,6 +314,7 @@ input{
     color:#E5E7E9;
     background-color:#000000;
 }
+
 table{
     border-collapse:separate; 
     border-spacing:1em;
@@ -361,6 +377,7 @@ button{
     #sidebar{
         width: 30vw;
     }
+    
     .crea_user {
         width: 95%;
     }
@@ -386,6 +403,16 @@ button{
 }
 
 @media screen and (max-width: 480px) {
+    .header{
+        flex-direction: row; /* Mantiene el diseño horizontal */
+        justify-content: space-between;
+        padding: 8px;
+    }
+    .user_container{
+        height: 5vh;
+        margin-right: 5%;
+        width: 33vw;
+    }
     .crea_user {
         padding: 8%;
         box-shadow: 3px 3px 15px rgba(107, 70, 0, 0.6);

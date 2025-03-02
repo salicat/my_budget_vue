@@ -1,11 +1,7 @@
 <template> 
     <b-container fluid> 
         <b-row>
-            <b-col cols="12" mx-class="auto" style="border-radius: 10px;  
-                                            margin-top: 5%;
-                                            margin-bottom: 5%;
-                                            padding: 3%;
-                                            border:1px solid rgb(0, 107, 107);">
+            <b-col cols="12"  class="module">
                 <div>
                     <h1 class="act">Alertas:</h1>
                     <h2 v-if="t_bud < t_in" class="act"> Tus finanzas lucen saludables</h2>
@@ -15,177 +11,143 @@
             </b-col>
         </b-row>
         <b-row align-h="between">
-            <b-col cols="9" sm="3" class="mx-auto" style="border-radius: 10px;
-                                            margin-top: 3%;  
-                                            padding: 3%; 
-                                            border:1px solid rgb(0, 107, 107);">
-                    <h2>Tus categorias </h2>  
-                    <select id="" v-model="action" style="background-color:black; color: white;">
-                        <option value="" selected disabled> Selecciona </option>
-                        <option value="crear"> Crear Categoria </option>
-                        <option value="modificar"> Modificar Categoria</option>
-                        <option value="eliminar"> Eliminar Categoria </option>
+            <b-col cols="12" sm="12" md="3" class="module">
+                <div class="form-container">
+                <h2 class="form-title">Tus Categorías</h2>
+                
+                <div class="form-group">
+                <label for="action">Selecciona una acción</label>
+                <select id="action" v-model="action" class="form-select">
+                    <option value="" disabled>Selecciona</option>
+                    <option value="crear">Crear Categoría</option>
+                    <option value="modificar">Modificar Categoría</option>
+                    <option value="eliminar">Eliminar Categoría</option>
+                </select>
+                </div>
+                
+                <!-- Crear Categoría -->
+                <div v-if="action === 'crear'" class="create-category">
+                <div class="form-group">
+                    <label for="category">Nombra tu categoría</label>
+                    <input type="text" id="category" v-model="category" class="form-input" placeholder="Nombre de la categoría">
+                </div>
+                
+                <div class="form-group">
+                    <label for="type">Elige un tipo de categoría</label>
+                    <select id="type" v-model="type" class="form-select">
+                    <option value="incomes">Ingresos</option>
+                    <option value="expenses">Egresos</option>
+                    <option value="liabilities">Activos</option>
+                    <option value="passives">Pasivos</option>
                     </select>
-                    <div v-if="action ==='crear'">
-                        <div class = "crear_categorias">
-                            <br>
-                            <input type="text" v-model="category" style="background-color:black; color: white;">
-                            <p> Nombra tu categoria </p>
-                            <select v-model="type" style="background-color:black; color: white;">
-                                <option value="incomes"> Ingresos </option>
-                                <option value="expenses"> Egresos </option>
-                                <option value="liabilities"> Activos </option>
-                                <option value="passives"> Pasivos </option>
-                            </select> 
-                            <p> Elige un tipo de categoria </p>
-                            <div v-if="type == 'liabilities' || type ==  'passives'">
-                                <input type="text" v-model="value" style="background-color:black; color: white;">
-                                <p> Valor</p>
-                            </div> 
-                            <div v-if="type == 'incomes'">
-                                <input type="text" v-model="budget" style="background-color:black; color: white;">
-                                <p> Meta mensual</p>
-                            </div> 
-                            <div v-if="type == 'expenses'">
-                                <input type="text" v-model="budget" style="background-color:black; color: white;">
-                                <p> Presupuesto mensual</p>
-                                <input type="checkbox" v-model="recurrency"  v-on:click="recurrency = true" style="background-color:black; color: white;">                            
-                                <p>Selecciona si este es un gasto que haces cada mes</p>
-                            </div> 
-                            <div v-if="recurrency == true">
-                                <p> Elige la fecha del proximo vencimiento</p>
-                                <b-form-datepicker id="datepicker" v-model="day" size="sm" dark="true" style="background-color:black; color:white;"></b-form-datepicker> <br>
-                            </div>
-                            <button v-on:click="cat_create"> Crear Categoria</button>
-                        </div>                    
-                    </div>       
-                    <div v-if="action === 'modificar'">
-                        <div class="mod_class">
-                            <br>
-                            <select v-model ="type" style="background-color:black; color: white;">    
-                                <option value= "incomes"> Ingreso </option>
-                                <option value= "expenses"> Egreso </option>
-                                <option value= "liabilities"> Activo </option>
-                                <option value= "passives"> Pasivo </option>
-                            </select>
-                            <p>Elige tipo de categoria que quieres modificar</p>
-                            <div v-if="type === 'incomes'">
-                                <select id="category" v-model="category" style="background-color:black; color: white;">
-                                    <option value="income" v-for="cat in cats.incomes" :key="cat.type">
-                                        {{cat.category}} 
-                                    </option>
-                                </select>
-                                <p>Elige tu categoria</p>
-                            </div>
-                            <div v-if="type === 'expenses'">
-                                <select v-model="category" style="background-color:black; color: white;">
-                                    <option value="expense" v-for="cat in cats.expenses" :key="cat.type" >
-                                        {{cat.category}} 
-                                    </option>
-                                </select>
-                                <p>Elige tu categoria</p>
-                            </div>                         
-                            <div v-if="type === 'liabilities'">
-                                <select v-model="category" style="background-color:black; color: white;">
-                                    <option value="liability" v-for="cat in cats.liabilities" :key="cat.type" >
-                                        {{cat.category}} 
-                                    </option>            
-                                </select>
-                                <p>Elige tu categoria</p>
-                            </div>
-                            <div v-if="type === 'passives'">
-                                <select v-model="category" style="background-color:black; color: white;">
-                                    <option value="passive" v-for="cat in cats.passives" :key="cat.type" >
-                                        {{cat.category}} 
-                                    </option>
-                                </select>
-                                <p>Elige tu categoria</p>
-                            </div>
-                        </div>
-                        <div v-if="category === 'income'">
-                            <br>
-                            <div>
-                                <input type="number" v-model="budget" cols="12" rows="1" style="background-color:black; color: white;">
-                                <p>Ingresa el nuevo valor de tu categoria</p>
-                            </div>
-                            <button v-on:click="modify_cat"> Guardar </button>
-                        </div>
-                        <div v-if="category === 'expense'">
-                            <div>
-                                <input type="number" v-model="budget" cols="12" rows="1" style="background-color:black; color: white;"> 
-                                <p>Ingresa el nuevo valor de tu categoria</p>
-                            </div>
-                            <br>
-                            <button v-on:click="modify_cat"> Guardar </button>
-                        </div>
-                        <div v-if="category === 'liability'">
-                            <div>
-                                <input type="number" v-model="value" cols="12" rows="1" style="background-color:black; color: white;">
-                                <p>Ingresa el nuevo valor de tu categoria</p>
-                            </div>
-                            <br>
-                            <button v-on:click="modify_cat"> Guardar </button>
-                        </div>
-                        <div v-if="category === 'passive'">
-                            <div>
-                                <input type="number" v-model="value" cols="12" rows="1" style="background-color:black; color: white;">
-                                <p>Ingresa el nuevo valor de tu categoria</p>
-                            </div>
-                            <br>
-                            <button v-on:click="modify_cat"> Guardar </button>
-                        </div>
+                </div>
+
+                <!-- Campos dinámicos según tipo -->
+                <div v-if="type === 'liabilities' || type === 'passives'" class="form-group">
+                    <label for="value">Valor</label>
+                    <input type="number" id="value" v-model="value" class="form-input" placeholder="Valor de la categoría">
+                </div>
+
+                <div v-if="type === 'incomes'" class="form-group">
+                    <label for="budget">Meta mensual</label>
+                    <input type="number" id="budget" v-model="budget" class="form-input" placeholder="Meta mensual">
+                </div>
+
+                <div v-if="type === 'expenses'" class="form-group">
+                    <label for="budget">Presupuesto mensual</label>
+                    <input type="number" id="budget" v-model="budget" class="form-input" placeholder="Presupuesto mensual">
+                    
+                    <div class="form-group">
+                    <label for="recurrency">¿Gasto recurrente?</label>
+                    <input type="checkbox" id="recurrency" v-model="recurrency" class="form-checkbox" />
                     </div>
-                    <div v-if="action ==='eliminar'">
-                        <div class="del_cat">
-                            <br>
-                            <select v-model ="type" style="background-color:black; color: white;">    
-                                <option value= "incomes"> Ingreso </option>
-                                <option value= "expenses"> Egreso </option>
-                                <option value= "liabilities"> Activo </option>
-                                <option value= "passives"> Pasivo </option>
-                            </select>
-                             <p>Que tipo deseas eliminar </p>   
-                            <div v-if="type === 'incomes'">
-                                <select v-model="category"  style="background-color:black; color: white;">
-                                    <option  v-for="cat in cats.incomes" :key="cat.type" >
-                                        {{cat.category}} 
-                                    </option>
-                                </select>
-                                <p>Elige la categoria</p>
-                            </div>                 
-                            <div v-if="type === 'expenses'">
-                                <select v-model="category" style="background-color:black; color: white;">
-                                    <option  v-for="cat in cats.expenses" :key="cat.type" >
-                                        {{cat.category}} 
-                                    </option>
-                                </select>
-                                <p>Elige la categoria</p>
-                            </div>
-                            <div v-if="type === 'liabilities'">
-                                <select v-model="category" style="background-color:black; color: white;">
-                                    <option  v-for="cat in cats.liabilities" :key="cat.type" >
-                                        {{cat.category}} 
-                                    </option>            
-                                </select> 
-                                <p>Elige la categoria</p>
-                            </div>
-                            <div v-if="type === 'passives'">
-                                <select v-model="category" style="background-color:black; color: white;">
-                                    <option  v-for="cat in cats.passives" :key="cat.type" >
-                                        {{cat.category}} 
-                                    </option>
-                                </select>
-                                <p>Elige la categoria</p>
-                            </div>
-                            <br> 
-                            <button v-on:click="delete_cat"> Eliminar </button>
-                        </div>
-                    </div>               
+                </div>
+
+                <!-- Fecha de vencimiento si es recurrente -->
+                <div v-if="recurrency" class="form-group">
+                    <label for="day">Elige la fecha del próximo vencimiento</label>
+                    <input type="date" id="day" v-model="day" class="form-input" />
+                </div>
+
+                <button @click="cat_create" class="form-button">Crear Categoría</button>
+                </div>
+
+                <!-- Modificar Categoría -->
+                <div v-if="action === 'modificar'" class="modify-category">
+                <div class="form-group">
+                    <label for="type">Selecciona tipo de categoría</label>
+                    <select id="type" v-model="type" class="form-select">
+                    <option value="incomes">Ingreso</option>
+                    <option value="expenses">Egreso</option>
+                    <option value="liabilities">Activo</option>
+                    <option value="passives">Pasivo</option>
+                    </select>
+                </div>
+
+                <div v-if="type === 'incomes'" class="form-group">
+                    <label for="category">Selecciona una categoría</label>
+                    <select id="category" v-model="category" class="form-select">
+                    <option v-for="cat in cats.incomes" :key="cat.type" :value="cat.category">{{ cat.category }}</option>
+                    </select>
+                </div>
+
+                <!-- Otros tipos de categoría -->
+                <div v-if="type === 'expenses'" class="form-group">
+                    <label for="category">Selecciona una categoría</label>
+                    <select id="category" v-model="category" class="form-select">
+                    <option v-for="cat in cats.expenses" :key="cat.type" :value="cat.category">{{ cat.category }}</option>
+                    </select>
+                </div>
+                
+                <div v-if="type === 'liabilities'" class="form-group">
+                    <label for="category">Selecciona una categoría</label>
+                    <select id="category" v-model="category" class="form-select">
+                    <option v-for="cat in cats.liabilities" :key="cat.type" :value="cat.category">{{ cat.category }}</option>
+                    </select>
+                </div>
+
+                <div v-if="type === 'passives'" class="form-group">
+                    <label for="category">Selecciona una categoría</label>
+                    <select id="category" v-model="category" class="form-select">
+                    <option v-for="cat in cats.passives" :key="cat.type" :value="cat.category">{{ cat.category }}</option>
+                    </select>
+                </div>
+
+                <div v-if="category">
+                    <div class="form-group">
+                    <label for="budget">Nuevo valor</label>
+                    <input type="number" id="budget" v-model="budget" class="form-input" placeholder="Nuevo valor">
+                    </div>
+                    <button @click="modify_cat" class="form-button">Guardar</button>
+                </div>
+                </div>
+
+                <!-- Eliminar Categoría -->
+                <div v-if="action === 'eliminar'" class="delete-category">
+                <div class="form-group">
+                    <label for="type">Selecciona tipo de categoría a eliminar</label>
+                    <select id="type" v-model="type" class="form-select">
+                    <option value="incomes">Ingreso</option>
+                    <option value="expenses">Egreso</option>
+                    <option value="liabilities">Activo</option>
+                    <option value="passives">Pasivo</option>
+                    </select>
+                </div>
+
+                <div v-if="type">
+                    <div class="form-group">
+                    <label for="category">Selecciona una categoría</label>
+                    <select id="category" v-model="category" class="form-select">
+                        <option v-for="cat in cats[type]" :key="cat.type" :value="cat.category">{{ cat.category }}</option>
+                    </select>
+                    </div>
+                    <button @click="delete_cat" class="form-button">Eliminar Categoría</button>
+                </div>
+                </div>
+            </div>             
             </b-col>
-            <b-col cols="10" class="mx-auto" sm="4" style="margin-top: 3%;">
-                <div class = "ing_egr" style="border-radius: 10px;  
-                                            padding: 3%; 
-                                            border:1px solid rgb(0, 107, 107);" >
+            <b-col cols="12" sm="4" md="4" >
+                <div class = "module" >
                         <h1 class="goo"> Ingresos </h1>
                         <h2 class="goo"> ${{Number(t_in).toLocaleString()}} </h2>
                         <table >
@@ -199,7 +161,7 @@
                             </tr>
                         </table>                                                                                    
                     </div>
-                    <div class ="egresos" style="border-radius: 10px;
+                    <div class ="module" style="border-radius: 10px;
                                             margin-top: 3%;  
                                             padding: 3%; 
                                             border:1px solid rgb(0, 107, 107);">
@@ -217,10 +179,8 @@
                         </table>
                     </div>                                                        
             </b-col>
-            <b-col cols="10" class="mx-auto" sm="4" style="margin-top: 3%;">
-                    <div class ="activos" style="border-radius: 10px;
-                                            padding: 3%; 
-                                            border:1px solid rgb(0, 107, 107);">
+            <b-col cols="12" sm="4" md="4">
+                    <div class="module">
                         <h1 class="act"> Activos ${{Number(t_lia).toLocaleString()}} </h1>
                         <table>
                             <thead>
@@ -237,11 +197,7 @@
                             </tbody>                    
                         </table>
                     </div>            
-                    <div class ="pasivos" style="border-radius: 10px;
-                                            margin-top: 3%;  
-                                            padding: 3%; 
-                                            border:1px solid rgb(0, 107, 107);">
-                        
+                    <div class="module">
                         <h1 class="pas"> Pasivos ${{Number(t_pass).toLocaleString()}} </h1>
                         <table>
                             <thead>

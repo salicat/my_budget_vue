@@ -31,7 +31,7 @@
                 <h2 class="form-title">Registrar Transacción</h2>
                 <div class="form-group">
                 <label for="type">Tipo de Transacción</label>
-                <select id="type" v-model="type" class="form-select">
+                <select id="type" v-model="type" class="form-select"> 
                     <option value="incomes">Ingreso</option>
                     <option value="expenses">Egreso</option>
                     <!-- Agrega más opciones según sea necesario -->

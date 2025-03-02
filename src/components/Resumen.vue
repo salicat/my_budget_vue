@@ -16,26 +16,24 @@
             </div>
         </b-modal>
         <b-row align-h="between">
-            <b-col cols="4" sm="3">
-                
+            <b-col cols="12" md="4" sm="10">
+                <h3>Consulta meses anteriores</h3>
                 <div class="date_request">
                         <b-form-select v-model="month" style="background-color:black; color: white;">                        
                             <option selected> {{month}} </option>
                             <option v-for="mes in meses" 
                                     :key="mes" > {{mes}} </option>  
                         </b-form-select>   
-                    
-                
-                    <select v-model="anio" style="background-color:black; color: white;">                        
-                        <option selected> {{curr_year}} </option>
-                        <option v-for="anio in anios" 
-                                :key="anio" > {{anio}} </option>
-                    </select>
-    
+                        <select v-model="anio" style="background-color:black; color: white;">                        
+                            <option selected> {{curr_year}} </option>
+                            <option v-for="anio in anios" 
+                                    :key="anio" > {{anio}} </option>
+                        </select>      
                     <b-button class="button_request" v-on:click="reload" > Consultar </b-button>
                 </div>
             </b-col>
         </b-row>
+        <br>
         <b-row >
             <b-col cols="10" md="8" class="mx-auto"   style="border-radius: 10px;
                                             margin-bottom: 3%;
@@ -145,7 +143,7 @@
                                 </p>                                
                             </b-col> 
                         </b-row>
-                    </b-col>
+                    </b-col> 
             </b-col>
             <b-col cols="10" class="mx-auto" sm="6" style="border-radius: 10px;  
                                             margin-top: 3%;
