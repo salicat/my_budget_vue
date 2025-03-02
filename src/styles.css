@@ -7,8 +7,108 @@
 }
 #sidebar{
     width: 15vw;
-    
+    background-color: #00000087 !important;
+
 }
+.user_container{
+    border-radius: 10px;
+    margin: 5%;  
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.5em;
+    border:1px solid rgb(0, 107, 107); 
+    box-shadow: 0 5px 15px rgba(0, 148, 148, 0.774);
+    color: #00E8FF;
+}
+
+.module{
+    border-radius: 10px; 
+    padding: 3%; 
+    margin-top: 3%; 
+    border:1px solid rgb(0, 107, 107);
+}
+
+.date_request{  
+    border:1px solid rgb(0, 107, 107); 
+    border-radius: 10px;                                
+    padding: 3%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+select {
+    border-radius: 6px;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+  }
+  
+  .form-title {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .form-group label {
+    color: #ffffff;
+    font-weight: 600;
+  }
+  
+  .form-select,
+  .form-input {
+    padding: 0.5rem;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background-color: #2c2c2c;
+    color: #ffffff;
+  }
+  
+  .form-select:focus,
+  .form-input:focus {
+    border-color: #00bcd4;
+    outline: none;
+  }
+  
+  .form-button {
+    padding: 0.75rem;
+    background-color: #00bcd4;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .form-button:hover {
+    background-color: #0097a7;
+  }
+  
+
+.button_request{
+    align-items: center;
+    border-radius: 6px;
+    border: none;
+    color: #fff;
+    background: linear-gradient(180deg, #4B91F7 0%, #367AF6 100%);
+    background-origin: border-box;
+}
+
+
 .crea_user{
     padding: 2%;
     display: flex;
@@ -162,10 +262,7 @@ h1{
 .pas{
     color:#FF8600;
 }
-table{
-    border-collapse:separate; 
-    border-spacing:1em;
-}
+
 tr{
     padding-bottom: 1%;
 }
@@ -186,6 +283,9 @@ td {
     color: rgb(0, 107, 107);
     padding: 5px;
     font-size: 90%;
+}
+.right_col{
+    text-align: left !important;
 }
 .titulos{
     color: rgb(0, 107, 107);
@@ -212,7 +312,7 @@ td {
 }
 .goo{
     color: #79FF00;
-}
+}   
 .act{
     color: #00E8FF; 
 }
@@ -253,3 +353,53 @@ button{
     color: white;
 }
   
+@media screen and (max-width: 768px) {
+    #SingUp {
+        width: 100%;
+        padding: 5%;
+    }
+    #sidebar{
+        width: 30vw;
+    }
+    .crea_user {
+        width: 95%;
+    }
+
+    .crea_user button {
+        width: 100%;
+    }
+
+    .modal {
+        width: 95%;
+    }
+
+    .bar {
+        width: 90%;
+    }
+    .registered{
+        font-size: 0.8rem;
+    }
+    .nombres, .progres {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .crea_user {
+        padding: 8%;
+        box-shadow: 3px 3px 15px rgba(107, 70, 0, 0.6);
+    }
+    #sidebar{
+        width: 40vw;
+    }
+    .bar {
+        height: 15px;
+    }
+    .registered{
+        font-size: 0.5rem;
+    }
+    .pagok, .pagofail {
+        font-size: 14px;
+    }
+}

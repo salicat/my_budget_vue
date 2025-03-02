@@ -5,20 +5,14 @@
       <b-col cols="2" style="margin: 1%;">
         <b-button v-b-toggle.sidebar id="main" v-if="is_auth"> ☰ </b-button>  
       </b-col>
-      <b-col cols="3" md="2" style="border-radius: 10px;
-                            margin: 1%;  
-                            padding: 1%;
-                            justify-content: center; 
-                            font-size: 1.5em;
-                            border:1px solid rgb(0, 107, 107); 
-                            box-shadow: 0 5px 15px rgba(0, 148, 148, 0.774);">
-        <div v-if="is_auth">
+      <b-col cols="3" md="2">
+        <div v-if="is_auth" class="user_container">
           <p>{{username}}</p>    
         </div>
       </b-col>
     </b-row>    
-        <b-sidebar id="sidebar" v-if="is_auth" bg-variant="dark" >       
-          <b-button-group vertical size="lg" >
+        <b-sidebar id="sidebar" v-if="is_auth">       
+          <b-button-group vertical size="lg">
               <b-button variant="secondary" v-on:click="go_to_resumen">Resumen</b-button>
               <!-- <b-button variant="secondary" v-on:click="go_to_incomes"> Ingresos </b-button> -->
               <b-button variant="secondary" v-on:click="go_to_reg">Registros</b-button>

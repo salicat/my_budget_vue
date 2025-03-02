@@ -1,163 +1,132 @@
 <template>
     <b-container fluid>
-        <b-row >
-            <b-row>
-            <b-col cols="10" class="mx-auto" sm="12" style="border-radius: 10px;
-                                            margin-top: 3%;
-                                            margin-bottom: 5%;
-                                            padding: 3%;  
-                                            border:1px solid rgb(0, 107, 107); ">
-                <div v-if="cats.expenses.length > 0">
-                    <h1>Variaciones en Gastos</h1>
-                    <select v-model="track" v-on:change="track_months">
-                        <option v-for="cat in cats.expenses" v-bind:key="cat.name">
-                        {{cat.category}} 
-                        </option>
-                    </select>
-                    <area-chart :colors="['#00E8FF']"
-                                label="Value"    
-                                :curve="false"                         
-                                :discrete="true"
-                                prefix="$"
-                                thousands=","
-                                :messages="{empty: 'Selecciona la categoria'}"
-                                :legend="false"
-                                xtitle="Meses" ytitle="Valor"
-                                :data="datos">
-                    </area-chart>
+      <b-row>
+        <!-- Contenedor para "Variaciones en Gastos" -->
+        <b-col cols="12" class="module">
+          <div v-if="cats.expenses.length > 0">
+            <h1>Variaciones en Gastos</h1>
+            <select v-model="track" v-on:change="track_months">
+              <option v-for="cat in cats.expenses" v-bind:key="cat.name">
+                {{cat.category}}
+              </option>
+            </select>
+            <area-chart :colors="['#00E8FF']"
+                        label="Value"
+                        :curve="false"
+                        :discrete="true"
+                        prefix="$"
+                        thousands=","
+                        :messages="{empty: 'Selecciona la categoria'}"
+                        :legend="false"
+                        xtitle="Meses" ytitle="Valor"
+                        :data="datos">
+            </area-chart>
+          </div>
+        </b-col>
+      </b-row>
+      <b-row>
+        <!-- Contenedor para "Registrar Transacción" -->
+        <b-col cols="12" sm="12" md="6" lg="6" class="module">
+            <div class="form-container">
+                <h2 class="form-title">Registrar Transacción</h2>
+                <div class="form-group">
+                <label for="type">Tipo de Transacción</label>
+                <select id="type" v-model="type" class="form-select">
+                    <option value="incomes">Ingreso</option>
+                    <option value="expenses">Egreso</option>
+                    <!-- Agrega más opciones según sea necesario -->
+                </select>
                 </div>
+                <div v-if="type === 'incomes'" class="form-group">
+                <label for="category">Categoría de Ingreso</label>
+                <select id="category" v-model="category" class="form-select">
+                    <option v-for="cat in cats.incomes" :key="cat.type" :value="cat.category">
+                    {{ cat.category }}
+                    </option>
+                </select>
+                </div>
+                <div v-if="type === 'expenses'" class="form-group">
+                <label for="category">Categoría de Egreso</label>
+                <select id="category" v-model="category" class="form-select">
+                    <option v-for="cat in cats.expenses" :key="cat.category" :value="cat.category">
+                    {{ cat.category }}
+                    </option>
+                </select>
+                </div>
+                <!-- Agrega más campos según sea necesario -->
+                <div class="form-group">
+                <label for="descripcion">Descripción</label>
+                <input id="descripcion" v-model="descripcion" type="text" class="form-input" placeholder="Descripción">
+                </div>
+                <div class="form-group">
+                <label for="value">Valor</label>
+                <input id="value" v-model="value" type="number" class="form-input" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                <label for="day">Fecha</label>
+                <input id="day" v-model="day" type="date" class="form-input">
+                </div>
+                <button @click="save_reg" class="form-button">Guardar Registro</button>
+            </div>
+        </b-col>
+        <!-- Contenedor para "Consultar Registros" -->
+        <b-col cols="12" sm="12" md="6" lg="6" class="module">
+          <h2 class="act">Consultar Registros</h2>
+          <b-row class="botones" align-h="between">
+            <b-col cols="12" sm="8">
+              <div class="date_request">
+                <b-form-select v-model="month" style="background-color:black; color: white;">
+                  <option v-for="mes in meses" :key="mes">
+                    {{mes}}
+                  </option>
+                </b-form-select>
+                <b-form-select v-model="year" style="background-color:black; color: white;">
+                  <option value="2021">2021</option>
+                  <option value="2022">2022</option>
+                  <option value="2023">2023</option>
+                  <option value="2024">2024</option>
+                  <option value="2025">2025</option>
+                </b-form-select>
+                <b-button v-on:click="get_regs" class="button_request">Consultar</b-button>
+              </div>
             </b-col>
-        </b-row>
-            <b-col cols="10"  sm="4" class = "mx-auto" style="border-radius: 10px;  
-                                            padding: 3%;
-                                            margin-top: 3%;
-                                            border:1px solid rgb(0, 107, 107); "> 
-                <b-row>
-                   <h2 class ="act">Registrar Transaccion</h2><br>
-                </b-row>               
-                <b-row>
-                    <b-col cols="10">
-                        <p>Selecciona tipo de Transaccion</p>
-                        <b-form-select v-model ="type" style="background-color:black; color: white;">    
-                            <option value= "incomes"> Ingreso </option>
-                            <option value= "expenses"> Egreso </option>
-                        </b-form-select>
-                    </b-col>
-                    <b-col cols="10">
-                        <p> Selecciona la Categoria </p>     
-                        <b-form-select v-model="category" v-if="type === 'incomes'" style="background-color:black; color: white;">
-                            <option  v-for="cat in cats.incomes" :key="cat.type" >
-                                {{cat.category}} 
-                            </option>
-                        </b-form-select>        
-                    </b-col>
-                    <b-col cols="10">
-                        <b-form-select v-model="category" v-if="type === 'expenses'" style="background-color:black; color: white;">
-                            <option  v-for="cat in cats.expenses" :key="cat.category" >
-                                {{cat.category}}
-                            </option>
-                        </b-form-select>
-                    </b-col>
-                    <b-col cols="10">
-                        <b-form-select v-model="category" v-if="type === 'liabilities'" style="background-color:black; color: white;">
-                            <option  v-for="cat in cats.liabilities" :key="cat.type" >
-                                {{cat.category}} 
-                            </option>            
-                        </b-form-select>   
-                    </b-col>
-                    <b-col cols="10">
-                        <b-form-select v-model="category" v-if="type === 'passives'" style="background-color:black; color: white;">
-                            <option  v-for="cat in cats.passives" :key="cat.type" >
-                                {{cat.category}} 
-                            </option>
-                        </b-form-select> 
-                    </b-col>
-                    <b-col cols="7">
-                        <p>Descripcion</p>
-                        <b-form-input placeholder="Descripcion" size="sm" type= "text" v-model ="descripcion" style="background-color:black; color: white;"> </b-form-input>
-                    </b-col>            
-                    <b-col cols="7">
-                        <p>Ingresa el valor</p>
-                        <b-form-input placeholder="0.00" v-model ="value" style="background-color:black; color: white;"> </b-form-input><br>            
-                    </b-col>
-                    <b-col cols="7">
-                        <p>Elige la fecha del registro</p>
-                        <b-form-datepicker id="datepicker" v-model="day" size="sm" dark="true"></b-form-datepicker> <br>
-                    </b-col>
-                    <b-col cols="8">
-                        <b-button v-on:click="save_reg" variant="dark"> Guardar Registro </b-button>            
-                    </b-col>
-                </b-row>
+            <b-col cols="6">
+              <b-button v-if="selected.length" v-on:click="reg_del" variant="dark">Eliminar</b-button>
             </b-col>
-                     <b-col cols="10" sm="7" mx-class="auto" style="border-radius: 10px;  
-                                            padding: 3%;
-                                            margin-left: 8%;
-                                            margin-top: 3%;
-                                            border:1px solid rgb(0, 107, 107);">
-                <h2 class="act">Consultar Registros</h2>
-                <b-row class="botones" align-h="between">
-                    <b-col cols="5">
-                        <b-form-select v-model="month" style="background-color:black; color: white;">
-                            <option v-for="mes in meses" :key="mes"> 
-                                {{mes}} 
-                            </option>
-                        </b-form-select >
-                    </b-col>
-                    <b-col cols="6">
-                        <select v-model="year" style="background-color:black; color: white;">
-                            <option value="2021"> 2021 </option>
-                            <option value="2022"> 2022 </option>
-                            <option value="2023"> 2023 </option>
-                            <option value="2024"> 2024 </option>
-                            <option value="2025"> 2025 </option>
-                        </select>
-                    </b-col>
-                    <b-col cols="6" >
-                        <b-button v-on:click="get_regs" variant="dark"> Consultar </b-button>                    
-                    </b-col>
-                    <b-col cols="5" >
-                        <b-button id="del" v-if="selected.length" v-on:click="reg_del" variant="dark"> Eliminar  </b-button>
-                    </b-col>               
-                </b-row>
-                <b-row >
-                    <h2 class="act">Mis Registros</h2>  
-                    <div>
-                        <table style="font-size:01.8vw">
-                            <thead>
-                                <tr>                    
-                                    <label>
-                                        <input type="checkbox" v-model="selectedAll" v-on:click="select">
-                                    </label>
-                                    <th class="act"> Categoria </th>
-                                    <th class="act"> Descripción </th>
-                                    <th class="act"> Valor </th>
-                                    <th class="act"> Fecha </th>
-                                </tr >
-                            </thead>
-                            <tbody>
-                                <tr v-for="reg in registers" :key="reg.id"
-                                    v-bind:class="{ goo: reg.type == 'incomes',
-                                                    bad: reg.type == 'expenses',
-                                                    pas: reg.type == 'passives',
-                                                    act: reg.type == 'liabilities'
-                                    }">     
-                                    <td>
-                                        <label> <input type="checkbox" :value="reg.id" v-model="selected"> </label>
-                                    </td>               
-                                    <td> {{reg.category}}</td>                                      
-                                    <td>{{reg.description}} </td>                        
-                                    <td>${{Number(reg.value).toLocaleString()}}</td>
-                                    <td>{{reg.date}}</td>                           
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </b-row>                                          
-            </b-col>
-        </b-row>
-        
-    </b-container> 
-</template>
+          </b-row>
+          <b-row>
+            <h2 class="act">Mis Registros</h2>
+            <table class="registered">
+                <thead>
+                    <tr>
+                    <th>
+                        <input type="checkbox" v-model="selectedAll" v-on:click="select">
+                    </th>
+                    <th class="act">Categoría</th>
+                    <th class="act">Descripción</th>
+                    <th class="act">Valor</th>
+                    <th class="act">Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="reg in registers" :key="reg.id" v-bind:class="{ goo: reg.type == 'incomes', bad: reg.type == 'expenses', pas: reg.type == 'passives', act: reg.type == 'liabilities' }">
+                    <td>
+                        <input type="checkbox" :value="reg.id" v-model="selected">
+                    </td>
+                    <td class="right_col">{{reg.category}}</td>
+                    <td>{{reg.description}}</td>
+                    <td>${{Number(reg.value).toLocaleString()}}</td>
+                    <td>{{reg.date}}</td>
+                    </tr>
+                </tbody>
+            </table>
+          </b-row>
+        </b-col>
+      </b-row>
+    </b-container>
+  </template>
+  
+  
 <script>
 import axios from "axios";
 import { cat } from "shelljs";
