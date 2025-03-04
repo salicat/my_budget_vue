@@ -256,27 +256,10 @@ h1{
     color: #79FF00;
 }
 .bad{
-    color: #FF00D5;
+    color: #ff0000;
     font-weight: bold;
 }
-.act{
-    color: #00E8FF; 
-}
-.pas{
-    color:#FF8600;
-}
-.goo{
-    color: #79FF00;
-}
-.bad{
-    color: #FF00D5;
-}
-.act{
-    color: #00E8FF; 
-}
-.pas{
-    color:#FF8600;
-}
+
 
 tr{
     padding-bottom: 1%;
@@ -326,12 +309,7 @@ td {
   padding-left: 1%;
   font-weight: 300;
 }
-.goo{
-    color: #79FF00;
-}   
-.act{
-    color: #00E8FF; 
-}
+
 .pas{
     color:#FF8600;
 }
@@ -343,18 +321,11 @@ body{
     color:white;
     margin-top:5%;
   }
-  .goo{
-    color: #79FF00;
-}
-.bad{
-    color: #FF00D5;
-}
+
 .act{
     color: #00E8FF; 
 }
-.pas{
-    color:#FF8600;
-}
+
 .titulos{
     font-weight: bold;
 }

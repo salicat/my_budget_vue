@@ -151,14 +151,15 @@
                             <div class="nombres">
                                 <div class="act"> {{item.name}} </div>
                                 <div v-bind:class="{    goo: (item.value/item.budget*100) < 99.99999,
-                                                        bad: (item.value/item.budget*100) > 100
+                                                        act: (item.value/item.budget*100) == 100,
+                                                        bad: (item.value/item.budget*100) > 100.00001
                                 }"> 
                                     {{Math.round(item.value/item.budget*100)}}% </div> 
                             </div>                            
                             <div class="progres" >
                                 <div class="bar" >
-                                    <div v-bind:class="{perce_goo: item.value/item.budget < 0.9999,
-                                                        perce_ok: item.value/item.budget == 1,
+                                    <div v-bind:class="{perce_ok: item.value/item.budget < 0.9999,
+                                                        perce_goo: item.value/item.budget == 1,
                                                         perce_bad: item.value/item.budget > 1}"  
                                                         :style="{
                                                         width: (item.value/item.budget*100)+'%'}"> 
@@ -166,7 +167,8 @@
                                     </div>                                                                                                           
                                 </div>
                                 <div class="budget">
-                                    <p v-bind:class="{    goo: (item.value/item.budget*100) < 99.99999,
+                                    <p v-bind:class="{  goo: (item.value/item.budget*100) < 99.99999,
+                                                        act: (item.value/item.budget*100) == 100,
                                                         bad: (item.value/item.budget*100) > 100
                                 }" 
                                     > ${{Number(item.budget).toLocaleString()}} </p>
