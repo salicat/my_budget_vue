@@ -427,52 +427,56 @@ export default {
             if (!printWindow) return;
 
             const content = `
-            <html>
-            <head>
-                <title>Gastos por Categoría</title>
+                <html>
+                <head>
+                <title>Gastos por Categoría - ${this.curr_day} de ${this.month}</title>
                 <style>
-                body { font-family: Arial, sans-serif; padding: 20px; }
-                h1 { text-align: center; }
-                .divider { border-top: 2px solid #000; margin: 10px 0; }
-                .nombres { display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; }
-                .progres { display: flex; flex-direction: column; margin: 10px 0; }
-                .bar { background: #eee; height: 45px; border-radius: 5px; position: relative; overflow: hidden; }
-                .bar div { height: 100%; line-height: 30px; color: white; font-weight: bold; padding-left: 10px; }
-                .perce_goo { background: green; }
-                .perce_ok { background: orange; }
-                .perce_bad { background: red; }
-                .budget { font-size: 16px; font-weight: bold; text-align: right; }
+                    body { font-family: Arial, sans-serif; padding: 20%; background-color:black; color:white; }
+                    h1 { text-align: center; }
+                    .divider { border-top: 2px solid #000; margin: 10px 0; }
+                    .nombres { display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; }
+                    .progres { display: flex; flex-direction: column; margin: 10px 0; }
+                    .bar { background-color: black; height: 45px; border-radius: 5px; position: relative; overflow: hidden; }
+                    .bar div { height: 100%; line-height: 30px; color: white; font-weight: bold; padding-left: 10px; }
+                    .perce_goo { background: green; }
+                    .perce_ok { background: orange; }
+                    .perce_bad { background: red; }
+                    .budget { font-size: 16px; font-weight: bold; text-align: right; }
                 </style>
-            </head>
-            <body>
-                <h1>Gastos por Categoría</h1>
+                </head>
+                <body>  
+                <h1>Gastos por Categoría - ${this.curr_day} de ${this.month} </h1>
                 ${this.alertas
-                .filter(item => item.value > 0)
-                .map(item => `
+                    .filter(item => item.value > 0)
+                    .map(item => `
                     <hr class="divider">
                     <div class="nombres">
-                    <div class="act">${item.name}</div>
-                    <div>${Math.round((item.value / item.budget) * 100)}%</div>
+                        <div class="act">${item.name}</div>
+                        <div>${Math.round((item.value / item.budget) * 100)}%</div>
                     </div>
                     <div class="progres">
-                    <div class="bar">
+                        <div class="bar">
                         <div class="${item.value / item.budget < 1 ? "perce_goo" : item.value / item.budget === 1 ? "perce_ok" : "perce_bad"}" 
                             style="width: ${(item.value / item.budget) * 100}%">
-                        <p>${Number(item.value).toLocaleString()}</p>
+                            <p>${Number(item.value).toLocaleString()}</p>
                         </div>
+                        </div>
+                        <div class="budget">$${Number(item.budget).toLocaleString()}</div>
                     </div>
-                    <div class="budget">$${Number(item.budget).toLocaleString()}</div>
-                    </div>
-                `)
-                .join("")}
-            </body>
-            </html>
+                    `)
+                    .join("")}
+                <hr class="divider">
+                <div>
+                    <div class="nombres">Total Gastado <strong> ${Number(this.expenses).toLocaleString()} </strong> </div>
+                </div>
+                </body>
+                </html>
             `;
 
             printWindow.document.write(content);
             printWindow.document.close();
             printWindow.print();
-        }
+            }
     }     
 }
 </script>
