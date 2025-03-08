@@ -1,5 +1,8 @@
 <template>
-    <b-container fliud class="main">
+    <div v-if="isLoading">
+      <LottieAnimation :animationData="loadingAnimation" />
+    </div>
+    <b-container v-else fliud class="main">
         <b-modal ref="wellcome" hide-header content-class="modal">
             <div >
                 <p>Acá podras ver graficos e historial de tus gastos en meses anteriores</p>
@@ -65,7 +68,7 @@
         <b-row > 
             <b-col cols="12" sm="12" md="6" lg="6" class="module">   
                 <div class="gastorta" v-if="expenses > 0" >
-                    <h2 class="act"> Gastos </h2> 
+                    <h2 class="act"> Distribución de Gastos </h2> 
                     <pie-chart
                         :donut  ="false"
                         :data   ="exp_pie"
@@ -91,7 +94,7 @@
                 </div>
                 <div class="right">
                     <div v-if="incomes||expenses != 0" >
-                        <h2 class="act">Balance</h2>
+                        <h2 class="act">Ingresos VS Egresos</h2>
                         <column-chart        
                             :data="[['Ingresos', incomes], ['Gastos', expenses]]"
                             :colors="[['#79FF00', '#FF00D5']]"
@@ -184,17 +187,22 @@ import Datepicker from 'vuejs-datepicker';
 import Vue from 'vue'
 import Chart from 'chart.js'
 import VueChartkick from 'vue-chartkick'
+import LottieAnimation from '@/components/LottieAnimation'; 
+import loadingAnimation from '@/assets/loading.json';
 
 Vue.use(Chartkick.use(Chart))
 
 
 export default {
     components: {
-        Datepicker
+        Datepicker,
+        LottieAnimation
     },    
     name: 'Resumen',
     data: function (){
         return {
+            isLoading	: false, 
+            loadingAnimation,
             assets      : 0,
             expenses    : 0,
             balance     : 0,
@@ -219,7 +227,8 @@ export default {
                             'Noviembre', 'Diciembre']                        
         }
     },
-    created: function(){                       
+    created: function(){       
+        this.isLoading = true;                
         console.log(process.env.NODE_ENV);
 
         const today = new Date()
@@ -319,6 +328,7 @@ export default {
                 if (this.expenses == 0 && this.incomes == 0) {
                     this.$refs['wellcome'].show()
                 }
+                this.isLoading = false;
         })) 
         .catch((error) => {
             alert(error);

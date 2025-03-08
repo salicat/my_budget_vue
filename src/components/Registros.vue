@@ -1,5 +1,8 @@
 <template>
-    <b-container fluid>
+	<div v-if="isLoading">
+      <LottieAnimation :animationData="loadingAnimation" />
+    </div>
+    <b-container v-else fluid>
       <b-row>
         <!-- Contenedor para "Variaciones en Gastos" -->
         <b-col cols="12" class="module">
@@ -10,17 +13,23 @@
                 {{cat.category}}
               </option>
             </select>
-            <area-chart :colors="['#00E8FF']"
-                        label="Value"
-                        :curve="true"
-                        :discrete="true"
-                        prefix="$"
-                        thousands=","
-                        :messages="{empty: 'Selecciona la categoria'}"
-                        :legend="false"
-                        xtitle="Meses" ytitle="Valor"
-                        :data="datos">
-            </area-chart>
+			<div class="chart-container">
+				<area-chart
+					:colors="['#00E8FF']"
+					label="Value"
+					:curve="true"
+					:discrete="true"
+					prefix="$"
+					thousands=","
+					:messages="{empty: 'Selecciona la categoria'}"
+					:legend="false"
+					xtitle="Meses"
+					ytitle="Valor"
+					:data="datos"
+					:library="chartOptions"
+					>
+				</area-chart>
+			</div>
           </div>
         </b-col>
       </b-row>
@@ -129,14 +138,18 @@
   
 <script>
 import axios from "axios";
-import { cat } from "shelljs";
-
+import LottieAnimation from '@/components/LottieAnimation'; 
+import loadingAnimation from '@/assets/loading.json';
 
 export default {
     name: "Registros", 
-    components: {},
+    components: {
+		LottieAnimation
+	},
     data: function (){
         return {
+			isLoading	: false, 
+            loadingAnimation,
             username    : localStorage.getItem('current_username'),
             category    : "",
             day         : "",
@@ -158,40 +171,42 @@ export default {
                         'Noviembre', 'Diciembre']            
         };       
     },
-        created: function() {
-            this.username = localStorage.getItem("current_username");
-            var self = this;            
-            const url = window.location.hostname.includes("localhost") 
-            ? "http://localhost:8000" 
-            : "https://my-budget-back.onrender.com";
+	created: function() {
+		this.isLoading = true;    
+		this.username = localStorage.getItem("current_username");
+		var self = this;            
+		const url = window.location.hostname.includes("localhost") 
+		? "http://localhost:8000" 
+		: "https://my-budget-back.onrender.com";
 
 
-            axios            
-            .get(`${url}/user/cats/` + this.username)
-            .then((response) => {                
-                this.cats = response.data;
-				if (this.cats.expenses) {
-					this.cats.expenses.sort((a, b) => a.category.localeCompare(b.category));
-				}
-            })            
-        },
-		mounted() {
-			const url = window.location.hostname.includes("localhost") 
-            ? "http://localhost:8000" 
-            : "https://my-budget-back.onrender.com";
-
-			axios.get(`${url}/user/cats/` + this.username)
-			.then((response) => {
-				this.cats = response.data;
+		axios            
+		.get(`${url}/user/cats/` + this.username)
+		.then((response) => {                
+			this.cats = response.data;
+			if (this.cats.expenses) {
 				this.cats.expenses.sort((a, b) => a.category.localeCompare(b.category));
+			}
+			this.isLoading = false;    
+		})            
+	},
+	mounted() {
+		const url = window.location.hostname.includes("localhost") 
+		? "http://localhost:8000" 
+		: "https://my-budget-back.onrender.com";
 
-				// Asignar la primera categoría automáticamente
-				if (this.cats.expenses.length > 0) {
-				this.track = this.cats.expenses[0].category;
-				this.track_months(); // Llamar la función con la primera categoría
-				}
-			});
-		},
+		axios.get(`${url}/user/cats/` + this.username)
+		.then((response) => {
+			this.cats = response.data;
+			this.cats.expenses.sort((a, b) => a.category.localeCompare(b.category));
+
+			// Asignar la primera categoría automáticamente
+			if (this.cats.expenses.length > 0) {
+			this.track = this.cats.expenses[0].category;
+			this.track_months(); // Llamar la función con la primera categoría
+			}
+		});
+	},
     methods:{
         get_regs: function (){            
             

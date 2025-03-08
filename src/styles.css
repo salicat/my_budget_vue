@@ -5,6 +5,13 @@
     flex-direction: column;
     align-items: center;
 }
+.lottie-container{
+    padding-top: 15%;
+    text-align: center;
+    top: 35vh;
+    width: 400px;
+    margin: auto;
+}
 .header{
     position: sticky;
     top: 0;
@@ -336,6 +343,7 @@ table{
     justify-content: space-between;
 }
 
+
   
 @media screen and (max-width: 768px) {
     #SingUp {
@@ -369,6 +377,12 @@ table{
 @media screen and (max-width: 480px) {
     .header{
         padding-right: 15%;
+    }
+    .lottie-container{
+        top: 50vh !important;
+        width: 80vw;
+        height: 80vw;
+        margin: auto;
     }
     .user_container{
         height: 5vh;
