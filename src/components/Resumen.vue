@@ -33,12 +33,8 @@
                 </div>
             </b-col>
         </b-row>
-        <br>
         <b-row >
-            <b-col cols="10" md="8" class="mx-auto"   style="border-radius: 10px;
-                                            margin-bottom: 3%;
-                                            padding: 2%;
-                                            border:1px solid rgb(0, 107, 107); "> 
+            <b-col cols="12" class="module"> 
                 <div style="display:flex; flex-direction:row; justify-content: space-between;">    
                         <p v-bind:class="{  goo: expenses/gen_budget < 0.99999,
                                             act: expenses/gen_budget == 1,

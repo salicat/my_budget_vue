@@ -368,13 +368,11 @@ table{
 
 @media screen and (max-width: 480px) {
     .header{
-        flex-direction: row; /* Mantiene el diseño horizontal */
-        justify-content: space-between;
-        padding: 8px;
+        padding-right: 15%;
     }
     .user_container{
         height: 5vh;
-        margin-right: 5%;
+
         width: 33vw;
     }
     .crea_user {
