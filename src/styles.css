@@ -16,7 +16,7 @@
     position: sticky;
     top: 0;
     width: 100%;
-    background-color: #121212; /* Color oscuro para modo oscuro */
+    background-color: #000000; /* Color oscuro para modo oscuro */
     z-index: 1000; /* Asegura que esté sobre otros elementos */
     display: flex;
     align-items: center;
@@ -376,6 +376,7 @@ table{
 
 @media screen and (max-width: 480px) {
     .header{
+        width: 100%;
         padding-right: 15%;
     }
     .lottie-container{

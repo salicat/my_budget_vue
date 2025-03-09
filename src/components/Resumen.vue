@@ -116,7 +116,7 @@
                     </div>
                     <b-col cols="12">
                         <div v-if="recurrents.length > 0">
-                            <h1> Pagos {{month}} </h1>                                   
+                            <h1> Pagos {{month}} </h1>         
                         </div>
                         <b-row v-if="recurrents.length > 0">  
                             <b-col cols="5" lg="5"  style=" padding:3%;
@@ -228,207 +228,213 @@ export default {
         }
     },
     created: function(){       
-        this.isLoading = true;                
-        console.log(process.env.NODE_ENV);
+    this.isLoading = true;                
+    console.log(process.env.NODE_ENV);
 
-        const today = new Date()
-        today.toLocaleString('default', { month: 'long' })
-        
-        var n = today.getMonth();
-        this.month = this.meses[n]
+    const today = new Date();
+    today.toLocaleString('default', { month: 'long' });
+    
+    var n = today.getMonth();
+    this.month = this.meses[n];
 
-        var y = today.getFullYear();
-        this.anio = y
+    var y = today.getFullYear();
+    this.anio = y;
 
+    var d = String(today.getDate()).padStart(2, '0');
+    this.curr_day = d;
 
-        var d = String(today.getDate()).padStart(2, '0');
-        this.curr_day = d
+    var month_cons = this.meses.indexOf(this.month) + 1;
 
+    var data = {
+        username: this.$route.params.username,
+        year: this.anio,
+        month: month_cons
+    };
+
+    const url = window.location.hostname.includes("localhost") 
+            ? "http://localhost:8000" 
+            : "https://my-budget-back.onrender.com";
+
+    let one   = `${url}/user/month_records/` + data.username + "/" + data.year + "/" + data.month;
+    let two   = `${url}/user/cats/` + data.username;
+    let three = `${url}/user/month_regs/` + data.username + "/" +  data.year + "/" + data.month;
+    let four  = `${url}/user/cats/` + data.username + "/" + data.year + "/" + data.month;
+    
+    const requestOne   = axios.get(one);
+    const requestTwo   = axios.get(two);
+    const requestThree = axios.get(three);
+    const requestFour  = axios.get(four);
+
+    let self = this;                
+    axios
+      .all([ requestOne, requestTwo, requestThree, requestFour ])
+      .then(axios.spread((...responses) => {                       
+          const responseOne = responses[0];
+
+          const mes = function(date){
+              if (!date) return '';
+              let fecha = date.split("-");
+              return fecha[1];
+          };
+
+          for (var i = 0; i < responseOne.data.length; i++){                
+              if (mes(responseOne.data[i].date) == month_cons) {                    
+                  if (responseOne.data[i].type == "incomes") {
+                      this.incomes = this.incomes + responseOne.data[i].value;
+                  }
+                  if (responseOne.data[i].type == "expenses") {
+                      this.expenses = this.expenses + responseOne.data[i].value;
+                  }
+              }                                                                                 
+          }
+
+          const ano = function (odate){
+              if (!odate) return '';
+              let anof = odate.split("-");
+              return anof[0] + "-" + anof[1];
+          };
+          for (var m = 0; m < responseOne.data.length; m++){
+              self.months = ano(responseOne.data[m].date);
+          }
+          
+          const responseTwo = responses[1];                  
+          for (var j = 0; j < responseTwo.data.liabilities.length; j++){
+              this.liabilities = this.liabilities + responseTwo.data.liabilities[j].value;       
+          }
+          for (var k = 0; k < responseTwo.data.passives.length; k++){
+              this.passives = this.passives + responseTwo.data.passives[k].value;
+          }    
+              
+          const responseThree = responses[2];
+          var estemes = month_cons.toString();
+          var actualiza = function(date){
+              if (!date) return '';
+              var fecha = date.split("-");
+              fecha[1] = estemes.padStart(2, '0');                
+              var actualizada = fecha.join("-");
+              return actualizada;                                 
+          };
+          for (var l = 0; l < responseThree.data.length; l++) {                
+              if (mes(responseThree.data[l].expires) < month_cons) {
+                  responseThree.data[l].expires = actualiza(responseThree.data[l].expires);
+              }                
+              self.recurrents[l] = responseThree.data[l];
+          }
+          
+          const responseFour = responses[3];
+          for (var b = 0; b < responseFour.data.length; b++){
+              this.gen_budget = this.gen_budget + responseFour.data[b].budget;
+              self.alertas[b] = responseFour.data[b];
+              if (this.alertas[b].value > 0) {
+                  self.exp_pie[b] = [this.alertas[b].name, this.alertas[b].value];           
+              }
+          }
+        //   if (this.expenses == 0 && this.incomes == 0) {
+        //       this.$refs['wellcome'].show();
+        //   }
+          this.isLoading = false;
+      }))
+      .catch((error) => {
+          alert(error);
+      });        
+},
+methods : {
+    reload : function () {
+        this.exp_pie = [];
+        const today = new Date();
+        today.toLocaleString('default', { month: 'long' });
+        var new_month = today.getMonth(); 
         var month_cons = this.meses.indexOf(this.month) + 1;
 
-        var data = {
-            username    : this.$route.params.username,
-            year        : this.anio,
-            month       : month_cons
-        }                
-
+        var datos = {
+            username: this.$route.params.username,
+            year: this.anio,
+            month: month_cons
+        };
         const url = window.location.hostname.includes("localhost") 
-            ? "http://localhost:8000" 
-            : "https://my-budget-back.onrender.com";
+              ? "http://localhost:8000" 
+              : "https://my-budget-back.onrender.com";
 
-
-        let one     = `${url}/user/month_records/` + data.username + "/" + data.year + "/" + data.month
-        let two     = `${url}/user/cats/` + data.username
-        let three   = `${url}/user/month_regs/` + data.username + "/" +  data.year + "/" + data.month
-        let four    = `${url}/user/cats/` + data.username + "/" + data.year + "/" + data.month
-        
-        const requestOne    = axios.get(one)
-        const requestTwo    = axios.get(two)
-        const requestThree  = axios.get(three)
-        const requestFour   = axios.get(four)
-
-        let self = this                
-        axios
-        .all([ requestOne, requestTwo, requestThree, requestFour ])
-        .then(axios.spread((...responses) => {                       
-            const responseOne = responses[0]                                        
-                
-            const mes = function(date){
-                let fecha = date.split("-");
-                return fecha[1]
-            }            
-            for (var i = 0; i < responseOne.data.length; i++){                
-                if (mes(responseOne.data[i].date) == month_cons) {                    
-                    if ( responseOne.data[i].type == "incomes") {
-                    this.incomes = this.incomes + responseOne.data[i].value;
-                };
-                if ( responseOne.data[i].type == "expenses") {
-                    this.expenses = this.expenses + responseOne.data[i].value;
-                };
-                }                                                                                 
-            }
-                  
-            const ano = function (odate){
-                let anof = odate.split("-")
-                return "" +anof[0] +"-"+ anof[1]
-            }
-            for(var m = 0; m < responseOne.data.length; m++){
-                self.months = ano(responseOne.data[m].date)
-            }
-            const responseTwo = responses[1]                  
-            for (var j = 0; j < responseTwo.data.liabilities.length; j++){
-                this.liabilities = this.liabilities + responseTwo.data.liabilities[j].value;       
-            }
-            for (var k = 0; k < responseTwo.data.passives.length; k++){
-                this.passives = this.passives + responseTwo.data.passives[k].value
-            }    
-                
-            const responseThree = responses[2]
-            var estemes = month_cons.toString()                
-            var actualiza = function(date){
-                var fecha = date.split("-");
-                fecha[1] = "0"+estemes;                
-                var actualizada = fecha[0]+"-"+fecha[1]+"-"+fecha[2];                
-                return actualizada;                                 
-            }
-            for (var l = 0; l < responseThree.data.length; l++) {                
-                if (mes(responseThree.data[l].expires) < month_cons) {
-                    responseThree.data[l].expires = actualiza(responseThree.data[l].expires)                                        
-                }                
-                self.recurrents[l] = responseThree.data[l]
-            }       
-            const responseFour = responses[3]
-                for (var b = 0; b < responseFour.data.length; b++){
-                this.gen_budget = this.gen_budget + responseFour.data[b].budget;
-                    self.alertas[b] = responseFour.data[b]
-                    if (this.alertas[b].value > 0) {
-                        self.exp_pie[b] = [this.alertas[b].name, this.alertas[b].value]           
-                    }
-                }
-                if (this.expenses == 0 && this.incomes == 0) {
-                    this.$refs['wellcome'].show()
-                }
-                this.isLoading = false;
-        })) 
-        .catch((error) => {
-            alert(error);
-        });        
-    },       
-    methods : {
-        reload : function () {
-            this.exp_pie = []
-            const today = new Date()
-            today.toLocaleString('default', { month: 'long' })
-            var new_month = today.getMonth(); 
-            var month_cons = this.meses.indexOf(this.month) + 1;
-
-            var datos = {
-                username    : this.$route.params.username,
-                year        : this.anio,
-                month       : month_cons
-            }
-            const url = window.location.hostname.includes("localhost") 
-            ? "http://localhost:8000" 
-            : "https://my-budget-back.onrender.com";
-
-
-            let one     = `${url}/user/month_records/` + datos.username + "/" + datos.year + "/" + datos.month
-            let two     = `${url}/user/month_regs/`+ datos.username + "/" + datos.year + "/" +  datos.month
-            let four    = `${url}/user/cats/` + datos.username + "/" +datos.year + "/" + datos.month
+        let one   = `${url}/user/month_records/` + datos.username + "/" + datos.year + "/" + datos.month;
+        let two   = `${url}/user/month_regs/`+ datos.username + "/" + datos.year + "/" +  datos.month;
+        let four  = `${url}/user/cats/` + datos.username + "/" + datos.year + "/" + datos.month;
    
-            const requestOne    = axios.get(one)
-            const requestTwo    = axios.get(two)
-            const requestFour   = axios.get(four)
-            
-            let self = this                
-            axios
-            .all([ requestOne, requestTwo, requestFour])
-            .then(axios.spread((...responses) => {                
-                const mes = function(date){
-                    let fecha = date.split("-");
-                    return fecha[1]
-                    }                
-                const responseOne = responses[0]  
-                this.expenses =  0;
-                this.incomes = 0;
-                for (var l = 0; l < responseOne.data.length; l++){
-                    if (mes(responseOne.data[l].date) == month_cons) {
-                        if (responseOne.data[l].type == "incomes") {
-                        this.incomes = this.incomes + responseOne.data[l].value;
-                        };
-                        if ( responseOne.data[l].type == "expenses") {
-                            this.expenses = this.expenses + responseOne.data[l].value;
-                        };
-                    }                                                               
-            }
-            const responseTwo = responses[1]
-            var estemes = new_month.toString()                
-            var actualiza = function(date){
-                var fecha = date.split("-");
-                fecha[1] = "0"+estemes;                
-                var actualizada = fecha[0]+"-"+fecha[1]+"-"+fecha[2];                
-                return actualizada;                                 
-            }
-            for (var l = 0; l < responseTwo.data.length; l++) {                
-                if (mes(responseTwo.data[l].expires) < new_month) {
-                    responseTwo.data[l].expires = actualiza(responseTwo.data[l].expires)
-                }                
-                self.recurrents[l] = responseTwo.data[l]
-            }        
-            const responseFour = responses[2]
-            this.gen_budget = 0;
-                for (var b = 0; b < responseFour.data.length; b++){
-                    this.gen_budget = this.gen_budget + responseFour.data[b].budget;
-                }    
-                self.alertas = responseFour.data
-            for (var r = 0; r < this.alertas.length; r++){
-                if (this.alertas[r].value > 0) {
-                        self.exp_pie[r] = [this.alertas[r].name, this.alertas[r].value]           
-                    }
-            }
-            }))                           
-        },
-        go_to_cats: function () {
-            if (this.$route.name != "Categorias") {
-            let username = localStorage.getItem("current_username")
+        const requestOne  = axios.get(one);
+        const requestTwo  = axios.get(two);
+        const requestFour = axios.get(four);
+        
+        let self = this;                
+        axios
+          .all([ requestOne, requestTwo, requestFour])
+          .then(axios.spread((...responses) => {
+              // Función que devuelve el mes de una fecha comprobando si es null
+              const mes = function(date){
+                  if (!date) return '';
+                  let fecha = date.split("-");
+                  return fecha[1];
+              };
+              const responseOne = responses[0];  
+              this.expenses = 0;
+              this.incomes = 0;
+              for (var l = 0; l < responseOne.data.length; l++){
+                  if (mes(responseOne.data[l].date) == month_cons) {
+                      if (responseOne.data[l].type == "incomes") {
+                          this.incomes = this.incomes + responseOne.data[l].value;
+                      }
+                      if (responseOne.data[l].type == "expenses") {
+                          this.expenses = this.expenses + responseOne.data[l].value;
+                      }
+                  }                                                               
+              }
+              const responseTwo = responses[1];
+              var estemes = new_month.toString();                
+              var actualiza = function(date){
+                  if (!date) return '';
+                  var fecha = date.split("-");
+                  fecha[1] = estemes.padStart(2, '0');                
+                  var actualizada = fecha.join("-");
+                  return actualizada;                                 
+              };
+              for (var l = 0; l < responseTwo.data.length; l++) {                
+                  if (mes(responseTwo.data[l].expires) < new_month) {
+                      responseTwo.data[l].expires = actualiza(responseTwo.data[l].expires);
+                  }                
+                  self.recurrents[l] = responseTwo.data[l];
+              }
+              const responseFour = responses[2];
+              this.gen_budget = 0;
+              for (var b = 0; b < responseFour.data.length; b++){
+                  this.gen_budget = this.gen_budget + responseFour.data[b].budget;
+              }    
+              self.alertas = responseFour.data;
+              for (var r = 0; r < this.alertas.length; r++){
+                  if (this.alertas[r].value > 0) {
+                      self.exp_pie[r] = [this.alertas[r].name, this.alertas[r].value];           
+                  }
+              }
+          }));                           
+    },
+    go_to_cats: function () {
+        if (this.$route.name != "Categorias") {
+            let username = localStorage.getItem("current_username");
             this.$router.push({name: "Categorias", params: {username: username}});                
             this.open = false;
-            }
-        },
-        go_to_registers: function () {
-            if (this.$route.name != "Registros"){
-                let username = localStorage.getItem("current_username")
-                this.$router.push({name: "Registros", params: {username: username}});
-                this.open = false;
-            }
-        },
-        print() {
-            const printWindow = window.open("", "_blank");
-            if (!printWindow) return;
+        }
+    },
+    go_to_registers: function () {
+        if (this.$route.name != "Registros"){
+            let username = localStorage.getItem("current_username");
+            this.$router.push({name: "Registros", params: {username: username}});
+            this.open = false;
+        }
+    },
+    print() {
+        const printWindow = window.open("", "_blank");
+        if (!printWindow) return;
 
-            const content = `
-                <html>
-                <head>
+        const content = `
+            <html>
+            <head>
                 <title>Gastos por Categoría - ${this.curr_day} de ${this.month}</title>
                 <style>
                     body { font-family: Arial, sans-serif; padding: 20%; background-color:black; color:white; }
@@ -443,40 +449,40 @@ export default {
                     .perce_bad { background: red; }
                     .budget { font-size: 16px; font-weight: bold; text-align: right; }
                 </style>
-                </head>
-                <body>  
-                <h1>Gastos por Categoría - ${this.curr_day} de ${this.month} </h1>
+            </head>
+            <body>  
+                <h1>Gastos por Categoría - ${this.curr_day} de ${this.month}</h1>
                 ${this.alertas
                     .filter(item => item.value > 0)
                     .map(item => `
-                    <hr class="divider">
-                    <div class="nombres">
-                        <div class="act">${item.name}</div>
-                        <div>${Math.round((item.value / item.budget) * 100)}%</div>
-                    </div>
-                    <div class="progres">
-                        <div class="bar">
-                        <div class="${item.value / item.budget < 1 ? "perce_goo" : item.value / item.budget === 1 ? "perce_ok" : "perce_bad"}" 
-                            style="width: ${(item.value / item.budget) * 100}%">
-                            <p>${Number(item.value).toLocaleString()}</p>
+                        <hr class="divider">
+                        <div class="nombres">
+                            <div class="act">${item.name}</div>
+                            <div>${Math.round((item.value / item.budget) * 100)}%</div>
                         </div>
+                        <div class="progres">
+                            <div class="bar">
+                                <div class="${item.value / item.budget < 1 ? "perce_goo" : item.value / item.budget === 1 ? "perce_ok" : "perce_bad"}" 
+                                    style="width: ${(item.value / item.budget) * 100}%">
+                                    <p>${Number(item.value).toLocaleString()}</p>
+                                </div>
+                            </div>
+                            <div class="budget">$${Number(item.budget).toLocaleString()}</div>
                         </div>
-                        <div class="budget">$${Number(item.budget).toLocaleString()}</div>
-                    </div>
                     `)
                     .join("")}
                 <hr class="divider">
                 <div>
-                    <div class="nombres">Total Gastado <strong> ${Number(this.expenses).toLocaleString()} </strong> </div>
+                    <div class="nombres">Total Gastado <strong> ${Number(this.expenses).toLocaleString()} </strong></div>
                 </div>
-                </body>
-                </html>
-            `;
+            </body>
+            </html>
+        `;
 
-            printWindow.document.write(content);
-            printWindow.document.close();
-            printWindow.print();
-            }
-    }     
+        printWindow.document.write(content);
+        printWindow.document.close();
+        printWindow.print();
+    }
+}
 }
 </script>
