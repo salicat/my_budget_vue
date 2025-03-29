@@ -180,18 +180,91 @@ h1{
   body{
     background-color: black;
 }
-.modal{
-    background-color: black;
+
+.modal-content {
+    background-color: #000; /* Fondo negro */
+    color: #00E8FF; /* Texto azul neón */
+    border: 1px solid #00E8FF; /* Borde azul */
+    border-radius: 10px;
+  }
+  
+  .modal-header {
+    border-bottom: 1px solid #00E8FF; /* Línea divisoria azul */
+  }
+  
+  .modal-title {
+    color: #00E8FF;
+    font-weight: bold;
+  }
+  
+  .modal-body {
+    padding: 20px;
+  }
+  
+  .table {
+    color: white; /* Texto blanco en la tabla */
+  }
+  
+  .table thead {
+    background-color: #00E8FF; /* Encabezado azul */
+    color: #000; /* Texto negro en encabezados */
+  }
+  
+  .table tbody tr:hover {
+    background-color: rgba(0, 232, 255, 0.2); /* Resalte suave */
+  }
+  
+  .form-control, .form-select {
+    background-color: #111; /* Campo de entrada oscuro */
+    color: #00E8FF; /* Texto azul */
+    border: 1px solid #00E8FF;
+  }
+  
+  .form-control:focus, .form-select:focus {
+    box-shadow: 0 0 10px #00E8FF;
+    border-color: #00E8FF;
+  }
+  
+  .modal-footer {
+    border-top: 1px solid #00E8FF;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .b-button {
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 5px;
+  }
+  
+  .b-button-secondary {
+    background-color: #444; /* Botón cerrar gris oscuro */
     color: white;
-    padding: 3%; 
-    border:1px solid rgb(0, 107, 107);
-}
-.nombres{
+  }
+  
+  .b-button-primary {
+    background-color: #00BCD4; /* Botón guardar azul */
+    color: #000;
+    transition: 0.3s;
+  }
+  
+  .b-button-primary:hover {
+    background-color: #008C9E; /* Azul más oscuro al pasar el mouse */
+  }
+  
+  .nombres{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     padding-top: 2em;
 }
+.modal-body {
+        background-color: black;
+    color: white;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
 .progres{
     display: flex;
     flex-direction: row;
