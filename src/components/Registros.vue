@@ -7,9 +7,9 @@
         <!-- Contenedor para "Variaciones en Gastos" -->
         <b-col cols="12" class="module">
           <div v-if="cats.expenses.length > 0">
-            <h1>Variaciones en Gastos</h1>
+            <h1>Historico Gastos</h1>
             <select v-model="track" v-on:change="track_months">
-              <option v-for="cat in cats.expenses" v-bind:key="cat.name">
+              <option v-for="cat in cats.expenses" v-bind:key="cat.id">
                 {{cat.category}}
               </option>
             </select>
@@ -26,7 +26,6 @@
 					xtitle="Meses"
 					ytitle="Valor"
 					:data="datos"
-					:library="chartOptions"
 					>
 				</area-chart>
 			</div>
@@ -69,11 +68,10 @@
 						accept="image/*"
 						@change="uploadTicket"
 					/>
-					<button @click="save_reg" class="form-button">Guardar Registro</button>
 				</div>
 
 				<!-- Si se elige "Ingreso" o "ManualEntry" en "Egreso" -->
-				<div v-if="type === 'incomes' || expenseMethod === 'manualEntry'">
+				<div v-if="expenseMethod === 'manualEntry'">
 					<div class="form-group">
 						<label for="category">Categoría de Egreso</label>
 						<select id="category" v-model="category" class="form-select">
@@ -84,7 +82,31 @@
 					</div>
 					<div class="form-group">
 						<label for="descripcion">Descripción</label>
-						<input id="descripcion" v-model="descripcion" type="text" class="form-input" placeholder="Descripción">
+						<input id="descripcion" v-model="description" type="text" class="form-input" placeholder="Descripción">
+					</div>
+					<div class="form-group">
+						<label for="value">Valor</label>
+						<input id="value" v-model="value" type="number" class="form-input" placeholder="0.00">
+					</div>
+					<div class="form-group">
+						<label for="day">Fecha</label>
+						<input id="day" v-model="day" type="date" class="form-input">
+					</div>
+					<button @click="save_reg" class="form-button">Guardar Registro</button>
+				</div>
+
+				<div v-if="type === 'incomes'">
+					<div class="form-group">
+						<label for="category">Categoría de Ingreso</label>
+						<select id="category" v-model="category" class="form-select">
+							<option v-for="cat in cats.incomes" :key="cat.category" :value="cat.category">
+							{{ cat.category }}
+							</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="descripcion">Descripción</label>
+						<input id="descripcion" v-model="description" type="text" class="form-input" placeholder="Descripción">
 					</div>
 					<div class="form-group">
 						<label for="value">Valor</label>
@@ -153,23 +175,22 @@
           </b-row>
         </b-col>
       </b-row>
-	  <b-modal id="ticketModal" v-model="showTicketModal" title="Datos del Tiquet" size="lg" hide-footer>
+	  <b-modal id="ticketModal" v-model="showTicketModal" title="Datos del Tiquet (Testing)"  size="lg" hide-footer>
 		<div v-if="isLoading">
 			<LottieAnimation :animationData="loadingAnimation" />
 		</div>
 		<div v-else-if="extractedData && extractedData.length">
-			<h5>Datos extraídos del tiquet:</h5>
+			<h3 class="pas">*Estos Valores Pueden Contener Errores</h3>
+			<p>Revisa el valor antes de guardar este registro</p>
 			<table class="table table-sm">
 			<thead>
 				<tr>
-				<th>Categoría</th>
 				<th>Descripción</th>
 				<th>Valor</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="(item, idx) in extractedData" :key="idx">
-				<td>{{ item.category || '-' }}</td>
+				<tr v-for="(item, idx) in extractedData" :key="'extracted_' + idx">
 				<td>{{ item.description }}</td>
 				<td>{{ item.value }}</td>
 				</tr>
@@ -178,15 +199,25 @@
 			<hr>
 			<div class="form-group">
 			<label><strong>Valor total:</strong></label>
-			<input type="number" step="any" class="form-control" v-model="ticket_data[0].value" />
+			<input type="number" 
+					step="any" 
+					class="form-control" 
+					v-model="ticket_data[0].value" 
+					@input="handleValueInput" 
+				/>
 			</div>
 			<div class="form-group">
 			<label><strong>Asignar Categoría:</strong></label>
-			<select v-model="ticket_data[0].category" class="form-select">
+			<select v-model="category" class="form-select">
+				<option disabled> -- Elige una categoria -- </option>
 				<option v-for="cat in cats.expenses" :key="cat.category" :value="cat.category">
 				{{ cat.category }}
 				</option>
 			</select>
+			</div>
+			<div class="form-group">
+				<label for="day">Fecha de la compra</label>
+				<input id="day" v-model="day" type="date" class="form-input">
 			</div>
 		</div>
 		<div v-else>
@@ -219,7 +250,7 @@ export default {
             category    : "",
             day         : "",
             type        : "",
-            descripcion : "",
+            description : "",
             value       : 0,
 			expenseMethod : '',
             cats		: { expenses: [] },
@@ -305,7 +336,7 @@ export default {
                 date        : this.day,
                 type        : this.type,
                 category    : this.category,
-                description : this.descripcion,
+                description : this.description,
                 value       : this.value
             }
             const url = window.location.hostname.includes("localhost") 
@@ -356,7 +387,6 @@ export default {
                 month       : this.month,
                 category    : this.track
             }
-            console.log(data.month)
             var self = this
             const url = window.location.hostname.includes("localhost") 
             ? "http://localhost:8000" 
@@ -415,14 +445,69 @@ export default {
 			
 			},
 			confirmTicketData: function() {
-			// Aquí se pueden editar los campos del objeto en ticket_data (valor total)
-			// Por ejemplo, asignar la categoría editada por el usuario, etc.
-			// Luego se realiza el POST para guardar el registro final.
-			console.log("Registro a guardar:", self.ticket_data);
-			// Se podría hacer algo como:
-			// axios.post(url + '/user/register/', self.ticket_data[0]).then(...);
-			this.showTicketModal = false;
-    }
+
+				this.description = "Ticket de Compra";
+				this.value = this.ticket_data[0].value;
+
+				var data = {
+					username: this.username,
+					date: this.day,
+					type: this.type,
+					category: this.category,
+					description: this.description,
+					value: this.value
+				};
+
+				if ( !this.category || !this.value || !this.day) {
+					alert("Por favor, completa todos los campos requeridos antes de enviar.");
+					return;
+				}
+				const message = 
+`Por favor, confirma los siguientes datos:
+----------------------------------
+Fecha: ${data.date}
+Categoría: ${data.category}
+Valor: ${data.value}
+----------------------------------
+¿Deseas enviar el registro?`;
+
+				if (!confirm(message)) {
+					return;
+				}
+
+				this.isLoading = true;
+
+				const url = window.location.hostname.includes("localhost")
+					? "http://localhost:8000"
+					: "https://my-budget-back.onrender.com";
+
+					axios
+					.post(`${url}/user/register/`, data)
+					.then((response) => {
+						window.location.reload();
+					})
+					.catch((error) => {
+						console.error("Error al guardar el registro:", error);
+						alert("Ocurrió un error al guardar el registro. Intente nuevamente.");
+					})
+					.finally(() => {
+						this.isLoading = false;
+					});
+				this.showTicketModal = false;
+
+				// console.log("Registro a guardar:", 
+				// 	this.username, 
+				// 	this.day, 
+				// 	this.type, 
+				// 	this.category, 
+				// 	this.description, 
+				// 	this.value
+				// );
+
+			},
+			handleValueInput: function (event) {
+				this.value = event.target.value;
+			}
     }        
 }
 
