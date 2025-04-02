@@ -4,7 +4,6 @@
             <b-col cols="12"  class="module">
                 <div>
                     <h1 class="act">Alertas:</h1>
-                    <h2 v-if="t_bud < t_in" class="act"> Tus finanzas lucen saludables</h2>
                     <h2 v-if="t_pass > t_lia" class="bad"> Tus Pasivos son mayores que tus activos en ${{Number(t_pass-t_lia).toLocaleString()}}</h2>
                     <h2 v-if="t_bud > t_in " class="bad"> Tus egresos exceden tus ingresos en ${{Number(t_bud - t_in).toLocaleString()}}</h2>
                 </div>
@@ -14,7 +13,6 @@
             <b-col cols="12" sm="12" md="3" class="module">
                 <div class="form-container">
                 <h2 class="form-title">Tus Categorías</h2>
-                
                 <div class="form-group">
                 <label for="action">Selecciona una acción</label>
                 <select id="action" v-model="action" class="form-select">
@@ -148,70 +146,62 @@
             </b-col>
             <b-col cols="12" sm="4" md="4" >
                 <div class = "module" >
-                        <h1 class="goo"> Ingresos </h1>
-                        <h2 class="goo"> ${{Number(t_in).toLocaleString()}} </h2>
-                        <table >
-                            <tr class = "columnas">
-                                <th>  </th>                            
-                                <th> Meta mensual</th>
-                            </tr>
-                            <tr v-for="cat in cats.incomes" :key="cat.category">                    
-                                <td class="titulos"> {{cat.category}} </td> 
-                                <td class="goo"> ${{Number(cat.budget).toLocaleString()}} </td>                                                
-                            </tr>
-                        </table>                                                                                    
-                    </div>
-                    <div class ="module" style="border-radius: 10px;
-                                            margin-top: 3%;  
-                                            padding: 3%; 
-                                            border:1px solid rgb(0, 107, 107);">
-                        <h1 class="bad"> Egresos </h1>                
-                        <h2 class="bad"> ${{Number(t_bud).toLocaleString()}} </h2>
-                        <table class="tab_egresos">
-                            <tr class = "columnas">
-                                <th> Presupuesto </th>
-                            </tr>                           
-                            <tr v-for="cat in cats.expenses" :key="cat.category">                    
-                                <td class="titulos"> {{cat.category}} </td> 
-                                <!-- <td v-bind:class="{alert: cat.value > cat.budget}"> ${{cat.value}}</td> -->
-                                <td class="bad"> ${{Number(cat.budget).toLocaleString()}} </td>                                          
-                            </tr>                    
-                        </table>
-                    </div>                                                        
+                    <h1 class="goo"> Ingresos </h1>
+                    <h2 class="goo"> ${{Number(t_in).toLocaleString()}} </h2>
+                    <table class="tab_egresos">
+                        <tr class = "columnas">
+                            <th>  </th>                            
+                            <th> Valor Mensual</th>
+                        </tr>
+                        <tr v-for="cat in cats.incomes" :key="cat.category">                    
+                            <td class="titulos"> {{cat.category}} </td> 
+                            <td class="goo"> ${{Number(cat.budget).toLocaleString()}} </td>                                                
+                        </tr>
+                    </table>                                                                                    
+                </div>
+                <div class ="module" >
+                    <h1 class="bad"> Egresos </h1>                
+                    <h2 class="bad"> ${{Number(t_bud).toLocaleString()}} </h2>
+                    <table class="tab_egresos">
+                        <tr class = "columnas">
+                            <th>  </th>
+                            <th> Presupuesto </th>
+                        </tr>                           
+                        <tr v-for="cat in cats.expenses" :key="cat.category">                    
+                            <td class="titulos"> {{cat.category}} </td> 
+                            <!-- <td v-bind:class="{alert: cat.value > cat.budget}"> ${{cat.value}}</td> -->
+                            <td class="bad"> ${{Number(cat.budget).toLocaleString()}} </td>                                          
+                        </tr>                    
+                    </table>
+                </div>                                                        
             </b-col>
             <b-col cols="12" sm="4" md="4">
                     <div class="module">
-                        <h1 class="act"> Activos ${{Number(t_lia).toLocaleString()}} </h1>
-                        <table>
-                            <thead>
+                        <h1 class="act"> Activos </h1>
+                        <h2 class="act"> ${{Number(t_lia).toLocaleString()}} </h2>
+                        <table class="tab_egresos">
                                 <tr class = "columnas">
-                                    <td> </td>
-                                    <td> Valor </td>
+                                    <th> </th>
+                                    <th> Valor </th>
                                 </tr>
-                            </thead>
-                            <tbody>
                                 <tr v-for="cat in cats.liabilities" :key="cat.category">                    
-                                    <th class="titulos"> {{cat.category}} </th> 
-                                    <th class="act"> ${{Number(cat.value).toLocaleString()}} </th>
-                                </tr>
-                            </tbody>                    
+                                    <td class="titulos"> {{cat.category}} </td> 
+                                    <td class="act"> ${{Number(cat.value).toLocaleString()}} </td>
+                                </tr>                 
                         </table>
                     </div>            
                     <div class="module">
-                        <h1 class="pas"> Pasivos ${{Number(t_pass).toLocaleString()}} </h1>
-                        <table>
-                            <thead>
+                        <h1 class="pas"> Pasivos </h1>
+                        <h2 class="pas"> ${{Number(t_pass).toLocaleString()}} </h2>
+                        <table class="tab_egresos">
                                 <tr class = "columnas">
-                                    <td> </td>
-                                    <td> Valor </td>
+                                    <th> </th>
+                                    <th> Valor </th>
                                 </tr>
-                            </thead>
-                            <tbody>
                                 <tr v-for="cat in cats.passives" :key="cat.category">                    
-                                    <th class="titulos"> {{cat.category}} </th> 
-                                    <th class="pas"> ${{Number(cat.value).toLocaleString()}} </th>
+                                    <td class="titulos"> {{cat.category}} </td> 
+                                    <td class="pas"> ${{Number(cat.value).toLocaleString()}} </td>
                                 </tr>                    
-                            </tbody>
                         </table>
                     </div> 
             </b-col> 
@@ -307,7 +297,7 @@ export default {
             axios
             .patch(`${url}/user/modify/category/`, data)
             .then((response) => {
-                
+                window.location.reload();
             })
             .catch((error) =>{
                 alert(error.response.data)                                                         

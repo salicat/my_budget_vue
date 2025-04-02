@@ -338,7 +338,6 @@ h1{
 }
 .bad{
     color: #ff0000;
-    font-weight: bold;
 }
 
 
@@ -359,7 +358,6 @@ td {
     background-color:#000000;
 }
 .columnas {
-    color: rgb(0, 107, 107);
     padding: 5px;
     font-size: 90%;
 }
@@ -367,7 +365,6 @@ td {
     text-align: left !important;
 }
 .titulos{
-    color: rgb(0, 107, 107);
     font-weight: 100;
     text-align: left;
     padding: 4px ;
@@ -389,6 +386,10 @@ tr{
 td {
   padding-left: 1%;
   font-weight: 300;
+}
+
+.tab_egresos{
+
 }
 
 .pas{
