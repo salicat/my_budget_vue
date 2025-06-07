@@ -4,7 +4,7 @@
     </div>
     <b-container v-else fluid>
       <b-row>
-        <!-- Contenedor para "Variaciones en Gastos" -->
+        <!-- Contenedor para "Variaciones en Gastos" --> 
         <b-col cols="12" class="module">
           <div v-if="cats.expenses.length > 0">
             <h1>Historico Gastos</h1>
@@ -234,7 +234,7 @@
   
 <script>
 import axios from "axios";
-import LottieAnimation from '@/components/LottieAnimation'; 
+import LottieAnimation from '@/components/LottieAnimation';  
 import loadingAnimation from '@/assets/loading.json';
 
 export default {

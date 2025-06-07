@@ -3,7 +3,7 @@
       <LottieAnimation :animationData="loadingAnimation" />
     </div>
     <b-container v-else fliud class="main">
-        <b-modal ref="wellcome" hide-header content-class="modal">
+        <b-modal ref="wellcome" hide-header content-class="modal"> 
             <div >
                 <p>Acá podras ver graficos e historial de tus gastos en meses anteriores</p>
                 <p> Primero debes crear tus categorias y luego registrar gastos</p>
@@ -38,7 +38,8 @@
         </b-row>
         <b-row >
             <b-col cols="12" class="module"> 
-                <div style="display:flex; flex-direction:row; justify-content: space-between;">    
+                <h3 class="act"> Presupuesto Actual</h3>
+                <div style="display:flex; flex-direction:row; justify-content: space-between;">   
                         <p v-bind:class="{  goo: expenses/gen_budget < 0.99999,
                                             act: expenses/gen_budget == 1,
                                             bad: expenses/gen_budget > 1                                
@@ -63,6 +64,29 @@
                 <div v-if="expenses > gen_budget">
                     <h2 class="bad"> Tu presupuesto se ha agotado!!!</h2>
                 </div>  
+            </b-col>
+        </b-row>
+        <b-row>
+            <b-col>
+                <div class="module">
+                    <h3 class="act"> Historico de Gastos</h3>
+                    <div class="chart-container">
+                        <area-chart
+                            :colors="['#FF00D5']"
+                            label="Value"
+                            :curve="true"
+                            :discrete="true"
+                            prefix="$"
+                            thousands=","
+                            :messages="{empty: 'No tienes datos aun'}"
+                            :legend="false"
+                            xtitle="Meses"
+                            ytitle="Valor"
+                            :data="history"
+                            >
+                        </area-chart>
+                    </div>
+                </div>
             </b-col>
         </b-row>
         <b-row > 
@@ -116,7 +140,7 @@
                     </div>
                     <b-col cols="12">
                         <div v-if="recurrents.length > 0">
-                            <h1> Pagos {{month}} </h1>         
+                            <h3 class="act"> Pagos {{month}} </h3>         
                         </div>
                         <b-row v-if="recurrents.length > 0">  
                             <b-col cols="5" lg="5"  style=" padding:3%;
@@ -141,7 +165,7 @@
                 </div>
                 <div class="left" v-if="alertas.length != 0">
                     <div class="left_title" >
-                        <h1> Gastos por Categoria </h1>
+                        <h3 class="act"> Gastos por Categoria </h3>
                         <b-button v-on:click="print()" class="button_request">Imprimir</b-button>
                     </div>
                     <div class="exp_cat" >                    
@@ -206,6 +230,7 @@ export default {
             assets      : 0,
             expenses    : 0,
             balance     : 0,
+            history     : [],
             liabilities : 0,
             passives    : 0,
             incomes     : 0,
@@ -259,7 +284,7 @@ export default {
     let two   = `${url}/user/cats/` + data.username;
     let three = `${url}/user/month_regs/` + data.username + "/" +  data.year + "/" + data.month;
     let four  = `${url}/user/cats/` + data.username + "/" + data.year + "/" + data.month;
-    
+
     const requestOne   = axios.get(one);
     const requestTwo   = axios.get(two);
     const requestThree = axios.get(three);
@@ -270,20 +295,22 @@ export default {
       .all([ requestOne, requestTwo, requestThree, requestFour ])
       .then(axios.spread((...responses) => {                       
           const responseOne = responses[0];
+          
+          self.history = responseOne.data[1]
 
           const mes = function(date){
-              if (!date) return '';
+              if (!date) return ''; 
               let fecha = date.split("-");
               return fecha[1];
           };
 
-          for (var i = 0; i < responseOne.data.length; i++){                
-              if (mes(responseOne.data[i].date) == month_cons) {                    
-                  if (responseOne.data[i].type == "incomes") {
-                      this.incomes = this.incomes + responseOne.data[i].value;
+          for (var i = 0; i < responseOne.data[0].length; i++){                
+              if (mes(responseOne.data[0][i].date) == month_cons) {                    
+                  if (responseOne.data[0][i].type == "incomes") {
+                      this.incomes = this.incomes + responseOne.data[0][i].value;
                   }
-                  if (responseOne.data[i].type == "expenses") {
-                      this.expenses = this.expenses + responseOne.data[i].value;
+                  if (responseOne.data[0][i].type == "expenses") {
+                      this.expenses = this.expenses + responseOne.data[0][i].value;
                   }
               }                                                                                 
           }
@@ -376,13 +403,13 @@ methods : {
               const responseOne = responses[0];  
               this.expenses = 0;
               this.incomes = 0;
-              for (var l = 0; l < responseOne.data.length; l++){
-                  if (mes(responseOne.data[l].date) == month_cons) {
-                      if (responseOne.data[l].type == "incomes") {
-                          this.incomes = this.incomes + responseOne.data[l].value;
+              for (var l = 0; l < responseOne.data[0].length; l++){
+                  if (mes(responseOne.data[0][l].date) == month_cons) {
+                      if (responseOne.data[0][l].type == "incomes") {
+                          this.incomes = this.incomes + responseOne.data[0][l].value;
                       }
-                      if (responseOne.data[l].type == "expenses") {
-                          this.expenses = this.expenses + responseOne.data[l].value;
+                      if (responseOne.data[0][l].type == "expenses") {
+                          this.expenses = this.expenses + responseOne.data[0][l].value;
                       }
                   }                                                               
               }

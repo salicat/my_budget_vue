@@ -99,7 +99,7 @@
                                 <td>{{goal.porc}}%</td>
                                 <td>${{Number(goal.meta).toLocaleString()}}</td>
                                 <td>${{Number(goal.actual).toLocaleString()}}</td>
-                                <td style="text-aling:right">{{goal.dias}}</td>
+                                <td style="text-align:right">{{goal.dias}}</td>
                             </tr>
                         </table>                
                     </div>            
