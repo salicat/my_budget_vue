@@ -7,7 +7,7 @@
         <!-- Contenedor para "Variaciones en Gastos" --> 
         <b-col cols="12" class="module">
           <div v-if="cats.expenses.length > 0">
-            <h1>Historico Gastos</h1>
+            <h1>Expenses History</h1>
             <select v-model="track" v-on:change="track_months">
               <option v-for="cat in cats.expenses" v-bind:key="cat.id">
                 {{cat.category}}
@@ -36,31 +36,31 @@
         <!-- Contenedor para "Registrar Transacción" -->
 		<b-col cols="12" sm="12" md="6" lg="6" class="module">
 			<div class="form-container">
-				<h2 class="form-title">Registrar Transacción</h2>
+				<h2 class="form-title">Register Transaction</h2>
 
 				<!-- Selección de Tipo de Transacción -->
 				<div class="form-group">
-					<label for="type">Tipo de Transacción</label>
+					<label for="type">Type of Transaction</label>
 					<select id="type" v-model="type" class="form-select">
-						<option value="">Selecciona...</option>
-						<option value="incomes">Ingreso</option>
-						<option value="expenses">Egreso</option>
+						<option value="">Select...</option>
+						<option value="incomes">Income</option>
+						<option value="expenses">Spend</option>
 					</select>
 				</div>
 
 				<!-- Mostrar método de registro SOLO si es un egreso -->
 				<div v-if="type === 'expenses'" class="form-group">
-					<label>¿Cómo deseas registrar la transacción?</label>
+					<label>¿How would you want to create the register?</label>
 					<select id="reg_mode" v-model="expenseMethod" class="form-select">
-						<option value="">Selecciona...</option>
-						<option value="ticket">Subir Ticket de Compra</option>
-						<option value="manualEntry">Registrar Manualmente</option>
+						<option value="">Select...</option>
+						<option value="ticket">Receipt Image</option>
+						<option value="manualEntry">Manually</option>
 					</select>
 				</div>
 
 				<!-- Si se elige "Subir Ticket" -->
 				<div v-if="expenseMethod === 'ticket'" class="form-group">
-					<b-button class="form-button" @click="triggerFileInput">Subir Tiquet de Compra</b-button>
+					<b-button class="form-button" @click="triggerFileInput">Upload your Receipt</b-button>
 					<input
 						type="file"
 						ref="ticketFile"
@@ -73,7 +73,7 @@
 				<!-- Si se elige "Ingreso" o "ManualEntry" en "Egreso" -->
 				<div v-if="expenseMethod === 'manualEntry'">
 					<div class="form-group">
-						<label for="category">Categoría de Egreso</label>
+						<label for="category">Category</label>
 						<select id="category" v-model="category" class="form-select">
 							<option v-for="cat in cats.expenses" :key="cat.category" :value="cat.category">
 							{{ cat.category }}
@@ -81,23 +81,23 @@
 						</select>
 					</div>
 					<div class="form-group">
-						<label for="descripcion">Descripción</label>
+						<label for="descripcion">Description</label>
 						<input id="descripcion" v-model="description" type="text" class="form-input" placeholder="Descripción">
 					</div>
 					<div class="form-group">
-						<label for="value">Valor</label>
+						<label for="value">Value</label>
 						<input id="value" v-model="value" type="number" class="form-input" placeholder="0.00">
 					</div>
 					<div class="form-group">
-						<label for="day">Fecha</label>
+						<label for="day">Date</label>
 						<input id="day" v-model="day" type="date" class="form-input">
 					</div>
-					<button @click="save_reg" class="form-button">Guardar Registro</button>
+					<button @click="save_reg" class="form-button">Save Register</button>
 				</div>
 
 				<div v-if="type === 'incomes'">
 					<div class="form-group">
-						<label for="category">Categoría de Ingreso</label>
+						<label for="category">Category</label>
 						<select id="category" v-model="category" class="form-select">
 							<option v-for="cat in cats.incomes" :key="cat.category" :value="cat.category">
 							{{ cat.category }}
@@ -105,25 +105,25 @@
 						</select>
 					</div>
 					<div class="form-group">
-						<label for="descripcion">Descripción</label>
+						<label for="descripcion">Description</label>
 						<input id="descripcion" v-model="description" type="text" class="form-input" placeholder="Descripción">
 					</div>
 					<div class="form-group">
-						<label for="value">Valor</label>
+						<label for="value">Value</label>
 						<input id="value" v-model="value" type="number" class="form-input" placeholder="0.00">
 					</div>
 					<div class="form-group">
-						<label for="day">Fecha</label>
+						<label for="day">Date</label>
 						<input id="day" v-model="day" type="date" class="form-input">
 					</div>
-					<button @click="save_reg" class="form-button">Guardar Registro</button>
+					<button @click="save_reg" class="form-button">Save Register</button>
 				</div>
 			</div>
 		</b-col>
 
         <!-- Contenedor para "Consultar Registros" -->
         <b-col cols="12" sm="12" md="6" lg="6" class="module">
-          <h2 class="act">Consultar Registros</h2>
+          <h2 class="act">Check Registers</h2>
           <b-row class="botones" align-h="between">
             <b-col cols="12" sm="8">
               <div class="date_request">
@@ -139,25 +139,25 @@
                   <option value="2024">2024</option>
                   <option value="2025">2025</option>
                 </b-form-select>
-                <b-button v-on:click="get_regs" class="button_request">Consultar</b-button>
+                <b-button v-on:click="get_regs" class="button_request">Consult</b-button>
               </div>
             </b-col>
             <b-col cols="6">
-              <b-button v-if="selected.length" v-on:click="reg_del" variant="dark">Eliminar</b-button>
+              <b-button v-if="selected.length" v-on:click="reg_del" variant="dark">Delete</b-button>
             </b-col>
           </b-row>
           <b-row>
-            <h2 class="act">Mis Registros</h2>
+            <h2 class="act">My Registers</h2>
             <table class="registered">
                 <thead>
                     <tr>
                     <th>
                         <input type="checkbox" v-model="selectedAll" v-on:click="select">
                     </th>
-                    <th class="act">Categoría</th>
-                    <th class="act">Descripción</th>
-                    <th class="act">Valor</th>
-                    <th class="act">Fecha</th>
+                    <th class="act">Category</th>
+                    <th class="act">Description</th>
+                    <th class="act">Value</th>
+                    <th class="act">Date</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -180,13 +180,13 @@
 			<LottieAnimation :animationData="loadingAnimation" />
 		</div>
 		<div v-else-if="extractedData && extractedData.length">
-			<h3 class="pas">*Estos Valores Pueden Contener Errores</h3>
-			<p>Revisa el valor antes de guardar este registro</p>
+			<h3 class="pas">*The value can contain errors</h3>
+			<p>Check the information before save register</p>
 			<table class="table table-sm">
 			<thead>
 				<tr>
-				<th>Descripción</th>
-				<th>Valor</th>
+				<th>Description</th>
+				<th>Value</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -198,7 +198,7 @@
 			</table>
 			<hr>
 			<div class="form-group">
-			<label><strong>Valor total:</strong></label>
+			<label><strong>Total Value:</strong></label>
 			<input type="number" 
 					step="any" 
 					class="form-control" 
@@ -207,25 +207,25 @@
 				/>
 			</div>
 			<div class="form-group">
-			<label><strong>Asignar Categoría:</strong></label>
+			<label><strong>Category:</strong></label>
 			<select v-model="category" class="form-select">
-				<option disabled> -- Elige una categoria -- </option>
+				<option disabled> -- Choose one -- </option>
 				<option v-for="cat in cats.expenses" :key="cat.category" :value="cat.category">
 				{{ cat.category }}
 				</option>
 			</select>
 			</div>
 			<div class="form-group">
-				<label for="day">Fecha de la compra</label>
+				<label for="day">Date</label>
 				<input id="day" v-model="day" type="date" class="form-input">
 			</div>
 		</div>
 		<div v-else>
-			<p>No hay datos extraídos para mostrar.</p>
+			<p>There are no data extracted.</p>
 		</div>
 		<div class="modal-footer">
-			<b-button variant="secondary" @click="showTicketModal = false">Cerrar</b-button>
-			<b-button variant="primary" @click="confirmTicketData">Guardar registro</b-button>
+			<b-button variant="secondary" @click="showTicketModal = false">Close</b-button>
+			<b-button variant="primary" @click="confirmTicketData">Save register</b-button>
 		</div>
 		</b-modal>
     </b-container>
