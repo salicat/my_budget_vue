@@ -39,7 +39,7 @@
             <b-col cols="12" lg="6" sm="12">
                 <div class="module">
                     <h3 class="act"> Total Expenses </h3>
-                    <p class="act">last 12 months</p>
+                    <p class="act">Last 12 months</p>
                     <div class="chart-container">
                         <area-chart
                             :colors="['#00E8FF']"
@@ -71,11 +71,11 @@
                                             act: expenses/gen_budget == 1,
                                             bad: expenses/gen_budget > 1                                
                                         }"> 
-                            Gasto ${{Number(expenses).toLocaleString()}} 
+                            Spended: ${{Number(expenses).toLocaleString()}} 
                         </p>
                         <p v-bind:class="{  goo: gen_budget-expenses > 1,
                                             bad: gen_budget-expenses <= 0 }"> 
-                            Presupuesto: ${{Number(gen_budget).toLocaleString()}}
+                            Budget: ${{Number(gen_budget).toLocaleString()}}
                         </p>    
                 </div> 
                 <div class="bar" style="width:100%; height: 40px;">
@@ -89,7 +89,7 @@
                 </div>
                 <br>
                 <div v-if="expenses > gen_budget">
-                    <h2 class="bad"> Tu presupuesto se ha agotado!!!</h2>
+                    <h2 class="bad"> Budget Depleted!</h2>
                 </div>  
             </b-col>
         </b-row>
@@ -97,7 +97,7 @@
         <b-row > 
             <b-col cols="12" lg="6" sm="12" class="module">   
                 <div class="gastorta" v-if="expenses > 0" >
-                    <h2 class="act"> Distribución de Gastos </h2> 
+                    <h2 class="act"> Expenses Distribution </h2> 
                     <pie-chart
                         :donut  ="true"
                         :data   ="exp_pie"
@@ -124,7 +124,7 @@
                 </div>
                 <div class="right">
                     <div v-if="incomes||expenses != 0" >
-                        <h2 class="act">Ingresos VS Egresos</h2>
+                        <h2 class="act">Incomes VS Expenses</h2>
                         <column-chart  
                              
                             :data="[['Ingresos', incomes], ['Gastos', expenses]]"
@@ -142,7 +142,7 @@
         </b-row> 
         <b-row align-h="between">
             <b-col cols="12" md="4" sm="10">
-                <h3 class="act">Consulta meses anteriores</h3>
+                <h3 class="act">Check Previous Months</h3>
                 <div class="date_request">
                         <b-form-select v-model="month" style="background-color:black; color: white;">                        
                             <option selected> {{month}} </option>
@@ -165,7 +165,7 @@
                     </div>
                     <b-col cols="12">
                         <div v-if="recurrents.length > 0">
-                            <h3 class="act"> Pagos {{month}} </h3>         
+                            <h3 class="act"> Payments {{month}} </h3>         
                         </div>
                         <b-row v-if="recurrents.length > 0">  
                             <b-col cols="5" lg="5"  style=" padding:3%;
@@ -186,11 +186,11 @@
             </b-col>
             <b-col cols="12" sm="12" md="6" lg="6" class="module">
                 <div v-if="alertas.length < 1">
-                    <p> Aca podrás ver el progreso de tus gastos por categoria</p>
+                    <p> No Info to Display</p>
                 </div>
                 <div class="left" v-if="alertas.length != 0">
                     <div class="left_title" >
-                        <h3 class="act"> Gastos por Categoria </h3>
+                        <h3 class="act"> Expenses by Category </h3>
                         <b-button v-on:click="print()" class="button_request">Imprimir</b-button>
                     </div>
                     <div class="exp_cat" >                    
