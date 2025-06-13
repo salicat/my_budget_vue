@@ -154,7 +154,7 @@
                             <option v-for="anio in anios" 
                                     :key="anio" > {{anio}} </option>
                         </select>      
-                    <b-button class="button_request" v-on:click="reload" > Consultar </b-button>
+                    <b-button class="button_request" v-on:click="reload" > Go </b-button>
                 </div>
             </b-col>
         </b-row>     
@@ -191,7 +191,7 @@
                 <div class="left" v-if="alertas.length != 0">
                     <div class="left_title" >
                         <h3 class="act"> Expenses by Category </h3>
-                        <b-button v-on:click="print()" class="button_request">Imprimir</b-button>
+                        <b-button v-on:click="print()" class="button_request">Print</b-button>
                     </div>
                     <div class="exp_cat" >                    
                         <div v-for="item in alertas" v-bind:key="item.name" v-if="item.value > 0">

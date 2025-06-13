@@ -13,12 +13,12 @@
     </b-row>    
         <b-sidebar id="sidebar" v-if="is_auth">       
           <b-button-group vertical size="lg">
-              <b-button variant="secondary" v-on:click="go_to_resumen">Resumen</b-button>
+              <b-button variant="secondary" v-on:click="go_to_resumen">Dashboard</b-button>
               <!-- <b-button variant="secondary" v-on:click="go_to_incomes"> Ingresos </b-button> -->
-              <b-button variant="secondary" v-on:click="go_to_reg">Registros</b-button>
+              <b-button variant="secondary" v-on:click="go_to_reg">Registers</b-button>
               <!-- <b-button variant="secondary" v-on:click="go_to_goals">Metas</b-button> -->
-              <b-button variant="secondary" v-on:click="go_to_cats">Categorias</b-button>              
-			  <b-button variant="secondary" v-on:click="logOut" id="cerrar"> Cerrar Cesión </b-button>    
+              <b-button variant="secondary" v-on:click="go_to_cats">Categories</b-button>              
+			  <b-button variant="secondary" v-on:click="logOut" id="cerrar"> Logout </b-button>    
           </b-button-group>
         </b-sidebar>
       <b-row>
