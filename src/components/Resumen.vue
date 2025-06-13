@@ -5,40 +5,67 @@
     <b-container v-else fliud class="main">
         <b-modal ref="wellcome" hide-header content-class="modal"> 
             <div >
-                <p>Acá podras ver graficos e historial de tus gastos en meses anteriores</p>
-                <p> Primero debes crear tus categorias y luego registrar gastos</p>
+                <p>No informatión</p>
+                <p> First go to Categories Tab and create your first category</p>
                 <b-row>
                     <b-col cols="4">
-                        <b-button v-on:click="go_to_cats" size="sm"> Ir a Categorias </b-button>
+                        <b-button v-on:click="go_to_cats" size="sm"> Go To Categories </b-button>
                     </b-col>
                     <b-col cols="4"></b-col>
                     <b-col cols="4">
-                        <b-button v-on:click="go_to_registers" size="sm"> Ir a Registros</b-button>
+                        <b-button v-on:click="go_to_registers" size="sm"> Go To Registers</b-button>
                     </b-col>
                 </b-row> 
             </div>
         </b-modal>
-        <b-row align-h="between">
-            <b-col cols="12" md="4" sm="10">
-                <h3>Consulta meses anteriores</h3>
-                <div class="date_request">
-                        <b-form-select v-model="month" style="background-color:black; color: white;">                        
-                            <option selected> {{month}} </option>
-                            <option v-for="mes in meses" 
-                                    :key="mes" > {{mes}} </option>  
-                        </b-form-select>   
-                        <select v-model="anio" style="background-color:black; color: white;">                        
-                            <option selected> {{curr_year}} </option>
-                            <option v-for="anio in anios" 
-                                    :key="anio" > {{anio}} </option>
-                        </select>      
-                    <b-button class="button_request" v-on:click="reload" > Consultar </b-button>
+        <b-row>
+            <b-col cols="12" lg="6" sm="12">
+                <div class="module">
+                    <h3 class="act">Net Worth: ${{ Number(liabilities-passives).toLocaleString() }}</h3>
+                    <p class="act"> Assets: ${{ Number(liabilities).toLocaleString() }} /  Liabilities: {{ Number(passives).toLocaleString() }}</p>
+                    <bar-chart
+                        horizontal
+                        :stacked="true"
+                        :colors="[ '#79FF00']" 
+                        :data="[['Pasivos', passives],['Activos', liabilities]]"
+                        :discrete="true"
+                        prefix="$"
+                        thousands=","
+                        :legend="true"
+                        ytitle="Valor"
+                    ></bar-chart>
                 </div>
             </b-col>
+            <b-col cols="12" lg="6" sm="12">
+                <div class="module">
+                    <h3 class="act"> Total Expenses </h3>
+                    <p class="act">last 12 months</p>
+                    <div class="chart-container">
+                        <area-chart
+                            :colors="['#00E8FF']"
+                            label="Value"
+                            :curve="true"
+                            :discrete="true"
+                            prefix="$"
+                            thousands=","
+                            :messages="{empty: 'No tienes datos aun'}"
+                            :legend="false"
+                            xtitle="Meses"
+                            ytitle="Valor"
+                            :data="history"
+                            >
+                        </area-chart>
+                    </div>
+                </div>
+            </b-col>
+
+        </b-row>
+        <b-row>
+            
         </b-row>
         <b-row >
             <b-col cols="12" class="module"> 
-                <h3 class="act"> Presupuesto Actual</h3>
+                <h3 class="act"> Current Month Budget ({{ month }})</h3>
                 <div style="display:flex; flex-direction:row; justify-content: space-between;">   
                         <p v-bind:class="{  goo: expenses/gen_budget < 0.99999,
                                             act: expenses/gen_budget == 1,
@@ -66,41 +93,20 @@
                 </div>  
             </b-col>
         </b-row>
-        <b-row>
-            <b-col>
-                <div class="module">
-                    <h3 class="act"> Historico de Gastos</h3>
-                    <div class="chart-container">
-                        <area-chart
-                            :colors="['#FF00D5']"
-                            label="Value"
-                            :curve="true"
-                            :discrete="true"
-                            prefix="$"
-                            thousands=","
-                            :messages="{empty: 'No tienes datos aun'}"
-                            :legend="false"
-                            xtitle="Meses"
-                            ytitle="Valor"
-                            :data="history"
-                            >
-                        </area-chart>
-                    </div>
-                </div>
-            </b-col>
-        </b-row>
+        
         <b-row > 
-            <b-col cols="12" sm="12" md="6" lg="6" class="module">   
+            <b-col cols="12" lg="6" sm="12" class="module">   
                 <div class="gastorta" v-if="expenses > 0" >
                     <h2 class="act"> Distribución de Gastos </h2> 
                     <pie-chart
-                        :donut  ="false"
+                        :donut  ="true"
                         :data   ="exp_pie"
-                        :colors ="['#ff7f50','#87cefa','#da70d6','#32cd32','#6495ed', 
-                                    '#ff69b4','#ba55d3','#cd5c5c','#ffa500','#40e0d0',
-                                    '#ff7f50','#87cefa','#da70d6','#32cd32','#6495ed', 
-                                    '#ff69b4', '#ff7f50','#87cefa','#da70d6','#32cd32',
-                                    '#6495ed', '#ff69b4']"
+                        :colors ="[     
+                            '#00E8FF','#FF00E8','#E8FF00','#FF8C00',
+                            '#8C00FF','#00FF8C','#FF008C','#008CFF','#E800FF',
+                            '#00FFEA','#FFEA00','#EA00FF','#00FF4C','#4C00FF',
+                            '#FF4C00','#00EAFF','#EAFF00'
+                        ]"
                         :library="  {animation:{easing:'easeOutQuart'},
                         elements: {arc: {borderWidth: 0}},
                         }"
@@ -112,14 +118,15 @@
                     </pie-chart>
                 </div> 
             </b-col>
-            <b-col cols="12" sm="12" md="6" lg="6" class="module">
+            <b-col cols="12" lg="6" sm="12" class="module">
                 <div v-if="incomes && expenses == 0">
-                    <p>Aca podrás ver el grafico de Ingresos VS Egresos </p>
+                    <p>No Information to display </p>
                 </div>
                 <div class="right">
                     <div v-if="incomes||expenses != 0" >
                         <h2 class="act">Ingresos VS Egresos</h2>
-                        <column-chart        
+                        <column-chart  
+                             
                             :data="[['Ingresos', incomes], ['Gastos', expenses]]"
                             :colors="[['#79FF00', '#FF00D5']]"
                             :library="{animation:{easing:'easeOutQuad'}}"
@@ -132,7 +139,25 @@
                     </div>    
                 </div>
             </b-col>
-        </b-row>      
+        </b-row> 
+        <b-row align-h="between">
+            <b-col cols="12" md="4" sm="10">
+                <h3 class="act">Consulta meses anteriores</h3>
+                <div class="date_request">
+                        <b-form-select v-model="month" style="background-color:black; color: white;">                        
+                            <option selected> {{month}} </option>
+                            <option v-for="mes in meses" 
+                                    :key="mes" > {{mes}} </option>  
+                        </b-form-select>   
+                        <select v-model="anio" style="background-color:black; color: white;">                        
+                            <option selected> {{curr_year}} </option>
+                            <option v-for="anio in anios" 
+                                    :key="anio" > {{anio}} </option>
+                        </select>      
+                    <b-button class="button_request" v-on:click="reload" > Consultar </b-button>
+                </div>
+            </b-col>
+        </b-row>     
         <b-row >
             <b-col cols="12" sm="12" md="6" lg="6" class="module">
                     <div v-if="recurrents.length < 1">
@@ -209,12 +234,9 @@
 import axios from 'axios';
 import Datepicker from 'vuejs-datepicker';
 import Vue from 'vue'
-import Chart from 'chart.js'
-import VueChartkick from 'vue-chartkick'
 import LottieAnimation from '@/components/LottieAnimation'; 
 import loadingAnimation from '@/assets/loading.json';
 
-Vue.use(Chartkick.use(Chart))
 
 
 export default {
@@ -247,9 +269,9 @@ export default {
             exp_pie     : [],
             anio        : undefined,
             anios       : [2021, 2022, 2023, 2024, 2025],
-            meses       : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 
-                            'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 
-                            'Noviembre', 'Diciembre']                        
+            meses       : ['January', 'February', 'March', 'April', 'May', 
+                            'June', 'July', 'August', 'September', 'October', 
+                            'November', 'December']                        
         }
     },
     created: function(){       
