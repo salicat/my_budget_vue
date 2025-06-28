@@ -124,9 +124,11 @@
         <!-- Contenedor para "Consultar Registros" -->
         <b-col cols="12" sm="12" md="6" lg="6" class="module">
           <h2 class="act">Check Registers</h2>
+		 
           <b-row class="botones" align-h="between">
             <b-col cols="12" sm="8">
               <div class="date_request">
+				
                 <b-form-select v-model="month" style="background-color:black; color: white;">
                   <option v-for="mes in meses" :key="mes">
                     {{mes}}
@@ -161,7 +163,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="reg in registers" :key="reg.id" v-bind:class="{ goo: reg.type == 'incomes', bad: reg.type == 'expenses', pas: reg.type == 'passives', act: reg.type == 'liabilities' }">
+                    <tr v-for="reg in registers[0]" :key="reg.id" v-bind:class="{ goo: reg.type == 'incomes', bad: reg.type == 'expenses', pas: reg.type == 'passives', act: reg.type == 'liabilities' }">
                     <td>
                         <input type="checkbox" :value="reg.id" v-model="selected">
                     </td>
@@ -263,9 +265,9 @@ export default {
             alertas     : [],
             datos       : [],
             year        : [2021, 2022, 2023, 2024, 2025],
-            meses       : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 
-                        'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 
-                        'Noviembre', 'Diciembre'],
+            meses       : ['January', 'February', 'March', 'April', 'May',  
+                        'June', 'July', 'August', 'September', 'October', 
+                        'November', 'December'],
 			showTicketModal	: false,   
 			extractedData	: [],      
 			ticket_data    	: []            
@@ -319,6 +321,7 @@ export default {
             const url = window.location.hostname.includes("localhost") 
             ? "http://localhost:8000" 
             : "https://my-budget-back.onrender.com";
+
 
             var self = this  
             axios

@@ -58,14 +58,12 @@
                     </div>
                 </div>
             </b-col>
-
         </b-row>
         <b-row>
-            
         </b-row>
         <b-row >
             <b-col cols="12" class="module"> 
-                <h3 class="act"> Current Month Budget ({{ month }})</h3>
+                <h3 class="act"> Month Budget ({{ month }})</h3>
                 <div style="display:flex; flex-direction:row; justify-content: space-between;">   
                         <p v-bind:class="{  goo: expenses/gen_budget < 0.99999,
                                             act: expenses/gen_budget == 1,
@@ -93,11 +91,10 @@
                 </div>  
             </b-col>
         </b-row>
-        
         <b-row > 
-            <b-col cols="12" lg="6" sm="12" class="module">   
+            <b-col cols="6" lg="6" sm="12" class="module">   
                 <div class="gastorta" v-if="expenses > 0" >
-                    <h2 class="act"> Expenses Distribution </h2> 
+                    <h2 class="act"> Expenses Distribution</h2> 
                     <pie-chart
                         :donut  ="true"
                         :data   ="exp_pie"
@@ -118,7 +115,7 @@
                     </pie-chart>
                 </div> 
             </b-col>
-            <b-col cols="12" lg="6" sm="12" class="module">
+            <b-col cols="6" lg="6" sm="12" class="module">
                 <div v-if="incomes && expenses == 0">
                     <p>No Information to display </p>
                 </div>
@@ -142,8 +139,8 @@
         </b-row> 
         <b-row align-h="between">
             <b-col cols="12" md="4" sm="10">
-                <h3 class="act">Check Previous Months</h3>
-                <div class="date_request">
+                <div class="module">
+                    <h5 class="act">Check Previous Months</h5>
                         <b-form-select v-model="month" style="background-color:black; color: white;">                        
                             <option selected> {{month}} </option>
                             <option v-for="mes in meses" 
@@ -275,8 +272,7 @@ export default {
         }
     },
     created: function(){       
-    this.isLoading = true;                
-    console.log(process.env.NODE_ENV);
+    this.isLoading = true;            
 
     const today = new Date();
     today.toLocaleString('default', { month: 'long' });

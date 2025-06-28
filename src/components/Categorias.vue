@@ -317,10 +317,10 @@ export default {
             axios
             .delete(`${url}/user/delete/category/`, {data})
             .then((response) => { 
-                window.location.reload();
+                alert(response.data.message)
             })
             .catch((error) =>{
-            alert(error.response.data)                                                         
+                alert(error.response.data.detail)                                                         
             })
         }
     }
