@@ -419,6 +419,9 @@ table{
     justify-content: space-between;
 }
 
+.registered{
+    font-size: 0.9rem;
+}
 
   
 @media screen and (max-width: 768px) {

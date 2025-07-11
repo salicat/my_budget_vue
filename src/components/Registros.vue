@@ -327,7 +327,9 @@ export default {
             axios
             .get(`${url}/user/month_records/` + data.username + "/" + data.year + "/" + data.month)
             .then((response) => {
-                self.registers = response.data.sort((a, b) => new Date(a.date) - new Date(b.date));
+                response.data[0].sort((a, b) => new Date(a.date) - new Date(b.date));
+        
+        		self.registers = response.data;
             })  
             .catch((error) => {
             alert(error + username + " ERROR en el server!")
